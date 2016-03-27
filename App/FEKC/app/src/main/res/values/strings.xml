@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FEKC</string>
+
+    <string name="facebook_app_id">264776833853773</string>
+
+    <string name="com_facebook_loginview_log_out_button">Log out</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tasks">TASKS</string>
+    <string name="stats">STATS</string>
+    <string name="tracked_friends">TRACKED FRIENDS</string>
+    <string name="title_activity_nav">NavActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="gcm_credential_project_id">356703539513</string>
+
+
+</resources>
