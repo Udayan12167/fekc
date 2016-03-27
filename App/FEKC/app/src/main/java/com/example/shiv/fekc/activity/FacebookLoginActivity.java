@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.gcm.GCMIntentService;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,7 +31,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
+                registerGCM();
             }
 
             @Override
@@ -66,6 +67,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         AppEventsLogger.deactivateApp(this);
+    }
+
+    private void registerGCM() {
+        Intent intent = new Intent(this, GCMIntentService.class);
+        intent.putExtra(Constants.STRING_EXTRA_KEY_GCM, "key");
+        intent.putExtra(Constants.STRING_EXTRA_USER_ID, AccessToken.getCurrentAccessToken().getUserId());
+        startService(intent);
     }
 
 }
