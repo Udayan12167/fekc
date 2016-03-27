@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/list_item_horizontal_margin"
+        android:layout_marginRight="@dimen/list_item_horizontal_margin"
+        android:layout_marginTop="@dimen/list_item_vertical_margin"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
+        android:id="@+id/linearLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/app_list_row_image_view"
+            android:layout_width="@dimen/list_view_image_width"
+            android:layout_height="@dimen/list_view_image_height"
+            android:layout_marginRight="@dimen/list_item_horizontal_margin"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#11000000"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            
+            <TextView
+                android:id="@+id/app_list_row_app_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/list_item_horizontal_margin"
+                android:textSize="@dimen/list_view_large_text_size"/>
+
+            <CheckBox
+                android:id="@+id/app_list_row_favorite_checkbox"
+                android:button="@drawable/custom_checkbox"
+                android:layout_marginRight="@dimen/list_item_horizontal_margin"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/app_list_row_selected_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/list_item_horizontal_margin"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

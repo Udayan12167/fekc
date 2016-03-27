@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -95,7 +96,8 @@ public class NavActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(this, AppListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         }
