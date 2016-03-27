@@ -35,6 +35,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".activity.AppListActivity" />
+        <activity android:name=".activity.UserListActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

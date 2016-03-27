@@ -99,7 +99,8 @@ public class NavActivity extends AppCompatActivity
             Intent intent = new Intent(this, AppListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
-
+            Intent intent = new Intent(this, UserListActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_nav_drawer_layout);
