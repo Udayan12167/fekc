@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }else{
             Log.d(getClass().toString(), "Credentials present");
+            Intent intent = new Intent(this, NavActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }

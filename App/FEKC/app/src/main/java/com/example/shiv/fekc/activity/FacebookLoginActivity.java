@@ -32,6 +32,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 registerGCM();
+                Intent tabActivityIntent = new Intent(FacebookLoginActivity.this, NavActivity.class);
+                startActivity(tabActivityIntent);
+                finish();
             }
 
             @Override
