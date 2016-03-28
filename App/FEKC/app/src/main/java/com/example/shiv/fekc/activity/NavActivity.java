@@ -30,6 +30,7 @@ import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.fragment.StatsFragment;
 import com.example.shiv.fekc.fragment.TaskListFragment;
 import com.example.shiv.fekc.fragment.TrackedFriendsFragment;
+import com.example.shiv.fekc.item.UserItem;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -74,8 +75,8 @@ public class NavActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(NavActivity.this, AddTaskActivity.class);
+                startActivity(intent);
             }
         });
 

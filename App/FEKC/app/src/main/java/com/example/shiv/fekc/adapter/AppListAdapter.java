@@ -29,6 +29,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
 
     private ArrayList<AppItem> originalList;
     private ArrayList<AppItem> filteredList = new ArrayList<AppItem>();
+    private ArrayList<String> selectedApps = new ArrayList<String>();
     private Context context;
 
     public AppListAdapter(Context context, ArrayList<AppItem> appItemList){
@@ -82,16 +83,23 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
                 if(appItem.isSelected()){
                     appItem.setIsSelected(false);
                     holder.getSelectedCheckBox().setChecked(false);
+                    selectedApps.remove(appItem.getPackageName());
                 }else{
                     appItem.setIsSelected(true);
                     holder.getSelectedCheckBox().setChecked(true);
+                    selectedApps.add(appItem.getPackageName());
                 }
                 updateItemFilteredList(appItem, position);
                 updateItemOriginalList(appItem);
             }
         });
 
+    }
 
+
+    public ArrayList<String> getSelectedApps()
+    {
+        return selectedApps;
     }
 
     @Override

@@ -20,6 +20,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="gcm_credential_project_id">356703539513</string>
+    <string name="title_activity_add_task">AddTaskActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_time_based_task">TimeBasedTaskActivity</string>
+    <string name="title_activity_schedule_based_task">ScheduleBasedTaskActivity</string>
+    <string name="title_activity_activity_based_task">ActivityBasedTaskActivity</string>
 
 
 </resources>

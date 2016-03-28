@@ -11,6 +11,18 @@ public class AppItem {
     private Drawable appIcon;
     private boolean isSelected;
     private boolean isFavorite;
+    private String packageName;
+
+    public String getPackageName()
+    {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName)
+    {
+        this.packageName=packageName;
+    }
+
 
     public boolean isSelected() {
         return isSelected;

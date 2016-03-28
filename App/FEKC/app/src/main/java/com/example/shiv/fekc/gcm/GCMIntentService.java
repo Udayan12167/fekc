@@ -26,9 +26,10 @@ public class GCMIntentService extends IntentService {
 
 
     @Override
-    protected void onHandleIntent(Intent intent) {;
+    protected void onHandleIntent(Intent intent) {
+        String key = intent.getStringExtra(Constants.STRING_EXTRA_KEY_GCM);
         String userId = intent.getStringExtra(Constants.STRING_EXTRA_USER_ID);
-        if (userId == null) {
+        if (key == null || userId == null) {
             return;
         }
         registerGCM(userId);

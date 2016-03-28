@@ -7,4 +7,23 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="APPS"
+        android:id="@+id/activity_main_app_list_button"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="USERS"
+        android:id="@+id/activity_main_user_list_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="139dp" />
+
 </RelativeLayout>

@@ -5,12 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserListActivity">
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/save"
+        android:onClick="onSave"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
     <view
         android:id="@+id/user_list_activity_recycler_view"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_list_activity_linear_layout"
-        android:layout_centerInParent="true" />
+        android:layout_below="@+id/save"
+        android:layout_centerHorizontal="true" />
+
+
 
 </RelativeLayout>

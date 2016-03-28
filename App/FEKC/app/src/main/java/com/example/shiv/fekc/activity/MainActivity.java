@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.activity;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,24 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null){
             return;
         }
+
+//        appListButton = (Button)findViewById(R.id.activity_main_app_list_button);
+//        appListButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, AppListActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        userListButton = (Button)findViewById(R.id.activity_main_user_list_button);
+//        userListButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, UserListActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override
