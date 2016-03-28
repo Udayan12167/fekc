@@ -27,7 +27,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
     private ArrayList<UserItem> originalList;
     private ArrayList<UserItem> filteredList = new ArrayList<UserItem>();
     private Context context;
-
+    private ArrayList<String> selectedUsers = new ArrayList<String>();
     public UserListAdapter(Context context, ArrayList<UserItem> userItemList){
         this.context = context;
         this.originalList = userItemList;
@@ -77,9 +77,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
                 if(userItem.isSelected()){
                     userItem.setIsSelected(false);
                     holder.getSelectedCheckBox().setChecked(false);
+                    selectedUsers.remove(userItem.getId());
                 }else{
                     userItem.setIsSelected(true);
                     holder.getSelectedCheckBox().setChecked(true);
+                    selectedUsers.add(userItem.getId());
                 }
                 updateItemFilteredList(userItem, position);
                 updateItemOriginalList(userItem);
@@ -87,6 +89,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         });
 
 
+    }
+
+    public ArrayList<String> getSelectedUsers(){
+        return selectedUsers;
     }
 
     @Override

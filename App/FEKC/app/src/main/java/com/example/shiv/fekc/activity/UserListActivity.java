@@ -1,5 +1,6 @@
 package com.example.shiv.fekc.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -82,6 +84,14 @@ public class UserListActivity extends AppCompatActivity {
         ).executeAsync();
     }
 
+    public void onSave(View view){
+        ArrayList<String> selectedUsers = userListAdapter.getSelectedUsers();
+
+        Intent intent=new Intent();
+        intent.putExtra("SelectedUsers",selectedUsers);
+        setResult(2,intent);
+        finish();
+    }
     private void getUserDPUrl(final UserItem userItem) {
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);

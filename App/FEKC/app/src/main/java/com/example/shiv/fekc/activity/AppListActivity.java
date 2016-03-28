@@ -1,5 +1,6 @@
 package com.example.shiv.fekc.activity;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -86,9 +88,19 @@ public class AppListActivity extends AppCompatActivity {
     private AppItem getAppItemFromApplicationInfo(ApplicationInfo applicationInfo) {
         AppItem appItem = new AppItem();
         appItem.setAppName(applicationInfo.loadLabel(packageManager).toString());
+        appItem.setPackageName(applicationInfo.packageName.toString());
         Log.d(getClass().toString(), applicationInfo.loadLabel(packageManager).toString());
         appItem.setAppIcon(applicationInfo.loadIcon(packageManager));
         return appItem;
+    }
+    public void onSave(View view)
+    {
+        ArrayList<String> selectedApps = appListAdapter.getSelectedApps();
+
+        Intent intent=new Intent();
+        intent.putExtra("SelectedApps",selectedApps);
+        setResult(1,intent);
+        finish();
     }
 
 }
