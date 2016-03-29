@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shiv.fekc" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.shiv.fekc">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
 
     <application
         android:allowBackup="true"
@@ -19,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.AppListActivity" />
+        <activity android:name=".activity.WarningActivity" />
         <activity android:name=".activity.FacebookLoginActivity" />
         <activity
             android:name=".activity.AddTaskActivity"
@@ -78,6 +84,12 @@
             android:name=".activity.ActivityBasedTaskActivity"
             android:label="@string/title_activity_activity_based_task" >
         </activity>
+
+        <service
+            android:name=".service.CheckViolationService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

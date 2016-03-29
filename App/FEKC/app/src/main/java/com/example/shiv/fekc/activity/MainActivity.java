@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.activity;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Functions;
+import com.example.shiv.fekc.service.CheckViolationService;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null){
             return;
         }
+
 
 //        appListButton = (Button)findViewById(R.id.activity_main_app_list_button);
 //        appListButton.setOnClickListener(new View.OnClickListener() {
@@ -61,11 +64,26 @@ public class MainActivity extends AppCompatActivity {
             Log.d(getClass().toString(), "Credentials absent");
             Intent intent = new Intent(this, FacebookLoginActivity.class);
             startActivity(intent);
+
+            Intent intent2 = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivity(intent2);
+
+            Intent checkViolationIntent = new Intent(this, CheckViolationService.class);
+            startService(checkViolationIntent);
+
         }else{
             Log.d(getClass().toString(), "Credentials present");
             Intent intent = new Intent(this, NavActivity.class);
             startActivity(intent);
+
+            Intent intent2 = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivity(intent2);
+
+            Intent checkViolationIntent = new Intent(this, CheckViolationService.class);
+            startService(checkViolationIntent);
+
             finish();
         }
+
     }
 }
