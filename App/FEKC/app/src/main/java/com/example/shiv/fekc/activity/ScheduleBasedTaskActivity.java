@@ -172,9 +172,6 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         task.setActivityStopFlag(0);
         task.setTaskID(dbAdapter.getMaxTaskIDFromTaskInfo() + 1);
 
-
-         // taskInfo.execSQL("INSERT INTO TaskInfo VALUES("+taskID+",'"+task_name+"',"+ task_type+",'"+end_date+"','"+start_time+"','"+end_time+"','"+duration+"','"+activity_name+"','"+app+"','"+friends+ "');");
-            //insertIntoDB(taskInfo,task_ID,task_name,task_type,end_date,start_time,end_time,duration,activity_name,app,friends);
         int flag = 1;
         try {
             task.setTaskName(name.getText().toString());
