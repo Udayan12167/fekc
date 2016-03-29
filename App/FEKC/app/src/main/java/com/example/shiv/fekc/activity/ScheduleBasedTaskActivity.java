@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.example.shiv.fekc.adapter.DBAdapter;
 
 import com.example.shiv.fekc.R;
+import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.item.TaskItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,12 +33,15 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
     String start_time;
     String end_time;
 
-    DBAdapter dbAdapter = new DBAdapter();
+    TaskItem task = new TaskItem();
+
+    DBAdapter dbAdapter;// = new DBAdapter(this.getApplicationContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_based_task);
+        dbAdapter = new DBAdapter(this.getApplicationContext());
     }
 
     @Override
@@ -72,10 +78,6 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(ScheduleBasedTaskActivity.this,
                 new mDateSetListener(), mYear, mMonth, mDay);
         dialog.show();
-
-
-
-
     }
 
     public void setStartTime(View view) {
@@ -88,8 +90,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 EditText editText2 = (EditText) findViewById(R.id.start_time_edit_text);
-                editText2.setText( selectedHour + ":" + selectedMinute);
-                start_time = selectedHour + ":" + selectedMinute;
+                editText2.setText(selectedHour + ":" + selectedMinute);
+                task.setStartTime(selectedHour + ":" + selectedMinute);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -106,8 +108,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 EditText editText2 = (EditText) findViewById(R.id.end_time_edit_text);
-                editText2.setText( selectedHour + ":" + selectedMinute);
-                end_time = selectedHour + ":" + selectedMinute;
+                editText2.setText(selectedHour + ":" + selectedMinute);
+                task.setEndTime(selectedHour + ":" + selectedMinute);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -142,11 +144,11 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             EditText editText = (EditText) findViewById(R.id.date);
             editText.setText(new StringBuilder()
                     // Month is 0 based so add 1
-                    .append(mMonth + 1).append("/").append(mDay).append("/")
+                    .append(mDay).append("/")
+                    .append(mMonth + 1).append("/")
                     .append(mYear).append(" "));
             System.out.println(editText.getText().toString());
-            end_date = editText.getText().toString();
-
+            task.setEndDate(editText.getText().toString());
 
         }
     }
@@ -156,14 +158,14 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         // check if the request code is same as what is passed  here it is 2
         if(requestCode==1)
         {
-            selectedApps=data.getStringArrayListExtra("SelectedApps");
-            Log.e("Select apps:",selectedApps.toString());
+            task.setApps(data.getStringArrayListExtra("SelectedApps"));
+            Log.e("Select apps:", task.getApps().toString());
 
         }
         if(requestCode==2)
         {
-            selectedUsers=data.getStringArrayListExtra("SelectedUsers");
-            Log.e("Select users:",selectedUsers.toString());
+            task.setFriends(data.getStringArrayListExtra("SelectedUsers"));
+            Log.e("Select users:", task.getFriends().toString());
 
 
         }
@@ -171,37 +173,89 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
     public void onSave(View view)
     {
         EditText name = (EditText)findViewById(R.id.taskname);
-        task_name = name.getText().toString();
-        Log.e("Task Name:", task_name);
-      //  Log.e("End Date:",end_date);
-       // Log.e("Start Time:",start_time);
-        //Log.e("End Time:",end_time);
-        String friends = "";
-        for (String user:selectedUsers) {
-            friends=friends+":"+user;
-        }
-        Integer task_type = 2;
-        Integer task_ID=1;
-        String duration = "NA";
-        String activity_name = "NA";
-        /*File sdcard = Environment.getExternalStorageDirectory();
-        SQLiteDatabase taskInfo = openOrCreateDatabase(sdcard.getAbsolutePath() + "/FEKC/TaskInfo.db", MODE_PRIVATE, null);
-        taskInfo.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, app VARCHAR, friends VARCHAR);");
-        Cursor result = taskInfo.rawQuery("SELECT COALESCE(MAX(task_ID),0) FROM TaskInfo",null);
-        Log.e("Result:",result.toString());
-        if(result.getCount()>0) {
-            result.moveToFirst();
-            Integer last_ID = result.getInt(0);
-            task_ID = last_ID +1;
-        }*/
-        task_ID = dbAdapter.getMaxTaskIDFromTaskInfo()+1;
-        for (String app:selectedApps)
-        {
-           // taskInfo.execSQL("INSERT INTO TaskInfo VALUES("+taskID+",'"+task_name+"',"+ task_type+",'"+end_date+"','"+start_time+"','"+end_time+"','"+duration+"','"+activity_name+"','"+app+"','"+friends+ "');");
+        task.setTaskType(Constants.SCHEDULE_BASED_TASK);
+        task.setDuration("NA");
+        task.setActivityName("NA");
+        task.setActivityStartFlag(0);
+        task.setActivityStopFlag(0);
+        task.setTaskID(dbAdapter.getMaxTaskIDFromTaskInfo() + 1);
+
+
+         // taskInfo.execSQL("INSERT INTO TaskInfo VALUES("+taskID+",'"+task_name+"',"+ task_type+",'"+end_date+"','"+start_time+"','"+end_time+"','"+duration+"','"+activity_name+"','"+app+"','"+friends+ "');");
             //insertIntoDB(taskInfo,task_ID,task_name,task_type,end_date,start_time,end_time,duration,activity_name,app,friends);
-            dbAdapter.insertIntoTaskInfo(task_ID,task_name,task_type,end_date,start_time,end_time,duration,activity_name,app,friends);
+        int flag = 1;
+        try {
+            task.setTaskName(name.getText().toString());
+        } catch(NullPointerException npe) {
+
         }
-        Toast.makeText(getApplicationContext(),"Task Added!",Toast.LENGTH_SHORT).show();
+        if(task.getTaskName().length()<=0 || task.getTaskName().length()>=255) {
+            Toast.makeText(getApplicationContext(),"Task name should be between 1 to 255 characters.",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getEndDate().length()<=0)
+        {
+            Toast.makeText(getApplicationContext(),"End date cannot be blank!",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getEndDate().length()>0)
+        {
+            Calendar calendar = Calendar.getInstance();
+            String[] setDate = task.getEndDate().trim().split("/");
+            Integer currYear = calendar.get(Calendar.YEAR);
+            Integer currMonth = calendar.get(Calendar.MONTH)+ 1;
+            Integer currDay = calendar.get(Calendar.DAY_OF_MONTH);
+            Log.e("GHUSSAAA", "HEREEEE");
+            Log.e("Calender current", currYear.toString()+currMonth.toString()+currDay.toString());
+            Log.e("Stored date:",setDate[2].trim()+setDate[1].trim()+setDate[0].trim());
+            if(Integer.parseInt(setDate[2].trim())<currYear) {
+
+                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+                flag = 0;
+            }
+            else if(Integer.parseInt(setDate[2].trim())==currYear && Integer.parseInt(setDate[1].trim())<currMonth) {
+                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+                flag = 0;
+            }
+            else if(Integer.parseInt(setDate[2].trim())==currYear && Integer.parseInt(setDate[1].trim())==currMonth && Integer.parseInt(setDate[0].trim())<currDay) {
+                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+                flag = 0;
+            }
+
+        }
+        if(flag==1 && task.getApps().size()==0) {
+            Toast.makeText(getApplicationContext(),"Please add at least one app!",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getFriends().size()==0) {
+            Toast.makeText(getApplicationContext(),"Please add at least one friend!",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getStartTime().length()==0) {
+            Toast.makeText(getApplicationContext(),"Please select start time!",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getEndTime().length()==0) {
+            Toast.makeText(getApplicationContext(),"Please select end time!",Toast.LENGTH_SHORT).show();
+            flag = 0;
+        }
+        if(flag==1 && task.getEndTime().length()>0) {
+            String[] startTime = task.getStartTime().trim().split(":");
+            String[] endTime = task.getEndTime().trim().split(":");
+            if(Integer.parseInt(startTime[0].trim())>Integer.parseInt(endTime[0])) {
+                Toast.makeText(getApplicationContext(),"Start time cannot be after end time!",Toast.LENGTH_SHORT).show();
+                flag = 0;
+            }
+            else if(Integer.parseInt(startTime[0].trim())==Integer.parseInt(endTime[0].trim()) && Integer.parseInt(startTime[1].trim())>Integer.parseInt(endTime[1].trim())) {
+                Toast.makeText(getApplicationContext(),"Start time cannot be after end time!",Toast.LENGTH_SHORT).show();
+                flag = 0;
+            }
+        }
+        if(flag==1) {
+            dbAdapter.insertIntoTaskInfo(task);
+            Toast.makeText(getApplicationContext(),"Task Added!",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 }

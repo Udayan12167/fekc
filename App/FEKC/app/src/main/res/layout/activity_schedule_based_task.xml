@@ -124,14 +124,22 @@
         android:layout_height="wrap_content"
         android:id="@+id/start_time_edit_text"
         android:layout_below="@+id/start_button"
-        android:layout_alignStart="@+id/start_button"/>
+        android:layout_alignStart="@+id/start_button"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/end_time_edit_text"
         android:layout_below="@+id/end_button"
-        android:layout_alignStart="@+id/end_button" />
+        android:layout_alignStart="@+id/end_button"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -140,7 +148,11 @@
         android:ems="10"
         android:id="@+id/date"
         android:layout_alignBottom="@+id/changeDate"
-        android:layout_toRightOf="@+id/changeDate" />
+        android:layout_toRightOf="@+id/changeDate"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
 
     <ImageView
