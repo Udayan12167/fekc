@@ -21,7 +21,7 @@ public class DBAdapter {
     public DBAdapter() {
         //Create database if not exists
         File fekcFolderCreate = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEKC");
-        fekcFolderCreate.mkdir();
+        fekcFolderCreate.mkdirs();
         db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEKC/FEKCDB.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
         //Create tables if not exists
         db.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, app VARCHAR, friends VARCHAR);");
