@@ -9,7 +9,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.shiv.fekc.item.TaskItem;
+import com.google.android.gms.gcm.Task;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.util.Collections;
@@ -48,7 +51,7 @@ public class DBAdapter {
         for (String user:task.getFriends()) {
             friends=friends+":"+user;
         }
-        Log.e("End date---",task.getEndDate());
+        Log.e("End date---", task.getEndDate());
         for (String app : task.getApps()) {
             db.execSQL("INSERT INTO TaskInfo VALUES(" + task.getTaskID() + ",'" + task.getTaskName() + "'," + task.getTaskType() + ",'" + task.getEndDate() + "','" + task.getStartTime() + "','" + task.getEndTime() + "','" +  task.getDuration() + "','" + task.getActivityName() + "',"+task.getActivityStartFlag()+","+task.getActivityStopFlag()+",'" + app + "','" + friends + "');");
         }
@@ -62,7 +65,51 @@ public class DBAdapter {
         return result.getInt(0);
     }
 
+    public ArrayList<TaskItem> getAllTasksMatchingPackageFromTaskInfo(String packageName) {
+        Cursor result = db.rawQuery("SELECT * FROM TaskInfo WHERE app='"+packageName+"';",null);
+        ArrayList<TaskItem> tasks = new ArrayList<>();
+        while(result.moveToNext()) {
+            TaskItem task = new TaskItem();
+            task.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
+            Log.e("TaskID", task.getTaskID().toString());
+            task.setTaskName(result.getString(result.getColumnIndex("task_name")));
+            Log.e("Task Name", task.getTaskName());
+            task.setTaskType(result.getInt(result.getColumnIndex("task_type")));
+            Log.e("Task Type", task.getTaskType().toString());
+            task.setEndDate(result.getString(result.getColumnIndex("end_date")));
+            Log.e("Task end date", task.getEndDate());
+            task.setStartTime(result.getString(result.getColumnIndex("start_time")));
+            Log.e("Task start time", task.getStartTime());
+            task.setEndTime(result.getString(result.getColumnIndex("end_time")));
+            Log.e("Task end time", task.getEndTime());
+            task.setDuration(result.getString(result.getColumnIndex("duration")));
+            Log.e("Task Duration", task.getDuration());
+            task.setActivityName(result.getString(result.getColumnIndex("activity_name")));
+            Log.e("Task activity name", task.getActivityName());
+            task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_start_flag")));
+            Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
+            task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
+            Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
+            ArrayList<String> apps = new ArrayList<>();
+            apps.add(result.getString(result.getColumnIndex("app")));
+            task.setApps(apps);
+            Log.e("Task apps", task.getApps().toString());
+            String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
+            ArrayList<String> friendsArray = new ArrayList<>();
+            for(String friend:friends) {
+                if(!friend.trim().isEmpty()) {
+                    friendsArray.add(friend.trim());
+                }
+            }
+            task.setFriends(friendsArray);
+            Log.e("Task Friends", task.getFriends().toString());
 
+            tasks.add(task);
+        }
+
+        result.close();
+        return tasks;
+    }
 
     private static String[] getStorageDirectories()
     {
