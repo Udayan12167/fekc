@@ -26,15 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ScheduleBasedTaskActivity extends AppCompatActivity {
-    String end_date;
-    ArrayList<String> selectedApps;
-    ArrayList<String> selectedUsers;
-    String task_name;
-    String start_time;
-    String end_time;
-
     TaskItem task = new TaskItem();
-
     DBAdapter dbAdapter; // = new DBAdapter();
 
     @Override

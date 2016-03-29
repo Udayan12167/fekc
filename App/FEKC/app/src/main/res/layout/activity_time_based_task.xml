@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Apps"
         android:id="@+id/add_apps_button"
-        android:onClick="add_apps_button"
+        android:onClick="addAppsButton"
         android:layout_toRightOf="@+id/add_apps"
         android:layout_alignBottom="@+id/add_apps"
         android:layout_marginLeft="10dp"
@@ -97,7 +97,11 @@
         android:ems="10"
         android:id="@+id/date"
         android:layout_alignBottom="@+id/changeDate"
-        android:layout_toRightOf="@+id/changeDate" />
+        android:layout_toRightOf="@+id/changeDate"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
 
     <ImageView
@@ -153,6 +157,20 @@
         android:ems="10"
         android:id="@+id/duration"
         android:layout_alignBottom="@+id/set_duration"
-        android:layout_toEndOf="@+id/set_duration" />
+        android:layout_toEndOf="@+id/set_duration_button"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/set_duration_button"
+        android:onClick="setDuration"
+        android:src="@drawable/ic_alarm_add_black_48dp"
+        android:layout_alignBottom="@+id/set_duration"
+        android:layout_toEndOf="@+id/set_duration"
+        android:layout_marginLeft="10dp"
+        />
 
 </RelativeLayout>
