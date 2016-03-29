@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Apps"
         android:id="@+id/add_apps_button"
-        android:onClick="add_apps_button"
+        android:onClick="addAppsButton"
         android:layout_toRightOf="@+id/add_apps"
         android:layout_alignBottom="@+id/add_apps"
         android:layout_marginLeft="10dp"
@@ -82,7 +82,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activity Description"
+        android:text="Activity Name"
         android:id="@+id/activity_description_textview"
         android:layout_below="@+id/add_apps"
         android:layout_marginTop="50dp"
