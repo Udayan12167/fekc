@@ -31,6 +31,12 @@ public class Constants {
     public static final String REGISTRATION_COMPLETE = "registration_complete";
 
     public static final String NOTIFICATION_MESSAGE = "message";
+    
+    public static final Integer ACTIVITY_BASED_TASK = 1;
+
+    public static final Integer SCHEDULE_BASED_TASK = 2;
+
+    public static final Integer TIME_BASED_TASK = 3;
 }
 
 
