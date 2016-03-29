@@ -35,13 +35,13 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
 
     TaskItem task = new TaskItem();
 
-    DBAdapter dbAdapter;// = new DBAdapter(this.getApplicationContext());
+    DBAdapter dbAdapter; // = new DBAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_based_task);
-        dbAdapter = new DBAdapter(this.getApplicationContext());
+        dbAdapter = new DBAdapter();
     }
 
     @Override

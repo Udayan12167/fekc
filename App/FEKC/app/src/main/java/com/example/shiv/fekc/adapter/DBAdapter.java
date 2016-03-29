@@ -27,15 +27,18 @@ public class DBAdapter {
         return db;
     }
 
-    public DBAdapter(Context context) {
-        //Create database if not exists
-        String[] rv = getStorageDirectories();
-        Log.e("Path to database:",rv[0]);
+    public DBAdapter() {
 
-        File fekcFolderCreate = new File(rv[0] + "/FEKC");
+        //Create database if not exists
+        /*
+        String[] rv = getStorageDirectories();
+        for(String r:rv) {
+            Log.e("Path to database:",r);
+        }*/
+
+        File fekcFolderCreate = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEKC");
         fekcFolderCreate.mkdirs();
-        //Environment.getExternalStorageDirectory().getAbsolutePath() + "
-        db = SQLiteDatabase.openDatabase(rv[0]+"/FEKC/FEKCDB.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
+        db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath()+"/FEKC/FEKCDB.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
         //Create tables if not exists
         db.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, activity_start_flag INT, activity_stop_flag INT, app VARCHAR, friends VARCHAR);");
     }
@@ -58,7 +61,10 @@ public class DBAdapter {
         result.moveToFirst();
         return result.getInt(0);
     }
-    public static String[] getStorageDirectories()
+
+
+
+    private static String[] getStorageDirectories()
     {
         // Final set of paths
         final HashSet<String> rv = new HashSet<String>();
