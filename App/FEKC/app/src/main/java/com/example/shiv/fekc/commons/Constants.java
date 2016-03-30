@@ -34,7 +34,11 @@ public class Constants {
 
     public static final String STRING_EXTRA_USER_ID = "user_id";
 
-    public static final String JSON_PARAMETER_USER_ID = "id";
+    public static final String JSON_PARAMETER_FACEBOOK_ID = "fbid";
+
+    public static final String JSON_PARAMETER_USER_ID = "user_id";
+
+    public static final String JSON_PARAMETER_TASK = "task";
 
     public static final String JSON_PARAMETER_GCM_TOKEN = "gcmtoken";
 
@@ -74,6 +78,8 @@ public class Constants {
     public static final String REGISTER_USER_ENDPOINT = "/users";
 
     public static final String UPDATE_USER_GCM_ENDPOINT = "/user";
+
+    public static final String CREATE_TASK_ENDPOINT = "/tasks";
 
     public static final String ID_PARAMETER = "/{id}";
 

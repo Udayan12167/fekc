@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,13 +22,25 @@ import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.DBAdapter;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
+import com.example.shiv.fekc.rest.response.TaskCreateResponse;
+import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
+import com.facebook.AccessToken;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.HashMap;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class TimeBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
     private TextView saveTextView;
+
+    private SharedPreferences sharedPreferences;
+    private BackendAPIServiceClient backendAPIServiceClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +54,11 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             }
         });
         dbAdapter = new DBAdapter();
+
+        backendAPIServiceClient = new BackendAPIServiceClient();
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_time_based_task, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    
     public void setDate(View view) {
 /*
         DialogFragment picker = new DatePickerFragment();
@@ -182,7 +177,6 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             Integer currYear = calendar.get(Calendar.YEAR);
             Integer currMonth = calendar.get(Calendar.MONTH) + 1;
             Integer currDay = calendar.get(Calendar.DAY_OF_MONTH);
-            Log.e("GHUSSAAA", "HEREEEE");
             Log.e("Calender current", currYear.toString() + currMonth.toString() + currDay.toString());
             Log.e("Stored date:", setDate[2].trim() + setDate[1].trim() + setDate[0].trim());
             if (Integer.parseInt(setDate[2].trim()) < currYear) {
@@ -212,7 +206,31 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
         }
         if (flag == 1) {
             dbAdapter.insertIntoTaskInfo(task);
+            uploadTaskOnServer();
             Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void uploadTaskOnServer(){
+        Gson gson = new Gson();
+        HashMap<String, String> parameters = new HashMap<>();
+        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        Log.d(getClass().toString(), "The user id  is : " + user_id);
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        parameters.put(Constants.JSON_PARAMETER_TASK,gson.toJson(task));
+        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
+        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
+        backendAPIServiceClient.getService().createTask(parameters, new Callback<TaskCreateResponse>() {
+            @Override
+            public void success(TaskCreateResponse taskCreateResponse, Response response) {
+                Log.d(getClass().toString(), "Task uploaded with id " + taskCreateResponse.getTid());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(getClass().toString(), "Unable to create task");
+                error.printStackTrace();
+            }
+        });
     }
 }
