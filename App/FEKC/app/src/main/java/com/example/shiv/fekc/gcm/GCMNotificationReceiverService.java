@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.commons.NotificationUtils;
@@ -18,9 +19,10 @@ public class GCMNotificationReceiverService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle bundle) {
         String message = bundle.getString(Constants.NOTIFICATION_MESSAGE);
         Intent resultIntent= null;
-//        Intent resultIntent = new Intent(getApplicationContext(), QuizActivity.class);
-//        resultIntent.putExtra(Constants.STRING_EXTRA_JSON, message);
-        showNotificationMessage(getApplicationContext(), message, resultIntent);
+        Log.d(getClass().toString(), "NOTIFICATION RECEIVED " + message );
+////        Intent resultIntent = new Intent(getApplicationContext(), QuizActivity.class);
+////        resultIntent.putExtra(Constants.STRING_EXTRA_JSON, message);
+//        showNotificationMessage(getApplicationContext(), message, resultIntent);
     }
 
     /**
