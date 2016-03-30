@@ -56,7 +56,8 @@ class User(Resource):
 class UserList(Resource):
     def post(self):
         args = user_parser.parse_args()
-        user = {'name': args["name"], "fbtoken": args["fbtoken"]}
+        user = {'name': args["name"],
+                'fbtoken': args["fbtoken"]}
         user_id = handle.users.insert_one(user)
         return dumps(user)
 
@@ -64,4 +65,4 @@ api.add_resource(UserList, '/users')
 api.add_resource(User, '/user/<user_id>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
