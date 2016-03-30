@@ -37,3 +37,6 @@ obj/
 
 #Virtualenv
 api/flask/
+
+#db
+api/db/

@@ -21,6 +21,18 @@ user_parser.add_argument('gcmtoken')
 
 handle = connect()
 
+errors = {
+    'AuthenticationError': {
+        'message': "Token was incorrect",
+        'status': 200,
+    },
+    'ResourceDoesNotExist': {
+        'message': "A resource with that ID no longer exists.",
+        'status': 410,
+        'extra': "Any extra information you want.",
+    },
+}
+
 
 class User(Resource):
     def get(self, user_id):
@@ -35,16 +47,17 @@ class User(Resource):
         args = user_parser.parse_args()
         user = handle.users.find_one({'_id': ObjectId(user_id)})
         if user["fbtoken"] == args["fbtoken"]:
-            updated = handle.tasks.update_one({'_id': ObjectId(user_id)},
+            updated = handle.users.update_one({'_id': ObjectId(user_id)},
                                               {'$set': args})
-        return {"mod_count": updated.modified_count}, 201
+            return {"mod_count": updated.modified_count}, 201
+        return errors["AuthenticationError"]
 
 
 class UserList(Resource):
     def post(self):
-        args = user_parser.args()
+        args = user_parser.parse_args()
         user = {'name': args["name"], "fbtoken": args["fbtoken"]}
-        user_id = handle.tasks.insert_one(user)
+        user_id = handle.users.insert_one(user)
         return dumps(user)
 
 api.add_resource(UserList, '/users')
