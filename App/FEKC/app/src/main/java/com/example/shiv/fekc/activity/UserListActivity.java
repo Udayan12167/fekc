@@ -5,17 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.UserListAdapter;
 import com.example.shiv.fekc.commons.Constants;
-import com.example.shiv.fekc.item.UserItem;
+import com.example.shiv.fekc.item.UserListItem;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -30,7 +26,7 @@ import java.util.ArrayList;
 
 public class UserListActivity extends AppCompatActivity {
 
-    private ArrayList<UserItem> userItemList = new ArrayList<UserItem>();
+    private ArrayList<UserListItem> userItemList = new ArrayList<UserListItem>();
     private RecyclerView recyclerView;
     private UserListAdapter userListAdapter;
     private Gson gson;
@@ -70,9 +66,9 @@ public class UserListActivity extends AppCompatActivity {
                     public void onCompleted(GraphResponse response) {
                         try {
                             JSONArray jsonArray = response.getJSONObject().getJSONArray(Constants.FACEBOOK_JSON_DATA);
-                            UserItem[] array = gson.fromJson(jsonArray.toString(), UserItem[].class);
+                            UserListItem[] array = gson.fromJson(jsonArray.toString(), UserListItem[].class);
                             Log.d(getClass().toString(), jsonArray.toString());
-                            for (UserItem userItem : array) {
+                            for (UserListItem userItem : array) {
                                 Log.d(getClass().toString(), userItem.getId());
                                 getUserDPUrl(userItem);
                             }
@@ -92,7 +88,7 @@ public class UserListActivity extends AppCompatActivity {
         setResult(2,intent);
         finish();
     }
-    private void getUserDPUrl(final UserItem userItem) {
+    private void getUserDPUrl(final UserListItem userItem) {
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
         new GraphRequest(

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
 import com.google.android.gms.gcm.Task;
 
@@ -31,19 +32,20 @@ public class DBAdapter {
         return db;
     }
 
+    public File getDatabaseDirectory(){
+        File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File directory = new File (sdCard.getAbsolutePath() +  File.separator + Constants.APP_NAME);
+        if(!directory.exists()) {
+            Log.d(getClass().toString() , "Created directory " + directory.getAbsolutePath());
+            directory.mkdir();
+        }
+        return directory;
+    }
+
     public DBAdapter() {
 
-        //Create database if not exists
-        /*
-        String[] rv = getStorageDirectories();
-        for(String r:rv) {
-            Log.e("Path to database:",r);
-        }*/
-
-        File fekcFolderCreate = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEKC");
-        fekcFolderCreate.mkdirs();
-        db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath()+"/FEKC/FEKCDB.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        //Create tables if not exists
+        File dataBaseDirectory = getDatabaseDirectory();
+        db = SQLiteDatabase.openDatabase(dataBaseDirectory.getAbsolutePath() + File.separator + Constants.APP_DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
         db.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, activity_start_flag INT, activity_stop_flag INT, app VARCHAR, friends VARCHAR);");
     }
 
