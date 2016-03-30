@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,13 +21,25 @@ import com.example.shiv.fekc.adapter.DBAdapter;
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
+import com.example.shiv.fekc.rest.response.TaskCreateResponse;
+import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
+import com.facebook.AccessToken;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.HashMap;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ScheduleBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
     private TextView saveTextView;
+
+    private SharedPreferences sharedPreferences;
+    private BackendAPIServiceClient backendAPIServiceClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +54,12 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
                 onSave();
             }
         });
+
+        backendAPIServiceClient = new BackendAPIServiceClient();
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_schedule_based_task, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     public void setDate(View view) {
 /*
         DialogFragment picker = new DatePickerFragment();
@@ -169,9 +165,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
 
         }
     }
-    public void onSave()
-    {
-        EditText name = (EditText)findViewById(R.id.taskname);
+    public void onSave() {
+        EditText name = (EditText) findViewById(R.id.taskname);
         task.setTaskType(Constants.SCHEDULE_BASED_TASK);
         task.setDuration("NA");
         task.setActivityName("NA");
@@ -182,76 +177,94 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         int flag = 1;
         try {
             task.setTaskName(name.getText().toString());
-        } catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
 
         }
-        if(task.getTaskName().length()<=0 || task.getTaskName().length()>=255) {
-            Toast.makeText(getApplicationContext(),"Task name should be between 1 to 255 characters.",Toast.LENGTH_SHORT).show();
+        if (task.getTaskName().length() <= 0 || task.getTaskName().length() >= 255) {
+            Toast.makeText(getApplicationContext(), "Task name should be between 1 to 255 characters.", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getEndDate().length()<=0)
-        {
-            Toast.makeText(getApplicationContext(),"End date cannot be blank!",Toast.LENGTH_SHORT).show();
+        if (flag == 1 && task.getEndDate().length() <= 0) {
+            Toast.makeText(getApplicationContext(), "End date cannot be blank!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getEndDate().length()>0)
-        {
+        if (flag == 1 && task.getEndDate().length() > 0) {
             Calendar calendar = Calendar.getInstance();
             String[] setDate = task.getEndDate().trim().split("/");
             Integer currYear = calendar.get(Calendar.YEAR);
-            Integer currMonth = calendar.get(Calendar.MONTH)+ 1;
+            Integer currMonth = calendar.get(Calendar.MONTH) + 1;
             Integer currDay = calendar.get(Calendar.DAY_OF_MONTH);
             Log.e("GHUSSAAA", "HEREEEE");
-            Log.e("Calender current", currYear.toString()+currMonth.toString()+currDay.toString());
-            Log.e("Stored date:",setDate[2].trim()+setDate[1].trim()+setDate[0].trim());
-            if(Integer.parseInt(setDate[2].trim())<currYear) {
+            Log.e("Calender current", currYear.toString() + currMonth.toString() + currDay.toString());
+            Log.e("Stored date:", setDate[2].trim() + setDate[1].trim() + setDate[0].trim());
+            if (Integer.parseInt(setDate[2].trim()) < currYear) {
 
-                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "End date cannot be older than the current date!", Toast.LENGTH_SHORT).show();
                 flag = 0;
-            }
-            else if(Integer.parseInt(setDate[2].trim())==currYear && Integer.parseInt(setDate[1].trim())<currMonth) {
-                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+            } else if (Integer.parseInt(setDate[2].trim()) == currYear && Integer.parseInt(setDate[1].trim()) < currMonth) {
+                Toast.makeText(getApplicationContext(), "End date cannot be older than the current date!", Toast.LENGTH_SHORT).show();
                 flag = 0;
-            }
-            else if(Integer.parseInt(setDate[2].trim())==currYear && Integer.parseInt(setDate[1].trim())==currMonth && Integer.parseInt(setDate[0].trim())<currDay) {
-                Toast.makeText(getApplicationContext(),"End date cannot be older than the current date!",Toast.LENGTH_SHORT).show();
+            } else if (Integer.parseInt(setDate[2].trim()) == currYear && Integer.parseInt(setDate[1].trim()) == currMonth && Integer.parseInt(setDate[0].trim()) < currDay) {
+                Toast.makeText(getApplicationContext(), "End date cannot be older than the current date!", Toast.LENGTH_SHORT).show();
                 flag = 0;
             }
 
         }
-        if(flag==1 && task.getApps().size()==0) {
-            Toast.makeText(getApplicationContext(),"Please add at least one app!",Toast.LENGTH_SHORT).show();
+        if (flag == 1 && task.getApps().size() == 0) {
+            Toast.makeText(getApplicationContext(), "Please add at least one app!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getFriends().size()==0) {
-            Toast.makeText(getApplicationContext(),"Please add at least one friend!",Toast.LENGTH_SHORT).show();
+        if (flag == 1 && task.getFriends().size() == 0) {
+            Toast.makeText(getApplicationContext(), "Please add at least one friend!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getStartTime().length()==0) {
-            Toast.makeText(getApplicationContext(),"Please select start time!",Toast.LENGTH_SHORT).show();
+        if (flag == 1 && task.getStartTime().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Please select start time!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getEndTime().length()==0) {
-            Toast.makeText(getApplicationContext(),"Please select end time!",Toast.LENGTH_SHORT).show();
+        if (flag == 1 && task.getEndTime().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Please select end time!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getEndTime().length()>0) {
+        if (flag == 1 && task.getEndTime().length() > 0) {
             String[] startTime = task.getStartTime().trim().split(":");
             String[] endTime = task.getEndTime().trim().split(":");
-            if(Integer.parseInt(startTime[0].trim())>Integer.parseInt(endTime[0])) {
-                Toast.makeText(getApplicationContext(),"Start time cannot be after end time!",Toast.LENGTH_SHORT).show();
+            if (Integer.parseInt(startTime[0].trim()) > Integer.parseInt(endTime[0])) {
+                Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
                 flag = 0;
-            }
-            else if(Integer.parseInt(startTime[0].trim())==Integer.parseInt(endTime[0].trim()) && Integer.parseInt(startTime[1].trim())>Integer.parseInt(endTime[1].trim())) {
-                Toast.makeText(getApplicationContext(),"Start time cannot be after end time!",Toast.LENGTH_SHORT).show();
+            } else if (Integer.parseInt(startTime[0].trim()) == Integer.parseInt(endTime[0].trim()) && Integer.parseInt(startTime[1].trim()) > Integer.parseInt(endTime[1].trim())) {
+                Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
                 flag = 0;
             }
         }
-        if(flag==1) {
+        if (flag == 1) {
             dbAdapter.insertIntoTaskInfo(task);
-            Toast.makeText(getApplicationContext(),"Task Added!",Toast.LENGTH_SHORT).show();
+            uploadTaskOnServer();
+            Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void uploadTaskOnServer(){
+        Gson gson = new Gson();
+        HashMap<String, String> parameters = new HashMap<>();
+        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        Log.d(getClass().toString(), "The user id  is : " + user_id);
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        parameters.put(Constants.JSON_PARAMETER_TASK,gson.toJson(task));
+        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
+        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
+        backendAPIServiceClient.getService().createTask(parameters, new Callback<TaskCreateResponse>() {
+            @Override
+            public void success(TaskCreateResponse taskCreateResponse, Response response) {
+                Log.d(getClass().toString(), "Task uploaded with id " + taskCreateResponse.getTid());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(getClass().toString(), "Unable to create task");
+                error.printStackTrace();
+            }
+        });
 
     }
 }

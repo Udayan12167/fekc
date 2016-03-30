@@ -44,12 +44,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private BackendAPIServiceClient backendAPIServiceClient;
 
-    private String name;
-    private String email;
-
     private SharedPreferences sharedPreferences;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +113,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private void registerUser() {
         HashMap<String, String> parameters = new HashMap<>();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        parameters.put(Constants.JSON_PARAMETER_USER_ID, accessToken.getUserId());
+        parameters.put(Constants.JSON_PARAMETER_FACEBOOK_ID, accessToken.getUserId());
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
         Log.d(getClass().toString(), "Trying to register user : " + accessToken.getUserId() );
         backendAPIServiceClient.getService().registerUser(parameters, new Callback<RegisterUserResponse>() {
@@ -137,20 +132,5 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 Log.d(getClass().toString(), "Failed to register user : " + Profile.getCurrentProfile().getName());
             }
         });
-    }
-
-    private void getFacebookProfileInfo() {
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-                        Profile.getCurrentProfile().getId();
-                        registerUser();
-                    }
-                });
-        request.executeAsync();
     }
 }
