@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
     private TextView saveTextView;
+    private ImageView goBackButton;
 
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
@@ -54,10 +56,21 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
                 onSave();
             }
         });
-
+        goBackButton = (ImageView) findViewById(R.id.add_task_back_button);
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_schedule_based_task, menu);
+        return true;
     }
 
     public void setDate(View view) {

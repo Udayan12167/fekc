@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter;
     private TextView saveTextView;
+    private ImageView goBackButton;
 
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
@@ -51,7 +53,12 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
                 onSave();
             }
         });
-
+        goBackButton = (ImageView) findViewById(R.id.add_task_back_button);
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
     }
