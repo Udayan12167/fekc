@@ -97,7 +97,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         mTimePicker = new TimePickerDialog(ScheduleBasedTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                EditText editText2 = (EditText) findViewById(R.id.start_time_edit_text);
+                EditText editText2 = (EditText) findViewById(R.id.start_time_edit_text_Schedule);
                 editText2.setText(selectedHour + ":" + selectedMinute);
                 task.setStartTime(selectedHour + ":" + selectedMinute);
             }
@@ -115,7 +115,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         mTimePicker = new TimePickerDialog(ScheduleBasedTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                EditText editText2 = (EditText) findViewById(R.id.end_time_edit_text);
+                EditText editText2 = (EditText) findViewById(R.id.end_time_edit_text_Schedule);
                 editText2.setText(selectedHour + ":" + selectedMinute);
                 task.setEndTime(selectedHour + ":" + selectedMinute);
             }
@@ -149,7 +149,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             int mMonth = monthOfYear;
             int mDay = dayOfMonth;
 
-            EditText editText = (EditText) findViewById(R.id.date);
+            EditText editText = (EditText) findViewById(R.id.duration_date_schedule);
             editText.setText(new StringBuilder()
                     // Month is 0 based so add 1
                     .append(mDay).append("/")
@@ -179,7 +179,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         }
     }
     public void onSave() {
-        EditText name = (EditText) findViewById(R.id.taskname);
+        EditText name = (EditText) findViewById(R.id.schedule_taskname);
         task.setTaskType(Constants.SCHEDULE_BASED_TASK);
         task.setDuration("NA");
         task.setActivityName("NA");

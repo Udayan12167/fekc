@@ -100,7 +100,7 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
             int mMonth = monthOfYear;
             int mDay = dayOfMonth;
 
-            EditText editText = (EditText) findViewById(R.id.date);
+            EditText editText = (EditText) findViewById(R.id.date_activity);
             editText.setText(new StringBuilder()
                     // Month is 0 based so add 1
                     .append(mDay).append("/")
@@ -129,8 +129,8 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
         }
     }
     public void onSave() {
-        EditText name = (EditText) findViewById(R.id.taskname);
-        EditText description = (EditText) findViewById(R.id.activity_description);
+        EditText name = (EditText) findViewById(R.id.taskname_activity);
+        EditText description = (EditText) findViewById(R.id.activity_descr);
         task.setTaskType(Constants.ACTIVITY_BASED_TASK);
         task.setDuration("NA");
 

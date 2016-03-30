@@ -22,8 +22,8 @@
             android:layout_below="@id/activity_type_description"
             android:paddingTop="5dp">
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/activity_type_logo"
                 android:src="@drawable/ic_hourglass_empty"
                 android:tint="#222"
@@ -161,7 +161,7 @@
         <RelativeLayout
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/appBlock_TimeBased"
+            android:layout_toRightOf="@id/appBlock_TimeBased"
             android:paddingLeft="20dp">
             <TextView
                 android:layout_width="wrap_content"
