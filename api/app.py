@@ -59,7 +59,7 @@ class UserList(Resource):
         user = {'name': args["name"],
                 'fbtoken': args["fbtoken"]}
         user_id = handle.users.insert_one(user)
-        return dumps(user)
+        return {'oid': str(user["_id"])}
 
 api.add_resource(UserList, '/users')
 api.add_resource(User, '/user/<user_id>')
