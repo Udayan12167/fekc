@@ -129,15 +129,12 @@ public class TaskListAdapter extends RecyclerView
         holder.taskNameFull.setText(tasks.get(position).getTaskName());
 
         ArrayList<String> apps = tasks.get(position).getApps();
-<<<<<<< HEAD
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         Integer height = displaymetrics.heightPixels; //432
         Integer width = displaymetrics.widthPixels;
         Integer scaleFactor = 10;
         Log.e("h and w",height+" ,"+width);
-=======
->>>>>>> Display tasks completed with UI
         int i=0;
         for(String packageName:apps) {
             try
@@ -147,31 +144,17 @@ public class TaskListAdapter extends RecyclerView
                 //image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
 
                 imageView.setImageDrawable(image);
-<<<<<<< HEAD
-              //  imageView.setMaxHeight(15);
-               // imageView.setMaxWidth(15);
-               // imageView.setTop(holder.llExpandArea.);
-             //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-              //          ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width/scaleFactor,width/scaleFactor);
-=======
                 imageView.setMaxHeight(15);
                 imageView.setMaxWidth(15);
                // imageView.setTop(holder.llExpandArea.);
              //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
               //          ViewGroup.LayoutParams.WRAP_CONTENT);
                 RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(50,50);
->>>>>>> Display tasks completed with UI
                 //RelativeLayout.MarginLayoutParams margin = new RelativeLayout.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         //ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 p.addRule(RelativeLayout.BELOW, R.id.apps_view);
-<<<<<<< HEAD
-                p.setMargins((i * (width/scaleFactor)+ i*(width/scaleFactor)/3), 5, 0, 0);
-=======
                 p.setMargins(i * 55, 5, 0, 0);
->>>>>>> Display tasks completed with UI
                 //margin.setMargins(i*20,0,0,0);
                 i++;
                 imageView.setLayoutParams(p);
@@ -189,31 +172,18 @@ public class TaskListAdapter extends RecyclerView
         for(String ID:friends) {
                 CircleImageView imageView = UserListActivity.getUserDP(ID,context);
                 //image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-
-<<<<<<< HEAD
-                //imageView.setMaxHeight(15);
-                //imageView.setMaxWidth(15);
-                // imageView.setTop(holder.llExpandArea.);
-                //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                //          ViewGroup.LayoutParams.WRAP_CONTENT);
-                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width/scaleFactor,width/scaleFactor);
-=======
                 imageView.setMaxHeight(15);
                 imageView.setMaxWidth(15);
                 // imageView.setTop(holder.llExpandArea.);
                 //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 //          ViewGroup.LayoutParams.WRAP_CONTENT);
                 RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(50,50);
->>>>>>> Display tasks completed with UI
                 //RelativeLayout.MarginLayoutParams margin = new RelativeLayout.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 //ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 p.addRule(RelativeLayout.BELOW, R.id.friends_view);
-<<<<<<< HEAD
-                p.setMargins(i * (width/scaleFactor)+ i*(width/scaleFactor)/3, 5, 0, 0);
-=======
+
                 p.setMargins(i * 55, 5, 0, 0);
->>>>>>> Display tasks completed with UI
                 //margin.setMargins(i*20,0,0,0);
                 i++;
                 imageView.setLayoutParams(p);
@@ -268,8 +238,4 @@ public class TaskListAdapter extends RecyclerView
     public interface MyClickListener {
         public void onItemClick(int position, View v);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Display tasks completed with UI
