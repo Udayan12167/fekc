@@ -88,9 +88,19 @@ public class NavActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        circleImageView = (CircleImageView)navigationView.findViewById(R.id.nav_header_nav_circular_image_view);
-        nameTextView = (TextView)navigationView.findViewById(R.id.nav_header_name_text_view);
+        createNavigationHeader();
+    }
+
+    private void createNavigationHeader() {
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_nav, null);
+        navigationView.addHeaderView(header);
+
+        circleImageView = (CircleImageView) header.findViewById(R.id.nav_header_nav_circular_image_view);
+        nameTextView = (TextView) header.findViewById(R.id.nav_header_name_text_view);
+        getUserName();
         getUserDPUrl(AccessToken.getCurrentAccessToken().getUserId());
+
     }
 
 
@@ -170,7 +180,7 @@ public class NavActivity extends AppCompatActivity
     }
 
     private void getUserDPUrl(final String facebookId) {
-        Log.e("Nav","getUserDPUrl called!");
+        Log.e("Nav", "getUserDPUrl called!");
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
         new GraphRequest(
@@ -184,19 +194,34 @@ public class NavActivity extends AppCompatActivity
                             Log.d(getClass().toString(), response.getJSONObject().toString());
                             JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
-                            Picasso.with(NavActivity.this).load(url).into(circleImageView);
-                            nameTextView.setText(Profile.getCurrentProfile().getName());
                             Log.d(getClass().toString(), url);
-
-                        }
-                        catch (RuntimeException e) {
-                            e.printStackTrace();
-                        }
-                        catch (JSONException e) {
+                            Picasso.with(NavActivity.this).load(url).into(circleImageView);
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }
+
         ).executeAsync();
+    }
+
+    private void getUserName(){
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            String name = object.getString(Constants.FACEBOOK_JSON_NAME);
+                            nameTextView.setText(name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 }

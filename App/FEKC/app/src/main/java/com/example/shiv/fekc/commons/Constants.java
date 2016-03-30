@@ -24,6 +24,8 @@ public class Constants {
 
     public static final String FACEBOOK_JSON_URL = "url";
 
+    public static final String FACEBOOK_JSON_NAME = "name";
+
     public static final String STRING_EXTRA_JSON = "extra_json";
 
     public static final String SLASH = "/";
