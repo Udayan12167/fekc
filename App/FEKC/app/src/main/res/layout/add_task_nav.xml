@@ -17,7 +17,7 @@
             android:background="?attr/colorAccent"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <include layout="@layout/add_friends_nav_header" />
+            <include layout="@layout/add_task_nav_header" />
 
         </android.support.v7.widget.Toolbar>
 

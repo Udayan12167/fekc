@@ -55,11 +55,10 @@ public class NavActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
-
-        getUserDPUrl(AccessToken.getCurrentAccessToken().getUserId());
+        Log.e("Nav", "onCreateCalled!");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_nav_toolbar);
-        circleImageView = (CircleImageView)toolbar.findViewById(R.id.toolbar_bar_circular_image_view);
+        circleImageView = (CircleImageView)findViewById(R.id.nav_header_nav_circular_image_view);
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.app_bar_nav_viewpager);
@@ -86,6 +85,7 @@ public class NavActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getUserDPUrl(AccessToken.getCurrentAccessToken().getUserId());
     }
 
 
@@ -120,23 +120,17 @@ public class NavActivity extends AppCompatActivity
     private void setUpTabIcons() {
         LinearLayout tabOne = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         ImageView imageView = (ImageView) tabOne.findViewById(R.id.custom_layout_image_view);
-        imageView.setImageDrawable(getDrawable(R.drawable.ic_list_white_36dp));
-        TextView textView = (TextView) tabOne.findViewById(R.id.custom_layout_text_view);
-        textView.setText(getResources().getString(R.string.tasks));
+        imageView.setImageDrawable(getDrawable(R.drawable.ic_view_list));
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         LinearLayout tabTwo = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         imageView = (ImageView) tabTwo.findViewById(R.id.custom_layout_image_view);
-        imageView.setImageDrawable(getDrawable(R.drawable.ic_assessment_white_36dp));
-        textView = (TextView) tabTwo.findViewById(R.id.custom_layout_text_view);
-        textView.setText(getResources().getString(R.string.stats));
+        imageView.setImageDrawable(getDrawable(R.drawable.ic_assessment));
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         LinearLayout tabThree = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         imageView = (ImageView) tabThree.findViewById(R.id.custom_layout_image_view);
-        imageView.setImageDrawable(getDrawable(R.drawable.ic_group_white_36dp));
-        textView = (TextView) tabThree.findViewById(R.id.custom_layout_text_view);
-        textView.setText(getResources().getString(R.string.tracked_friends));
+        imageView.setImageDrawable(getDrawable(R.drawable.ic_group));
         tabLayout.getTabAt(2).setCustomView(tabThree);
 
     }
@@ -171,6 +165,7 @@ public class NavActivity extends AppCompatActivity
     }
 
     private void getUserDPUrl(final String facebookId) {
+        Log.e("Nav","getUserDPUrl called!");
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
         new GraphRequest(
@@ -186,7 +181,10 @@ public class NavActivity extends AppCompatActivity
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             Picasso.with(NavActivity.this).load(url).into(circleImageView);
                             Log.d(getClass().toString(), url);
-                        } catch (JSONException e) {
+                        }
+                        catch (RuntimeException ignored) {
+                        }
+                        catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

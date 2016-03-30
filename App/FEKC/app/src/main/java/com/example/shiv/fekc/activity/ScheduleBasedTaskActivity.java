@@ -3,7 +3,6 @@ package com.example.shiv.fekc.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.shiv.fekc.adapter.DBAdapter;
@@ -22,7 +20,6 @@ import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ScheduleBasedTaskActivity extends AppCompatActivity {
@@ -32,7 +29,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_based_task);
+        setContentView(R.layout.task_schedule_based);
+        //setContentView(R.layout.activity_schedule_based_task);
         dbAdapter = new DBAdapter();
     }
 
