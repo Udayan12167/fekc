@@ -59,7 +59,6 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         dbAdapter = new DBAdapter();
 
         backendAPIServiceClient = new BackendAPIServiceClient();

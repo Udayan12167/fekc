@@ -42,7 +42,6 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +71,6 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_schedule_based_task, menu);
         return true;
     }
-
     public void setDate(View view) {
 /*
         DialogFragment picker = new DatePickerFragment();
