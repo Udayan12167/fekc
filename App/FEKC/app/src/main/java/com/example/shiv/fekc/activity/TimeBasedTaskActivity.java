@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -41,7 +42,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
-
+    private ImageView goBackButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,13 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
                 onSave();
             }
         });
+        goBackButton = (ImageView) findViewById(R.id.add_task_back_button);
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         dbAdapter = new DBAdapter();
 
         backendAPIServiceClient = new BackendAPIServiceClient();

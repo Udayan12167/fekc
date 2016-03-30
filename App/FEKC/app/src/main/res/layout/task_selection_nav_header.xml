@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="25dp">
+
+    <ImageView
+        android:id="@+id/add_task_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/task_selection_header"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="ADD NEW TASK"
+        android:textSize="20dp"
+        android:textColor="@color/colorWhite"
+        android:layout_toEndOf="@id/add_task_back_button"/>
+
+</RelativeLayout>
