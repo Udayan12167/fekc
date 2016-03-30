@@ -4,7 +4,7 @@ import android.util.Log;
 import android.widget.Filter;
 
 import com.example.shiv.fekc.adapter.UserListAdapter;
-import com.example.shiv.fekc.item.UserItem;
+import com.example.shiv.fekc.item.UserListItem;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 public class UserItemFilter extends Filter{
 
     private UserListAdapter userListAdapter;
-    private ArrayList<UserItem> originalList = new ArrayList<UserItem>();
-    private ArrayList<UserItem> filteredList = new ArrayList<UserItem>();
+    private ArrayList<UserListItem> originalList = new ArrayList<UserListItem>();
+    private ArrayList<UserListItem> filteredList = new ArrayList<UserListItem>();
 
-    public UserItemFilter(UserListAdapter userListAdapter, ArrayList<UserItem> originalList, ArrayList<UserItem> filteredList){
+    public UserItemFilter(UserListAdapter userListAdapter, ArrayList<UserListItem> originalList, ArrayList<UserListItem> filteredList){
         this.userListAdapter = userListAdapter;
         this.originalList.addAll(originalList);
         this.filteredList.addAll(filteredList);
@@ -33,7 +33,7 @@ public class UserItemFilter extends Filter{
         } else {
             String filterPattern = constraint.toString().toLowerCase().trim();
             Log.d(getClass().toString(), "The original list size is : " + Integer.toString(originalList.size()));
-            for (UserItem userItem : originalList) {
+            for (UserListItem userItem : originalList) {
                 if (userItem.getName().toLowerCase().startsWith(filterPattern)) {
                     filteredList.add(userItem);
                 }
@@ -47,7 +47,7 @@ public class UserItemFilter extends Filter{
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        userListAdapter.setFilteredList((ArrayList<UserItem>)results.values);
+        userListAdapter.setFilteredList((ArrayList<UserListItem>)results.values);
         userListAdapter.notifyDataSetChanged();
     }
 

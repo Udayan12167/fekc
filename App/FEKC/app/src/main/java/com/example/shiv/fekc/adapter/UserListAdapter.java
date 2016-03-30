@@ -2,7 +2,6 @@ package com.example.shiv.fekc.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.example.shiv.fekc.R;
-import com.example.shiv.fekc.filter.AppItemFilter;
 import com.example.shiv.fekc.filter.UserItemFilter;
 import com.example.shiv.fekc.holder.UserListViewHolder;
 import com.example.shiv.fekc.item.AppItem;
-import com.example.shiv.fekc.item.UserItem;
+import com.example.shiv.fekc.item.UserListItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,20 +22,20 @@ import java.util.ArrayList;
  */
 public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> implements Filterable {
 
-    private ArrayList<UserItem> originalList;
-    private ArrayList<UserItem> filteredList = new ArrayList<UserItem>();
+    private ArrayList<UserListItem> originalList;
+    private ArrayList<UserListItem> filteredList = new ArrayList<UserListItem>();
     private Context context;
     private ArrayList<String> selectedUsers = new ArrayList<String>();
-    public UserListAdapter(Context context, ArrayList<UserItem> userItemList){
+    public UserListAdapter(Context context, ArrayList<UserListItem> userItemList){
         this.context = context;
         this.originalList = userItemList;
     }
 
-    public ArrayList<UserItem> getOriginalList() {
+    public ArrayList<UserListItem> getOriginalList() {
         return originalList;
     }
 
-    public void setOriginalList(ArrayList<UserItem> originalList) {
+    public void setOriginalList(ArrayList<UserListItem> originalList) {
         this.originalList = originalList;
     }
 
@@ -50,7 +48,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
 
     @Override
     public void onBindViewHolder(final UserListViewHolder holder, final int position) {
-        final UserItem userItem = filteredList.get(position);
+        final UserListItem userItem = filteredList.get(position);
         holder.getUserNameTextView().setText(userItem.getName());
         holder.getSelectedCheckBox().setChecked(userItem.isSelected());
         holder.getFavoriteCheckBox().setChecked(userItem.isFavorite());
@@ -109,7 +107,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         return new UserItemFilter(this, originalList, filteredList);
     }
 
-    public void add(UserItem userItem){
+    public void add(UserListItem userItem){
         originalList.add((userItem));
         filteredList.add(userItem);
         notifyDataSetChanged();
@@ -130,20 +128,20 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         notifyItemRangeRemoved(0, originalSize);
     }
 
-    public void setFilteredList(ArrayList<UserItem> userItemList){
+    public void setFilteredList(ArrayList<UserListItem> userItemList){
         clearFilteredList();
         filteredList.addAll(userItemList);
         notifyDataSetChanged();
         notifyItemRangeInserted(0, filteredList.size());
     }
 
-    private void updateItemFilteredList(UserItem userItem, int position){
+    private void updateItemFilteredList(UserListItem userItem, int position){
         filteredList.set(position, userItem);
         notifyDataSetChanged();
         notifyItemChanged(position);
     }
 
-    private void updateItemOriginalList(UserItem userItem){
+    private void updateItemOriginalList(UserListItem userItem){
         for(int i = 0 ; i < originalList.size() ; i++){
             if(userItem.getName().equals(originalList.get(i).getName())){
                 originalList.set(i, userItem);
