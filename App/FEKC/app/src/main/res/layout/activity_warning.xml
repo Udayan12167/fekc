@@ -8,13 +8,85 @@
         android:id="@+id/nav_warn">
         <include layout="@layout/warning_nav"></include>
     </RelativeLayout>
-    <view
-        android:id="@+id/warning_recycler_view"
-        class="android.support.v7.widget.RecyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="410dp"
-        android:layout_below="@id/nav_warn"
-        android:layout_centerInParent="true" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nav_warn">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:paddingTop="20dp"
+            android:background="@drawable/layout_border"
+            android:id="@+id/user_shiv">
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="90dp"
+                android:src="@drawable/test_user2"
+                android:id="@+id/test_user"
+                android:paddingLeft="20dp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/test_user"
+                android:layout_alignTop="@id/test_user"
+                android:paddingLeft="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Shiv Kandikuppa"
+                    android:textSize="20dp"
+                    android:id="@+id/shiv"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Hey! You got to stop using this app!"
+                    android:textSize="15dp"
+                    android:layout_below="@id/shiv"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:paddingTop="20dp"
+            android:background="@drawable/layout_border"
+            android:layout_below="@id/user_shiv"
+            android:id="@+id/user_mrinal">
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="90dp"
+                android:src="@drawable/test_user4"
+                android:id="@+id/test_user2"
+                android:paddingLeft="20dp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/test_user2"
+                android:layout_alignTop="@id/test_user2"
+                android:paddingLeft="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mrinal Kachhara"
+                    android:textSize="20dp"
+                    android:id="@+id/mrinal"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Come on! You can do this! :D"
+                    android:textSize="15dp"
+                    android:layout_below="@id/mrinal"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <!--<view-->
+        <!--android:id="@+id/warning_recycler_view"-->
+        <!--class="android.support.v7.widget.RecyclerView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="410dp"-->
+        <!--android:layout_below="@id/nav_warn"-->
+        <!--android:layout_centerInParent="true" />-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
