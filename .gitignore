@@ -34,10 +34,13 @@ build/
 
 #NDK
 obj/
-<<<<<<< HEAD
+
 
 #Virtualenv
 api/flask/
 
 #db
 api/db/
+
+#Virtualenv
+api/flask/
