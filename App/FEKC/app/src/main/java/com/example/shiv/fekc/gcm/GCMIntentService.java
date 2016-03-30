@@ -3,11 +3,14 @@ package com.example.shiv.fekc.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
+import com.facebook.AccessToken;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -19,11 +22,20 @@ import retrofit.client.Response;
 
 public class GCMIntentService extends IntentService {
 
+    private SharedPreferences sharedPreferences;
+
+    private BackendAPIServiceClient backendAPIServiceClient;
 
     public GCMIntentService() {
         super("GCMIntentService");
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        backendAPIServiceClient = new BackendAPIServiceClient();
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -43,7 +55,7 @@ public class GCMIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
             Log.e(getClass().toString(), "GCM Registration Token: " + token);
-            sendRegistrationToServer(token, userId);
+            sendRegistrationToServer(token);
         } catch (Exception e) {
             Log.e(getClass().toString(), "Failed to complete token refresh", e);
         }
@@ -53,21 +65,23 @@ public class GCMIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private void sendRegistrationToServer(final String token, String userId) {
+    private void sendRegistrationToServer(final String token) {
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put(Constants.JSON_PARAMETER_USER_ID, userId);
+        String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        Log.d(getClass().toString(), "The user id  is : " + id);
         parameters.put(Constants.JSON_PARAMETER_GCM_TOKEN, token);
-//        backendAPIClient.getService().addStudentGCMToken(parameters, new Callback<String>() {
-//            @Override
-//            public void success(String s, Response response) {
-//                Log.d(getClass().toString(), "Successfully sent gcm token");
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Log.d(getClass().toString(), "Failed to send gcm token");
-//            }
-//        });
+        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
+        backendAPIServiceClient.getService().updateUserGCMToken(id, parameters, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d(getClass().toString(), "Sent GCM token to server");
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+                Log.d(getClass().toString(), "Unable to send GCM token to server");
+            }
+        });
     }
 }
