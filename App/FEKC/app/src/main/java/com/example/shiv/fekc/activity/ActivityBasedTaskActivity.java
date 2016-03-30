@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
@@ -23,12 +24,20 @@ import java.util.Calendar;
 public class ActivityBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter;
+    private TextView saveTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_activity_based);
         dbAdapter = new DBAdapter();
+        saveTextView = (TextView) findViewById(R.id.add_task_save_text);
+        saveTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
     }
 
     @Override
@@ -117,7 +126,7 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
 
         }
     }
-    public void onSave(View view)
+    public void onSave()
     {
         EditText name = (EditText)findViewById(R.id.taskname);
         EditText description = (EditText)findViewById(R.id.activity_description);

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.util.Calendar;
 public class ScheduleBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
+    private TextView saveTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,13 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         setContentView(R.layout.task_schedule_based);
         //setContentView(R.layout.activity_schedule_based_task);
         dbAdapter = new DBAdapter();
+        saveTextView = (TextView) findViewById(R.id.add_task_save_text);
+        saveTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
     }
 
     @Override
@@ -160,7 +169,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
 
         }
     }
-    public void onSave(View view)
+    public void onSave()
     {
         EditText name = (EditText)findViewById(R.id.taskname);
         task.setTaskType(Constants.SCHEDULE_BASED_TASK);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -26,11 +27,19 @@ import java.util.Calendar;
 public class TimeBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
+    private TextView saveTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_time_based);
+        saveTextView = (TextView) findViewById(R.id.add_task_save_text);
+        saveTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
         dbAdapter = new DBAdapter();
     }
 
@@ -140,7 +149,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
 
         }
     }
-    public void onSave(View view) {
+    public void onSave() {
         EditText name = (EditText) findViewById(R.id.taskname);
         task.setTaskType(Constants.TIME_BASED_TASK);
         task.setStartTime("NA");
