@@ -1,16 +1,21 @@
 package com.example.shiv.fekc.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.gcm.GCMIntentService;
 import com.example.shiv.fekc.rest.client.BackendAPI;
+import com.example.shiv.fekc.rest.response.RegisterUserResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,13 +47,17 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private String name;
     private String email;
 
-    private ProfileTracker mProfileTracker;
+    private SharedPreferences sharedPreferences;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         backendAPIServiceClient = new BackendAPIServiceClient();
+
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
 
         Log.d(getClass().toString(), "Called facebook login activity");
         callbackManager = CallbackManager.Factory.create();
@@ -58,7 +67,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                getFacebookProfileInfo();
+                registerUser();
                 Intent tabActivityIntent = new Intent(FacebookLoginActivity.this, NavActivity.class);
                 startActivity(tabActivityIntent);
                 finish();
@@ -110,15 +119,17 @@ public class FacebookLoginActivity extends AppCompatActivity {
         HashMap<String, String> parameters = new HashMap<>();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         parameters.put(Constants.JSON_PARAMETER_USER_ID, accessToken.getUserId());
-        parameters.put(Constants.JSON_PARAMETER_NAME, Profile.getCurrentProfile().getName());
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
-        Log.d(getClass().toString(), "Trying to register user : " + Profile.getCurrentProfile().getName() + " " + Profile.getCurrentProfile().getId());
-        backendAPIServiceClient.getService().registerUser(parameters, new Callback<String>() {
+        Log.d(getClass().toString(), "Trying to register user : " + accessToken.getUserId() );
+        backendAPIServiceClient.getService().registerUser(parameters, new Callback<RegisterUserResponse>() {
             @Override
-            public void success(String s, Response response) {
-                Log.d(getClass().toString(), "Registered user " + s);
+            public void success(RegisterUserResponse registerUserResponse, Response response) {
+                Log.d(getClass().toString(), "Registered user " + registerUserResponse.getOid());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(Constants.USER_ACCESS_TOKEN, registerUserResponse.getOid());
+                editor.commit();
+                Log.d(getClass().toString(), "The user id  is : " + registerUserResponse.getOid());
                 registerGCM();
-                Constants.setAccessToken(s);
             }
 
             @Override
@@ -136,13 +147,10 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     public void onCompleted(
                             JSONObject object,
                             GraphResponse response) {
-                            Profile.getCurrentProfile().getId();
-                            registerUser();
+                        Profile.getCurrentProfile().getId();
+                        registerUser();
                     }
                 });
-//        Bundle parameters = new Bundle();
-//        parameters.putString("fields", "id,name,email,gender,birthday");
-//        request.setParameters(parameters);
         request.executeAsync();
     }
 }

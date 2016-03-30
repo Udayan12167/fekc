@@ -33,6 +33,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.Profile;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -50,6 +51,8 @@ public class NavActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private CircleImageView circleImageView;
+    private TextView nameTextView;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class NavActivity extends AppCompatActivity
         setContentView(R.layout.activity_nav);
         Log.e("Nav", "onCreateCalled!");
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar_nav_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.app_bar_nav_home_toolbar);
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.app_bar_nav_viewpager);
@@ -82,9 +85,11 @@ public class NavActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
+        navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         circleImageView = (CircleImageView)navigationView.findViewById(R.id.nav_header_nav_circular_image_view);
+        nameTextView = (TextView)navigationView.findViewById(R.id.nav_header_name_text_view);
         getUserDPUrl(AccessToken.getCurrentAccessToken().getUserId());
     }
 
@@ -180,7 +185,9 @@ public class NavActivity extends AppCompatActivity
                             JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             Picasso.with(NavActivity.this).load(url).into(circleImageView);
+                            nameTextView.setText(Profile.getCurrentProfile().getName());
                             Log.d(getClass().toString(), url);
+
                         }
                         catch (RuntimeException e) {
                             e.printStackTrace();

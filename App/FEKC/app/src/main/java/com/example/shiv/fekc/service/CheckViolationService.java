@@ -78,13 +78,13 @@ public class CheckViolationService extends Service {
                         for (UsageStats usageStats : stats) {
                             mySortedMap.put(usageStats.getLastTimeUsed(),usageStats);
                         }
-                        Log.d(getClass().toString(), foregroundPackage + " is running");
+//                        Log.d(getClass().toString(), foregroundPackage + " is running");
                         if(!mySortedMap.isEmpty()) {
                             foregroundPackage =  mySortedMap.get(mySortedMap.lastKey()).getPackageName();
                         }
                     }
                 }
-                Log.d(getClass().toString(),foregroundPackage+" is running");
+//                Log.d(getClass().toString(),foregroundPackage+" is running");
 
 
                 //Get tasks from DB with foregroundPackage as added apps
