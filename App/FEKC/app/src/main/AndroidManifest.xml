@@ -9,14 +9,13 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".activity.MainActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +47,7 @@
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
@@ -58,7 +57,7 @@
 
         <service
             android:name=".gcm.GCMIntentService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
@@ -66,7 +65,7 @@
         <service
             android:name=".gcm.GCMNotificationReceiverService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -74,22 +73,19 @@
 
         <activity
             android:name=".activity.TimeBasedTaskActivity"
-            android:label="@string/title_activity_time_based_task" >
-        </activity>
+            android:label="@string/title_activity_time_based_task"></activity>
         <activity
             android:name=".activity.ScheduleBasedTaskActivity"
-            android:label="@string/title_activity_schedule_based_task" >
-        </activity>
+            android:label="@string/title_activity_schedule_based_task"></activity>
         <activity
             android:name=".activity.ActivityBasedTaskActivity"
-            android:label="@string/title_activity_activity_based_task" >
-        </activity>
+            android:label="@string/title_activity_activity_based_task"></activity>
 
         <service
             android:name=".service.CheckViolationService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
+
     </application>
 
 </manifest>

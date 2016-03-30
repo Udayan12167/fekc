@@ -1,12 +1,15 @@
 package com.example.shiv.fekc.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.UserListAdapter;
@@ -17,12 +20,15 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserListActivity extends AppCompatActivity {
 
@@ -85,7 +91,7 @@ public class UserListActivity extends AppCompatActivity {
 
         Intent intent=new Intent();
         intent.putExtra("SelectedUsers",selectedUsers);
-        setResult(2,intent);
+        setResult(2, intent);
         finish();
     }
     private void getUserDPUrl(final UserListItem userItem) {
@@ -113,5 +119,36 @@ public class UserListActivity extends AppCompatActivity {
                     }
                 }
         ).executeAsync();
+    }
+    public static CircleImageView getUserDP(String userID, final Context context) {
+        Bundle params = new Bundle();
+        params.putBoolean("redirect", false);
+        final CircleImageView image= new CircleImageView(context);
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                Constants.SLASH + userID + Constants.FACEBOOK_USER_PROFILE_PICTURE_EDGE,
+                params,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            Log.d(getClass().toString(), response.getJSONObject().toString());
+                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+                            String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
+                           // Log.d(getClass().toString(), userItem.getName());
+                            //userItem.setImageUrl(url);
+                            //userListAdapter.add(userItem);
+//                            Log.d(getClass().toString(), data);
+                            Log.d(getClass().toString(), url);
+
+                            Picasso.with(context).load(url).into(image);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).executeAsync();
+        return image;
     }
 }
