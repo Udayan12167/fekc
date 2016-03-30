@@ -26,6 +26,7 @@
     <string name="title_activity_time_based_task">TimeBasedTaskActivity</string>
     <string name="title_activity_schedule_based_task">ScheduleBasedTaskActivity</string>
     <string name="title_activity_activity_based_task">ActivityBasedTaskActivity</string>
+    <string name="title_activity_card_view">CardViewActivity</string>
 
 
 </resources>
