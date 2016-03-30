@@ -87,7 +87,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
         mTimePicker = new TimePickerDialog(TimeBasedTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                EditText editText2 = (EditText) findViewById(R.id.duration);
+                EditText editText2 = (EditText) findViewById(R.id.duration_duration);
                 editText2.setText(selectedHour + ":" + selectedMinute);
                 task.setDuration(selectedHour + ":" + selectedMinute);
             }
@@ -120,7 +120,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             int mMonth = monthOfYear;
             int mDay = dayOfMonth;
 
-            EditText editText = (EditText) findViewById(R.id.date);
+            EditText editText = (EditText) findViewById(R.id.duration_date);
             editText.setText(new StringBuilder()
                     // Month is 0 based so add 1
                     .append(mDay).append("/")
@@ -150,7 +150,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
         }
     }
     public void onSave() {
-        EditText name = (EditText) findViewById(R.id.taskname);
+        EditText name = (EditText) findViewById(R.id.duration_taskname);
         task.setTaskType(Constants.TIME_BASED_TASK);
         task.setStartTime("NA");
         task.setEndTime("NA");
