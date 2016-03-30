@@ -3,10 +3,12 @@ package com.example.shiv.fekc.adapter;
 /**
  * Created by Mrinalk on 30-Mar-16.
  */
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
