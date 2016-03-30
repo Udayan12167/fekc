@@ -37,6 +37,9 @@ public class Constants {
     public static final Integer SCHEDULE_BASED_TASK = 2;
 
     public static final Integer TIME_BASED_TASK = 3;
+
+    //Permission Codes
+    public static final Integer MY_PERMISSIONS_REQUEST_STORAGE = 1;
 }
 
 
