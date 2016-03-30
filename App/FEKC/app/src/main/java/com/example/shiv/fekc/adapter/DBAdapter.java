@@ -13,6 +13,7 @@ import com.google.android.gms.gcm.Task;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.util.Collections;
@@ -106,6 +107,78 @@ public class DBAdapter {
 
             tasks.add(task);
         }
+
+        result.close();
+        return tasks;
+    }
+    public ArrayList<TaskItem> getAllTasksFromTaskInfo() {
+        Cursor result = db.rawQuery("SELECT * FROM TaskInfo ;",null);
+        ArrayList<TaskItem> tasks = new ArrayList<>();
+        HashMap<Integer,ArrayList<String>> taskIDToApp = new HashMap<Integer,ArrayList<String>>();
+        while(result.moveToNext()) {
+            if(!taskIDToApp.containsKey(result.getInt(result.getColumnIndex("task_ID")))) {
+                TaskItem task = new TaskItem();
+                task.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
+                //Log.e("TaskID", task.getTaskID().toString());
+                task.setTaskName(result.getString(result.getColumnIndex("task_name")));
+                //Log.e("Task Name", task.getTaskName());
+                task.setTaskType(result.getInt(result.getColumnIndex("task_type")));
+                //Log.e("Task Type", task.getTaskType().toString());
+                task.setEndDate(result.getString(result.getColumnIndex("end_date")));
+                //Log.e("Task end date", task.getEndDate());
+                task.setStartTime(result.getString(result.getColumnIndex("start_time")));
+                //Log.e("Task start time", task.getStartTime());
+                task.setEndTime(result.getString(result.getColumnIndex("end_time")));
+                //Log.e("Task end time", task.getEndTime());
+                task.setDuration(result.getString(result.getColumnIndex("duration")));
+                //Log.e("Task Duration", task.getDuration());
+                task.setActivityName(result.getString(result.getColumnIndex("activity_name")));
+                //Log.e("Task activity name", task.getActivityName());
+                task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_start_flag")));
+                //Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
+                task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
+                //Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
+
+                String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
+                ArrayList<String> friendsArray = new ArrayList<>();
+                for(String friend:friends) {
+                    if(!friend.trim().isEmpty()) {
+                        friendsArray.add(friend.trim());
+                    }
+                }
+                task.setFriends(friendsArray);
+                //Log.e("Task Friends", task.getFriends().toString());
+                ArrayList<String> apps = new ArrayList<String>();
+                apps.add(result.getString(result.getColumnIndex("app")));
+                taskIDToApp.put(task.getTaskID(), apps);
+                tasks.add(task);
+            }
+            else {
+                ArrayList<String> apps = taskIDToApp.get(result.getInt(result.getColumnIndex("task_ID")));
+                apps.add(result.getString(result.getColumnIndex("app")));
+                taskIDToApp.put(result.getInt(result.getColumnIndex("task_ID")),apps);
+            }
+
+        }
+
+        for(TaskItem task:tasks) {
+            task.setApps(taskIDToApp.get(task.getTaskID()));
+        }
+
+       /* for(TaskItem task:tasks) {
+            Log.e("TaskID", task.getTaskID().toString());
+            Log.e("Task Name", task.getTaskName());
+            Log.e("Task Type", task.getTaskType().toString());
+            Log.e("Task end date", task.getEndDate());
+            Log.e("Task start time", task.getStartTime());
+            Log.e("Task end time", task.getEndTime());
+            Log.e("Task Duration", task.getDuration());
+            Log.e("Task activity name", task.getActivityName());
+            Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
+            Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
+            Log.e("Task Friends", task.getFriends().toString());
+            Log.e("Task Apps", task.getApps().toString());
+        }*/
 
         result.close();
         return tasks;
