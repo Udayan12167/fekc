@@ -58,7 +58,6 @@ public class NavActivity extends AppCompatActivity
         Log.e("Nav", "onCreateCalled!");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_nav_toolbar);
-        circleImageView = (CircleImageView)findViewById(R.id.nav_header_nav_circular_image_view);
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.app_bar_nav_viewpager);
@@ -85,6 +84,7 @@ public class NavActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        circleImageView = (CircleImageView)navigationView.findViewById(R.id.nav_header_nav_circular_image_view);
         getUserDPUrl(AccessToken.getCurrentAccessToken().getUserId());
     }
 
@@ -182,7 +182,8 @@ public class NavActivity extends AppCompatActivity
                             Picasso.with(NavActivity.this).load(url).into(circleImageView);
                             Log.d(getClass().toString(), url);
                         }
-                        catch (RuntimeException ignored) {
+                        catch (RuntimeException e) {
+                            e.printStackTrace();
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
