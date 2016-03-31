@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 from pushjack import GCMClient
 from ast import literal_eval
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -80,8 +81,13 @@ class TrackedTaskList(Resource):
                 print t
                 task_id = t["tracked_task"]
                 print task_id
-                tasks.append(handle.tasks.find_one({'_id': ObjectId(task_id)}))
-            print tasks
+                task = handle.tasks.find_one({'_id': ObjectId(task_id)})
+                if task:
+                    tasks.append(str(task["task"]))
+                    print(task.__dict__)
+            dictionary = {}
+            dictionary['tasks'] = tasks
+            return str(dictionary)
 
 task_parser = reqparse.RequestParser()
 task_parser.add_argument('task')
@@ -99,9 +105,9 @@ class Tasks(Resource):
         for friend in tracked_friends:
             task_entry = {'user_id': friend, 'tracked_task': str(task["_id"])}
             handle.tracked_tasks.insert_one(task_entry)
-            friend_gcm_token = handle.users.find_one(
-                {'fbid': friend})["gcmtoken"]
-            gcm_client.send(friend_gcm_token, literal_eval(args["tasks"]))
+            f = handle.users.find_one({'fbid': friend})
+            if f:
+                gcm_client.send(f["gcmtoken"], literal_eval(args["task"]))
         return {'tid': str(task["_id"])}
 
 api.add_resource(UserList, '/users')
