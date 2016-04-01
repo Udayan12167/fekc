@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.rest.response.UpdateGCMTokenResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.facebook.AccessToken;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -67,21 +68,21 @@ public class GCMIntentService extends IntentService {
 
     private void sendRegistrationToServer(final String token) {
         HashMap<String, String> parameters = new HashMap<>();
-        String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         Log.d(getClass().toString(), "The user id  is : " + id);
         parameters.put(Constants.JSON_PARAMETER_FACEBOOK_ID, AccessToken.getCurrentAccessToken().getUserId());
         parameters.put(Constants.JSON_PARAMETER_GCM_TOKEN, token);
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
-        backendAPIServiceClient.getService().updateUserGCMToken(id, parameters, new Callback<String>() {
+        backendAPIServiceClient.getService().updateUserGCMToken(id, parameters, new Callback<UpdateGCMTokenResponse>() {
             @Override
-            public void success(String s, Response response) {
-                Log.d(getClass().toString(), "Sent GCM token to server");
+            public void success(UpdateGCMTokenResponse updateGCMTokenResponse, Response response) {
+                Log.d(getClass().toString(), "Sent GCM token to server for user : " + id);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
-                Log.d(getClass().toString(), "Unable to send GCM token to server");
+                Log.d(getClass().toString(), "Unable to send GCM token to server for user : " + id);
             }
         });
     }

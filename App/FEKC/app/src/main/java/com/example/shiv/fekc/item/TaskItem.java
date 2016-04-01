@@ -18,6 +18,15 @@ public class TaskItem {
     private ArrayList<String> friends;
     private Integer activityStartFlag;
     private Integer activityStopFlag;
+    private String taskServerId;
+
+    public String getTaskServerId() {
+        return taskServerId;
+    }
+
+    public void setTaskServerId(String taskServerId) {
+        this.taskServerId = taskServerId;
+    }
 
     public TaskItem() {
         taskID = 0;

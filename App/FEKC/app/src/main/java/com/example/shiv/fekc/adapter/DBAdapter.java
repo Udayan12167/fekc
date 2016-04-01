@@ -46,7 +46,7 @@ public class DBAdapter {
 
         File dataBaseDirectory = getDatabaseDirectory();
         db = SQLiteDatabase.openDatabase(dataBaseDirectory.getAbsolutePath() + File.separator + Constants.APP_DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        db.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, activity_start_flag INT, activity_stop_flag INT, app VARCHAR, friends VARCHAR);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS TaskInfo(task_ID INT,task_name VARCHAR,task_type INT,end_date VARCHAR, start_time VARCHAR, end_time VARCHAR, duration VARCHAR, activity_name VARCHAR, activity_start_flag INT, activity_stop_flag INT, app VARCHAR, friends VARCHAR, task_server_id VARCHAR);");
     }
 
     public void insertIntoTaskInfo(TaskItem task) {
@@ -56,7 +56,7 @@ public class DBAdapter {
         }
         Log.e("End date---", task.getEndDate());
         for (String app : task.getApps()) {
-            db.execSQL("INSERT INTO TaskInfo VALUES(" + task.getTaskID() + ",'" + task.getTaskName() + "'," + task.getTaskType() + ",'" + task.getEndDate() + "','" + task.getStartTime() + "','" + task.getEndTime() + "','" +  task.getDuration() + "','" + task.getActivityName() + "',"+task.getActivityStartFlag()+","+task.getActivityStopFlag()+",'" + app + "','" + friends + "');");
+            db.execSQL("INSERT INTO TaskInfo VALUES(" + "'" + task.getTaskID() + "'" + "," + "'" + task.getTaskName() + "'" + "," + task.getTaskType() + "," + "'" + task.getEndDate() + "'" + "," + "'" + task.getStartTime() + "'" + "," + "'" + task.getEndTime() + "'" +  "," + "'" + task.getDuration() + "'" + "," + "'" +  task.getActivityName() + "'" + "," + task.getActivityStartFlag() + "," + task.getActivityStopFlag() + "," + "'" + app + "'" + "," + "'" + friends + "'" + "," + "'" + task.getTaskServerId() + "'" + ");");
         }
 
     }

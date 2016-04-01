@@ -38,6 +38,8 @@ public class Constants {
 
     public static final String JSON_PARAMETER_USER_ID = "user_id";
 
+    public static final String JSON_PARAMETER_TASK_ID = "task_id";
+
     public static final String JSON_PARAMETER_TASK = "task";
 
     public static final String JSON_PARAMETER_GCM_TOKEN = "gcmtoken";
@@ -73,6 +75,8 @@ public class Constants {
 
     public static final String JSON_PARAMETER_FB_TOKEN = "fbtoken";
 
+    public static final String JSON_PARAMETER_MESSAGE = "message";
+
     public static final String BACKEND_SERVER = "http://192.168.49.240:5000";
 
     public static final String REGISTER_USER_ENDPOINT = "/users";
@@ -83,21 +87,17 @@ public class Constants {
 
     public static final String GET_TRACKED_TASK_ENDPOINT = "/tracked_tasks";
 
+    public static final String PUT_MESSAGE_ENDPOINT = "/message";
+
+    public static final String GET_MESSAGES_ENDPOINT = "/messages";
+
     public static final String ID_PARAMETER = "/{id}";
 
     public static final String ID = "id";
 
-    private static final ArrayList<String> PERMISSION_LIST = new ArrayList<>();
+    public static final int CODE_NEW_USER = 1;
 
-    private static String ACCESS_TOKEN;
-
-    public static String getAccessToken() {
-        return ACCESS_TOKEN;
-    }
-
-    public static void setAccessToken(String accessToken) {
-        ACCESS_TOKEN = accessToken;
-    }
+    public static final int CODE_EXISTING_USER = 0;
 
 }
 

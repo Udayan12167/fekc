@@ -249,7 +249,6 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             }
         }
         if (flag == 1) {
-            dbAdapter.insertIntoTaskInfo(task);
             uploadTaskOnServer();
             Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
         }
@@ -268,6 +267,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             @Override
             public void success(TaskCreateResponse taskCreateResponse, Response response) {
                 Log.d(getClass().toString(), "Task uploaded with id " + taskCreateResponse.getTid());
+                task.setTaskServerId(taskCreateResponse.getTid());
+                dbAdapter.insertIntoTaskInfo(task);
             }
 
             @Override

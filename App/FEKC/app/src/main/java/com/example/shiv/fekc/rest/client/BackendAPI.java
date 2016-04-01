@@ -4,7 +4,10 @@ import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
 import com.example.shiv.fekc.rest.response.RegisterUserResponse;
 import com.example.shiv.fekc.rest.response.TaskCreateResponse;
+import com.example.shiv.fekc.rest.response.TaskMessageResponse;
 import com.example.shiv.fekc.rest.response.TrackedFriendsTaskResponse;
+import com.example.shiv.fekc.rest.response.UpdateGCMTokenResponse;
+import com.example.shiv.fekc.rest.response.UpdateUserMessageResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +32,7 @@ public interface BackendAPI {
 
     @FormUrlEncoded
     @PUT(Constants.UPDATE_USER_GCM_ENDPOINT + Constants.ID_PARAMETER)
-    void updateUserGCMToken(@Path(Constants.ID) String id , @FieldMap Map<String, String> options, Callback<String> callback);
+    void updateUserGCMToken(@Path(Constants.ID) String id , @FieldMap Map<String, String> options, Callback<UpdateGCMTokenResponse> callback);
 
     @FormUrlEncoded
     @POST(Constants.CREATE_TASK_ENDPOINT)
@@ -37,5 +40,13 @@ public interface BackendAPI {
 
     @GET(Constants.GET_TRACKED_TASK_ENDPOINT + Constants.ID_PARAMETER)
     void getTrackedTasks(@Path(Constants.ID) String id, @QueryMap Map<String, String> options, Callback<TrackedFriendsTaskResponse> callback);
+
+    @FormUrlEncoded
+    @PUT(Constants.PUT_MESSAGE_ENDPOINT + Constants.ID_PARAMETER)
+    void updateUserTaskMessage(@Path(Constants.ID)  String taskId, @FieldMap Map<String, String> options, Callback<UpdateUserMessageResponse> callback);
+
+    @GET(Constants.GET_MESSAGES_ENDPOINT + Constants.ID_PARAMETER)
+    void getUserTaskMessages(@Path(Constants.ID) String id, @QueryMap Map<String, String> options, Callback<TaskMessageResponse> callback);
+
 
 }

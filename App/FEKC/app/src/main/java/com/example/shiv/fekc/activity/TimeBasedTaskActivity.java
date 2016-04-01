@@ -211,9 +211,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             flag = 0;
         }
         if (flag == 1) {
-            dbAdapter.insertIntoTaskInfo(task);
             uploadTaskOnServer();
-            Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -230,12 +228,16 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             @Override
             public void success(TaskCreateResponse taskCreateResponse, Response response) {
                 Log.d(getClass().toString(), "Task uploaded with id " + taskCreateResponse.getTid());
+                task.setTaskServerId(taskCreateResponse.getTid());
+                dbAdapter.insertIntoTaskInfo(task);
+                Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Unable to create task");
                 error.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Unable to create task", Toast.LENGTH_SHORT).show();
             }
         });
     }

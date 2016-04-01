@@ -20,6 +20,24 @@ public class TrackedFriendsTask {
     private List<String> friends;
     private int activityStartFlag;
     private int activityStopFlag;
+    private int messageSet;
+    private String trackingFriendId;
+
+    public int getMessageSet() {
+        return messageSet;
+    }
+
+    public void setMessageSet(int messageSet) {
+        this.messageSet = messageSet;
+    }
+
+    public String getTrackingFriendId() {
+        return trackingFriendId;
+    }
+
+    public void setTrackingFriendId(String trackingFriendId) {
+        this.trackingFriendId = trackingFriendId;
+    }
 
     public Integer getTaskID() {
         return taskID;

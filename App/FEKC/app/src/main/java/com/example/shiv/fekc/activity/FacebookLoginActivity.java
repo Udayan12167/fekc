@@ -63,9 +63,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 registerUser();
-                Intent tabActivityIntent = new Intent(FacebookLoginActivity.this, NavActivity.class);
-                startActivity(tabActivityIntent);
-                finish();
             }
 
             @Override
@@ -124,7 +121,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 editor.putString(Constants.USER_ACCESS_TOKEN, registerUserResponse.getOid());
                 editor.commit();
                 Log.d(getClass().toString(), "The user id  is : " + registerUserResponse.getOid());
-                registerGCM();
+                if(registerUserResponse.getUserStatusCode() == Constants.CODE_NEW_USER){
+                    registerGCM();
+                }
+                Intent tabActivityIntent = new Intent(FacebookLoginActivity.this, NavActivity.class);
+                startActivity(tabActivityIntent);
+                finish();
             }
 
             @Override
