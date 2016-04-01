@@ -69,6 +69,7 @@ public class GCMIntentService extends IntentService {
         HashMap<String, String> parameters = new HashMap<>();
         String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         Log.d(getClass().toString(), "The user id  is : " + id);
+        parameters.put(Constants.JSON_PARAMETER_FACEBOOK_ID, AccessToken.getCurrentAccessToken().getUserId());
         parameters.put(Constants.JSON_PARAMETER_GCM_TOKEN, token);
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
         backendAPIServiceClient.getService().updateUserGCMToken(id, parameters, new Callback<String>() {

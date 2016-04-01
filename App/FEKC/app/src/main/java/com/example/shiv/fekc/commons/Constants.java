@@ -81,6 +81,8 @@ public class Constants {
 
     public static final String CREATE_TASK_ENDPOINT = "/tasks";
 
+    public static final String GET_TRACKED_TASK_ENDPOINT = "/tracked_tasks";
+
     public static final String ID_PARAMETER = "/{id}";
 
     public static final String ID = "id";

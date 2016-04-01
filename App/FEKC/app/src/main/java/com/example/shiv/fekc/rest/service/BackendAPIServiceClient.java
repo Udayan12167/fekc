@@ -17,6 +17,7 @@ public class BackendAPIServiceClient {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(BASE_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         backendAPI = restAdapter.create(BackendAPI.class);
