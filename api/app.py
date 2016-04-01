@@ -13,6 +13,7 @@ api = Api(app)
 
 gcm_client = GCMClient(api_key='AIzaSyC2KtWM8Ce1lWrtIN-Ql2J0c5bPZc0iLQc')
 
+
 def connect():
     connection = MongoClient("localhost", 27017)
     handle = connection["test"]
@@ -36,6 +37,7 @@ user_parser = reqparse.RequestParser()
 user_parser.add_argument('fbtoken')
 user_parser.add_argument('fbid')
 user_parser.add_argument('gcmtoken')
+
 
 class User(Resource):
     def get(self, user_id):
@@ -85,9 +87,13 @@ class TrackedTaskList(Resource):
                 if task:
                     tasks.append(str(task["task"]))
                     print(task.__dict__)
-            dictionary = {}
-            dictionary['tasks'] = tasks
-            return str(dictionary)
+            ret_json_dict = {}
+            ind = 0
+            for task in tasks:
+                ret_json_dict["task"+str(ind)] = task
+                ind += 1
+            return flask.jsonify(**ret_json_dict)
+
 
 task_parser = reqparse.RequestParser()
 task_parser.add_argument('task')
