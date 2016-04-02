@@ -64,7 +64,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
     }
-    
+
     public void setDate(View view) {
 /*
         DialogFragment picker = new DatePickerFragment();

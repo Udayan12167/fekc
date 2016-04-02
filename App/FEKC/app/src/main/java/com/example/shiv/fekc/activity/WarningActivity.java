@@ -99,7 +99,7 @@ public class WarningActivity extends AppCompatActivity {
     }
 
     private void getWarningMessages() {
-        final String taskId = "56fe6c2ff19872b2def51b22";
+        String taskId = getIntent().getExtras().getString(Constants.STRING_EXTRA_TASK_SERVER_ID);
         final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         HashMap<String, String> parameters = new HashMap<>();
 
@@ -172,6 +172,7 @@ public class WarningActivity extends AppCompatActivity {
                     }
                 }
         );
+        request.executeAsync();
     }
 
 }

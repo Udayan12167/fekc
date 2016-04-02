@@ -26,6 +26,7 @@ public class CheckViolationService extends Service {
 
     private static String goToButtonForPackage = "";
     private static String foregroundPackage = "";
+    private static UsageStats foregroundPackageUsageStats;
     private static String violatedPackage = "";
     DBAdapter dbAdapter = new DBAdapter();
 
@@ -81,6 +82,7 @@ public class CheckViolationService extends Service {
 //                        Log.d(getClass().toString(), foregroundPackage + " is running");
                         if(!mySortedMap.isEmpty()) {
                             foregroundPackage =  mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                            foregroundPackageUsageStats = mySortedMap.get(mySortedMap.lastKey());
                         }
                     }
                 }
@@ -101,48 +103,63 @@ public class CheckViolationService extends Service {
                         Log.e("Task----","HERE 1");
 
                         for(TaskItem task:mayBeViolatedTasks) {
-                           // if (flag == 0) {
-                                //Check if schedule based task
-                                if (task.getTaskType() == Constants.SCHEDULE_BASED_TASK) {
-                                    Calendar calendar = Calendar.getInstance();
-                                    String[] startTime = task.getStartTime().trim().split(":");
-                                    String[] endTime = task.getEndTime().trim().split(":");
-                                    Integer currHour = calendar.get(Calendar.HOUR_OF_DAY);
-                                    Integer currMin = calendar.get(Calendar.MINUTE);
+                            // if (flag == 0) {
+                            //Check if schedule based task
+                            if (task.getTaskType() == Constants.SCHEDULE_BASED_TASK) {
+                                Calendar calendar = Calendar.getInstance();
+                                String[] startTime = task.getStartTime().trim().split(":");
+                                String[] endTime = task.getEndTime().trim().split(":");
+                                Integer currHour = calendar.get(Calendar.HOUR_OF_DAY);
+                                Integer currMin = calendar.get(Calendar.MINUTE);
 
-                                    Log.e("Task----", "HERE 2");
-                                    Log.e("Task----", "start: " + startTime[0] + " " + startTime[1]);
-                                    Log.e("Task----", "start: " + endTime[0] + " " + endTime[1]);
-                                    Log.e("Task----", "start: " + currHour.toString() + " " + currMin.toString());
+                                Log.e("Task----", "HERE 2");
+                                Log.e("Task----", "start: " + startTime[0] + " " + startTime[1]);
+                                Log.e("Task----", "start: " + endTime[0] + " " + endTime[1]);
+                                Log.e("Task----", "start: " + currHour.toString() + " " + currMin.toString());
 
-                                    //Check if violation occurred
-                                    if ((Integer.parseInt(startTime[0].trim()) < currHour && Integer.parseInt(endTime[0].trim()) > currHour)
-                                            || (Integer.parseInt(startTime[0].trim()) == currHour && Integer.parseInt(startTime[1].trim()) <= currMin && Integer.parseInt(endTime[0].trim()) > currHour)
-                                            || (Integer.parseInt(startTime[0].trim()) < currHour && Integer.parseInt(endTime[1].trim()) >= currMin && Integer.parseInt(endTime[0].trim()) == currHour)
-                                            || (Integer.parseInt(startTime[0].trim()) == currHour && Integer.parseInt(startTime[1].trim()) <= currMin && Integer.parseInt(endTime[1].trim()) >= currMin && Integer.parseInt(endTime[0].trim()) == currHour)
-                                            ) {
-                                        flag = 1;
-                                        Log.e("Task----", "HERE 3");
+                                //Check if violation occurred
+                                if ((Integer.parseInt(startTime[0].trim()) < currHour && Integer.parseInt(endTime[0].trim()) > currHour)
+                                        || (Integer.parseInt(startTime[0].trim()) == currHour && Integer.parseInt(startTime[1].trim()) <= currMin && Integer.parseInt(endTime[0].trim()) > currHour)
+                                        || (Integer.parseInt(startTime[0].trim()) < currHour && Integer.parseInt(endTime[1].trim()) >= currMin && Integer.parseInt(endTime[0].trim()) == currHour)
+                                        || (Integer.parseInt(startTime[0].trim()) == currHour && Integer.parseInt(startTime[1].trim()) <= currMin && Integer.parseInt(endTime[1].trim()) >= currMin && Integer.parseInt(endTime[0].trim()) == currHour)
+                                        ) {
+                                    flag = 1;
+                                    Log.e("Task----", "HERE 3");
 
-                                        Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
+                                    Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    startActivity(intent);
 
-                                    }
                                 }
+                            }
 
-                                //Check if Activity Type Task
-                                if (task.getTaskType() == Constants.ACTIVITY_BASED_TASK) {
+                            //Check if Activity Type Task
+                            if (task.getTaskType() == Constants.ACTIVITY_BASED_TASK) {
 
-                                    if (task.getActivityStartFlag() == 1) {
-                                        flag = 1;
-                                        Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    }
+                                if (task.getActivityStartFlag() == 1) {
+                                    flag = 1;
+                                    Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    startActivity(intent);
                                 }
+                            }
 
-                                //TODO: FOR ACTIVITY BOUND TASK, CHECK IF VIOLATION OCCURRED
+                            //Check if Time Based Task
+                            if(task.getTaskType() == Constants.TIME_BASED_TASK) {
+
+                                String[] duration = task.getDuration().split(":");
+                                Integer durationInMilSec = 1000*(Integer.parseInt(duration[0].trim())*3600 + Integer.parseInt(duration[1].trim())*60);
+                                Log.e("Foreground time",foregroundPackageUsageStats.getTotalTimeInForeground()+"");
+                                if(durationInMilSec < foregroundPackageUsageStats.getTotalTimeInForeground()) {
+                                    flag = 1;
+                                    Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    startActivity(intent);
+                                }
+                            }
 
 
                             //}
