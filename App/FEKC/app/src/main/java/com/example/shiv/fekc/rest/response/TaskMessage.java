@@ -15,4 +15,12 @@ public class TaskMessage {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getFriendId() {
+        return friendId;
+    }
+
+    public void setFriendId(String friendId) {
+        this.friendId = friendId;
+    }
 }

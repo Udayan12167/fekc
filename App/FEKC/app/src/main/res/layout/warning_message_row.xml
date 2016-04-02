@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_shiv"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/layout_border"
+    android:paddingTop="20dp">
+
+    <ImageView
+        android:id="@+id/warning_message_row_image_view"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:paddingLeft="20dp"
+        android:src="@drawable/test_user2" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/warning_message_row_image_view"
+        android:layout_toRightOf="@id/warning_message_row_image_view"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/warning_message_row_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Shiv Kandikuppa"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/warning_message_row_message_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/warning_message_row_name_text_view"
+            android:paddingTop="10dp"
+            android:text="Hey! You got to stop using this app!"
+            android:textSize="15dp" />
+    </RelativeLayout>
+</RelativeLayout>
