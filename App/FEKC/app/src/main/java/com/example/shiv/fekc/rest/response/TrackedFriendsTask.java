@@ -22,6 +22,42 @@ public class TrackedFriendsTask {
     private int activityStopFlag;
     private int messageSet;
     private String trackingFriendId;
+    private String message;
+    private String friendName;
+    private String friendImageUrl;
+    private String trackedTaskId;
+
+    public String getTrackedTaskId() {
+        return trackedTaskId;
+    }
+
+    public void setTrackedTaskId(String trackedTaskId) {
+        this.trackedTaskId = trackedTaskId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getFriendName() {
+        return friendName;
+    }
+
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
+    }
+
+    public String getFriendImageUrl() {
+        return friendImageUrl;
+    }
+
+    public void setFriendImageUrl(String friendImageUrl) {
+        this.friendImageUrl = friendImageUrl;
+    }
 
     public int getMessageSet() {
         return messageSet;
@@ -134,4 +170,6 @@ public class TrackedFriendsTask {
     public void setActivityStopFlag(int activityStopFlag) {
         this.activityStopFlag = activityStopFlag;
     }
+
+
 }

@@ -101,6 +101,8 @@ public class Constants {
 
     public static final int CODE_EXISTING_USER = 0;
 
+    public static final int CODE_MESSAGE_SET = 1;
+
 }
 
 

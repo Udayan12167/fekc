@@ -16,8 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.shiv.fekc.R;
+import com.example.shiv.fekc.adapter.TaskListAdapter;
+import com.example.shiv.fekc.adapter.TrackedFriendListAdapter;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
+import com.example.shiv.fekc.item.WarningMessageItem;
 import com.example.shiv.fekc.rest.response.TaskCreateResponse;
 import com.example.shiv.fekc.rest.response.TaskMessageResponse;
 import com.example.shiv.fekc.rest.response.TrackedFriendsTask;
@@ -25,8 +28,15 @@ import com.example.shiv.fekc.rest.response.TrackedFriendsTaskResponse;
 import com.example.shiv.fekc.rest.response.UpdateUserMessageResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.android.gms.gcm.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,10 +60,8 @@ public class TrackedFriendsFragment extends Fragment {
     private BackendAPIServiceClient backendAPIServiceClient;
     private SharedPreferences sharedPreferences;
 
-    private Button sendMessageButton;
-    private Button getMessagesButton;
-
-    private EditText sendMessageEditText;
+    private TrackedFriendListAdapter trackedFriendListAdapter;
+    private ArrayList<TrackedFriendsTask> trackedFriendsTaskList;
 
     public TrackedFriendsFragment() {
         // Required empty public constructor
@@ -72,7 +80,15 @@ public class TrackedFriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tracked_friends, container, false);
-
+        trackedFriendsTaskList = new ArrayList<TrackedFriendsTask>();
+        trackedFriendListAdapter = new TrackedFriendListAdapter(getContext(), trackedFriendsTaskList);
+        trackedFriendListAdapter.setMyClickListener(new TaskListAdapter.MyClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i(getClass().toString(), " Clicked on Item " + position);
+                trackedFriendListAdapter.onClick(v, position);
+            }
+        });
         return rootView;
     }
 
@@ -82,13 +98,9 @@ public class TrackedFriendsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        sendMessageButton = (Button)view.findViewById(R.id.fragment_tracked_friends_send_message_button);
-        sendMessageEditText = (EditText)view.findViewById(R.id.fragment_tracked_friends_edit_text);
-
-        getMessagesButton = (Button)view.findViewById(R.id.fragment_tracked_friends_get_messages_button);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_tracked_friends_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(trackedFriendListAdapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_tracked_friends_swipe_refresh_view);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -98,25 +110,11 @@ public class TrackedFriendsFragment extends Fragment {
             }
         });
 
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
-
-        getMessagesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMessages();
-            }
-        });
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -133,14 +131,15 @@ public class TrackedFriendsFragment extends Fragment {
         backendAPIServiceClient.getService().getTrackedTasks(id, parameters, new Callback<TrackedFriendsTaskResponse>() {
             @Override
             public void success(TrackedFriendsTaskResponse trackedFriendsTaskResponse, Response response) {
-//                Log.d(getClass().toString(), string);
                 swipeRefreshLayout.setRefreshing(false);
+                trackedFriendListAdapter.removeAll();
                 Log.d(getClass().toString(), "Successfully got tracked tasks");
                 if (trackedFriendsTaskResponse.getTasks() == null) {
+                    Log.d(getClass().toString(), "Tasks are null :/");
                     return;
                 }
                 for (TrackedFriendsTask trackedFriendsTask : trackedFriendsTaskResponse.getTasks()) {
-                    Log.d(getClass().toString(), trackedFriendsTask.getActivityName());
+                    getUserDPUrl(trackedFriendsTask);
                 }
             }
 
@@ -149,27 +148,6 @@ public class TrackedFriendsFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
                 error.printStackTrace();
                 Log.d(getClass().toString(), "Failed");
-            }
-        });
-    }
-
-    private void sendMessage(){
-        final String taskId = "56fe6c2ff19872b2def51b22";
-        final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put(Constants.JSON_PARAMETER_USER_ID, id);
-        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
-        parameters.put(Constants.JSON_PARAMETER_MESSAGE, sendMessageEditText.getText().toString());
-
-        backendAPIServiceClient.getService().updateUserTaskMessage(taskId, parameters, new Callback<UpdateUserMessageResponse>() {
-            @Override
-            public void success(UpdateUserMessageResponse updateUserMessageResponse, Response response) {
-                Log.d(getClass().toString(), "Successfully updated message");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
             }
         });
     }
@@ -185,7 +163,7 @@ public class TrackedFriendsFragment extends Fragment {
         backendAPIServiceClient.getService().getUserTaskMessages(id, parameters, new Callback<TaskMessageResponse>() {
             @Override
             public void success(TaskMessageResponse taskMessageResponse, Response response) {
-                if(taskMessageResponse.getMessages() == null){
+                if (taskMessageResponse.getMessages() == null) {
                     return;
                 }
                 Log.d(getClass().toString(), "Successfully got messages");
@@ -196,5 +174,56 @@ public class TrackedFriendsFragment extends Fragment {
 
             }
         });
+    }
+
+    private void getUserDPUrl(final TrackedFriendsTask trackedFriendsTask) {
+        Bundle params = new Bundle();
+        params.putBoolean("redirect", false);
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                Constants.SLASH + trackedFriendsTask.getTrackingFriendId() + Constants.FACEBOOK_USER_PROFILE_PICTURE_EDGE,
+                params,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+                            String imageUrl = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
+                            Log.d(getClass().toString(), imageUrl);
+                            trackedFriendsTask.setFriendImageUrl(imageUrl);
+                            getUserName(trackedFriendsTask);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+        ).executeAsync();
+    }
+
+    private void getUserName(final TrackedFriendsTask trackedFriendsTask) {
+        GraphRequest request = new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                Constants.SLASH + trackedFriendsTask.getTrackingFriendId(),
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        try {
+//                            Log.d(getClass().toString() , response.getJSONObject().toString());
+                            JSONObject jsonObject = response.getJSONObject();
+                            Log.d(getClass().toString(), jsonObject.toString());
+                            String name = jsonObject.getString(Constants.FACEBOOK_JSON_NAME);
+                            Log.d(getClass().toString(), name);
+                            trackedFriendsTask.setFriendName(name);
+                            trackedFriendListAdapter.add(trackedFriendsTask);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        request.executeAsync();
     }
 }

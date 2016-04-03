@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/tracked_friends_card_view"
-        android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="5dp"
         card_view:cardCornerRadius="5dp"
         card_view:contentPadding="10dp">
@@ -17,67 +17,99 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            >
+            android:animateLayoutChanges="true">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/tracked_friends_row_profile_circular_image_view"
-                android:layout_width="@dimen/list_view_image_width"
-                android:layout_height="@dimen/list_view_image_height"
-                android:layout_marginRight="@dimen/list_item_horizontal_margin"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#11000000"/>
+            <LinearLayout
+                android:id="@+id/tracked_friends_row_profile_pic_linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/tracked_friends_row_profile_circular_image_view"
+                    android:layout_width="@dimen/list_view_image_width"
+                    android:layout_height="@dimen/list_view_image_height"
+                    android:layout_marginRight="@dimen/list_item_horizontal_margin"
+                    app:civ_border_color="#11000000"
+                    app:civ_border_width="2dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tracked_friends_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tracked_friends_row_profile_circular_image_view"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/tracked_friends_row_profile_pic_linear_layout"
                 android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tracked_friends_task_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tracked_friends_name_text_view"
                 android:layout_marginLeft="10dp"
-                android:textSize="10sp"
+                android:layout_marginTop="5dp"
 
-                android:layout_toRightOf="@+id/tracked_friends_row_profile_circular_image_view"
-                android:layout_below="@+id/tracked_friends_name_text_view"/>
+                android:layout_toRightOf="@+id/tracked_friends_row_profile_pic_linear_layout"
+                android:textSize="10sp" />
 
             <RelativeLayout
-                android:id="@+id/tracked_friends_ExpandArea"
-                android:visibility="gone"
-                android:layout_below="@+id/tracked_friends_task_text_view"
-                android:layout_alignParentStart="true"
+                android:id="@+id/tracked_friends_ExpandArea_relative_layout"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="20dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tracked_friends_task_text_view"
                 android:layout_marginLeft="6dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tracked_friends_message_text_view"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/tracked_friends_row_message_linear_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Message"
-                    android:textSize="15sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tracked_friends_row_message_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Message"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/tracked_friends_row_message_editText"
+                            android:layout_width="290dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/tracked_friends_row_update_message_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_action_send" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tracked_friends_apps_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Apps"
-                    android:layout_below="@+id/tracked_friends_message_text_view"
+                    android:layout_below="@+id/tracked_friends_row_message_linear_layout"
                     android:layout_marginTop="20dp"
+                    android:text="Apps"
                     android:textSize="15sp"
-                    android:id="@+id/tracked_friends_apps_view" />
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
