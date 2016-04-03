@@ -15,8 +15,8 @@ gcm_client = GCMClient(api_key='AIzaSyC2KtWM8Ce1lWrtIN-Ql2J0c5bPZc0iLQc')
 
 
 def connect():
-    connection = MongoClient("localhost", 27017)
-    handle = connection["test"]
+    connection = MongoClient("mongodb://udayan12167:Syncmaster2033@ds023098.mlab.com:23098/fekc")
+    handle = connection["fekc"]
     return handle
 
 handle = connect()
