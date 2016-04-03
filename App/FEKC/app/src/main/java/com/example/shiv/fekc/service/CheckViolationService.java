@@ -130,6 +130,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    Log.e(getClass().toString() , "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
 
                                 }
@@ -143,6 +144,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    Log.d(getClass().toString(), "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
                                 }
                             }
@@ -158,6 +160,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    Log.e(getClass().toString(), "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
                                 }
                             }

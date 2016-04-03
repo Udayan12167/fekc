@@ -106,7 +106,7 @@ public class DBAdapter {
             }
             task.setFriends(friendsArray);
             Log.e("Task Friends", task.getFriends().toString());
-
+            task.setTaskServerId(result.getString(result.getColumnIndex("task_server_id")));
             tasks.add(task);
         }
 

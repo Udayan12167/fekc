@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.WarningMessageAdapter;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.commons.Functions;
 import com.example.shiv.fekc.item.WarningMessageItem;
 import com.example.shiv.fekc.rest.response.TaskMessage;
 import com.example.shiv.fekc.rest.response.TaskMessageResponse;
@@ -47,6 +48,7 @@ public class WarningActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Functions.facebookSDKInitialize(getApplicationContext());
         setContentView(R.layout.activity_warning);
         Log.d(getClass().toString(), "Opened warning activity");
 
@@ -102,7 +104,7 @@ public class WarningActivity extends AppCompatActivity {
         String taskId = getIntent().getExtras().getString(Constants.STRING_EXTRA_TASK_SERVER_ID);
         final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         HashMap<String, String> parameters = new HashMap<>();
-
+        Log.d(getClass().toString(), "The taskId is : " + taskId + " and user id : " + id);
         parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
 
@@ -161,9 +163,11 @@ public class WarningActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+//                            Log.d(getClass().toString() , response.getJSONObject().toString());
+                            JSONObject jsonObject = response.getJSONObject();
                             Log.d(getClass().toString(), jsonObject.toString());
                             String name = jsonObject.getString(Constants.FACEBOOK_JSON_NAME);
+                            Log.d(getClass().toString(), name);
                             warningMessageItem.setName(name);
                             warningMessageAdapter.add(warningMessageItem);
                         } catch (Exception e) {

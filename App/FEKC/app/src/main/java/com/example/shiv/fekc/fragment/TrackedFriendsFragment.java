@@ -124,6 +124,7 @@ public class TrackedFriendsFragment extends Fragment {
     }
 
     private void getTrackedTasks() {
+        swipeRefreshLayout.setRefreshing(true);
         Log.d(getClass().toString(), "Calling get tracked tasks");
         HashMap<String, String> parameters = new HashMap<>();
         String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
