@@ -79,7 +79,7 @@ public class Constants {
 
     public static final String JSON_PARAMETER_MESSAGE = "message";
 
-    public static final String BACKEND_SERVER = "https://warm-coast-13635.herokuapp.com:5000";
+    public static final String BACKEND_SERVER = "http://ec2-52-35-206-73.us-west-2.compute.amazonaws.com:5000";
 
     public static final String REGISTER_USER_ENDPOINT = "/users";
 

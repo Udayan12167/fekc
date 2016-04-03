@@ -79,10 +79,11 @@ public class CheckViolationService extends Service {
                         for (UsageStats usageStats : stats) {
                             mySortedMap.put(usageStats.getLastTimeUsed(),usageStats);
                         }
-//                        Log.d(getClass().toString(), foregroundPackage + " is running");
+//                        Log.e(getClass().toString(), "The app : " + foregroundPackage + " is running");
                         if(!mySortedMap.isEmpty()) {
                             foregroundPackage =  mySortedMap.get(mySortedMap.lastKey()).getPackageName();
                             foregroundPackageUsageStats = mySortedMap.get(mySortedMap.lastKey());
+//                            Log.e(getClass().toString(), "The app : " + foregroundPackage + " is running");
                         }
                     }
                 }
@@ -181,7 +182,7 @@ public class CheckViolationService extends Service {
                 }*/
 
             }
-        }, 20000, 500);
+        }, 1, 500);
         // If we get killed, after returning from here, restart
         return START_STICKY;
     }
@@ -191,5 +192,11 @@ public class CheckViolationService extends Service {
         // TODO: Return the communication channel to the service.
         return null;
         //throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(getClass().toString(), "The service has been destroyed");
+        super.onDestroy();
     }
 }
