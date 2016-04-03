@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
@@ -44,6 +46,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private BackendAPIServiceClient backendAPIServiceClient;
 
+    Button fb;
+    LoginButton loginButton;
+
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -57,7 +62,16 @@ public class FacebookLoginActivity extends AppCompatActivity {
         Log.d(getClass().toString(), "Called facebook login activity");
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_facebook_login);
-        LoginButton loginButton = (LoginButton) findViewById(R.id.faceebook_login_activity_login_button);
+        fb = (Button) findViewById(R.id.faceebook_login_activity_custom_login_button);
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == fb) {
+                    loginButton.performClick();
+                }
+            }
+        });
+        loginButton = (LoginButton) findViewById(R.id.faceebook_login_activity_login_button);
         loginButton.setReadPermissions(Constants.FACEBOOK_PERMISSION_USER_FRIENDS);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override

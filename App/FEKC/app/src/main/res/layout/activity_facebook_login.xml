@@ -16,6 +16,85 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/faceebook_login_activity_fekc_logo"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src = "@drawable/fekc_logo"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"/>
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="200dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/faceebook_login_activity_fekc_logo"
+        />
+    <TextView
+        android:id="@+id/Efficacy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Efficacy"
+        android:layout_below="@id/separator1"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:paddingTop="12dp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/Pronunciation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[ef-i-kuh-see]"
+        android:layout_below="@id/Efficacy"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/Noun"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Noun"
+        android:layout_below="@id/Pronunciation"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:textColor="#000"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/Definition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The ability to produce a\ndesired or intended result"
+        android:textAlignment="center"
+        android:layout_below="@id/Noun"
+        />
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="200dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/Definition"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"/>
+
+    <Button
+        android:id="@+id/faceebook_login_activity_custom_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_bg_rounded_corners"
+        android:drawableLeft="@drawable/com_facebook_button_icon_white"
+        android:drawablePadding="5dp"
+        android:padding="10dp"
+        android:text="Join with Facebook"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/separator2"
+        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>
