@@ -119,7 +119,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
     public void add(AppItem appItem){
         originalList.add((appItem));
         filteredList.add(appItem);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     public void remove(AppItem appItem){

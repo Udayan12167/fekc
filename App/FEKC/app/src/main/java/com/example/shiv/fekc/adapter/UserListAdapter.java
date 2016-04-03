@@ -53,6 +53,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         holder.getSelectedCheckBox().setChecked(userItem.isSelected());
         holder.getFavoriteCheckBox().setChecked(userItem.isFavorite());
         Picasso.with(context).load(userItem.getImageUrl()).into(holder.getCircleImageView());
+        holder.getProgressBar().setVisibility(View.GONE);
 
         holder.getFavoriteCheckBox().setOnClickListener(new View.OnClickListener() {
             @Override

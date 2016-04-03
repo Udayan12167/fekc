@@ -3,6 +3,7 @@ package com.example.shiv.fekc.holder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shiv.fekc.R;
@@ -18,6 +19,7 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
     private TextView userNameTextView;
     private CheckBox favoriteCheckBox;
     private CheckBox selectedCheckBox;
+    private ProgressBar progressBar;
 
     public UserListViewHolder(View view) {
         super(view);
@@ -25,6 +27,7 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
         this.userNameTextView = (TextView)view.findViewById(R.id.user_list_row_app_name_text_view);
         this.favoriteCheckBox = (CheckBox)view.findViewById(R.id.user_list_row_favorite_checkbox);
         this.selectedCheckBox = (CheckBox)view.findViewById(R.id.user_list_row_selected_checkbox);
+        this.progressBar = (ProgressBar)view.findViewById(R.id.user_list_row_progress_bar);
     }
 
     public TextView getUserNameTextView() {
@@ -57,5 +60,13 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
 
     public void setCircleImageView(CircleImageView circleImageView) {
         this.circleImageView = circleImageView;
+    }
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
     }
 }

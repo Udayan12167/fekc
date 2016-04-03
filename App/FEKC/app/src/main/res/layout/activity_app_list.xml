@@ -48,4 +48,11 @@
         android:layout_below="@id/app_list_activity_linear_layout"
         android:layout_centerInParent="true" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_app_list_progressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

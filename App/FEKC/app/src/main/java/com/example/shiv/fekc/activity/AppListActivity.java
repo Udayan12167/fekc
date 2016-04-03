@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.AppListAdapter;
@@ -29,6 +31,8 @@ public class AppListActivity extends AppCompatActivity {
     private AppListAdapter appListAdapter;
     private EditText searchEditText;
     private LinearLayout searchViewLinearLayout;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,11 @@ public class AppListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         appListAdapter = new AppListAdapter(this, appItemList);
         recyclerView.setAdapter(appListAdapter);
-        updateAppList();
+        recyclerView.setVisibility(View.GONE);
+
+
+        progressBar = (ProgressBar)findViewById(R.id.activity_app_list_progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         searchEditText = (EditText) findViewById(R.id.app_list_activity_search_edit_text);
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -67,6 +75,8 @@ public class AppListActivity extends AppCompatActivity {
 
             }
         });
+        searchViewLinearLayout.setVisibility(View.GONE);
+        new FetchAppsAsyncTask().execute();
 
     }
 
@@ -101,6 +111,25 @@ public class AppListActivity extends AppCompatActivity {
         intent.putExtra("SelectedApps",selectedApps);
         setResult(1,intent);
         finish();
+    }
+
+    private class FetchAppsAsyncTask extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            updateAppList();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d(getClass().toString(), "Fetched all apps");
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            searchViewLinearLayout.setVisibility(View.VISIBLE);
+        }
     }
 
 }

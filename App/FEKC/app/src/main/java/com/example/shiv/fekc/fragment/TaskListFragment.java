@@ -41,15 +41,21 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_task_list, container, false);
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_task_list, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new TaskListAdapter(getDataSet(), this.getContext());
         mRecyclerView.setAdapter(mAdapter);
-        return v;
     }
+
     @Override
     public void onResume() {
         super.onResume();

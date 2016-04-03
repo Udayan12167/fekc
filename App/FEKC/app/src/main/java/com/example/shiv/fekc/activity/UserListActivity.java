@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.UserListAdapter;
@@ -35,6 +38,7 @@ public class UserListActivity extends AppCompatActivity {
     private ArrayList<UserListItem> userItemList = new ArrayList<UserListItem>();
     private RecyclerView recyclerView;
     private UserListAdapter userListAdapter;
+    private RelativeLayout relativeLayout;
     private Gson gson;
 
     @Override
@@ -42,6 +46,12 @@ public class UserListActivity extends AppCompatActivity {
         gson = new Gson();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+
+        if (savedInstanceState != null) {
+            return;
+        }
+
+        relativeLayout = (RelativeLayout)findViewById(R.id.activity_user_list_relative_layout);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -51,6 +61,8 @@ public class UserListActivity extends AppCompatActivity {
         recyclerView.setAdapter(userListAdapter);
 
         getFriendList();
+
+//        new FetchUserListAsyncTask().execute();
     }
 
     @Override
@@ -120,6 +132,7 @@ public class UserListActivity extends AppCompatActivity {
                 }
         ).executeAsync();
     }
+
     public static CircleImageView getUserDP(String userID, final Context context) {
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
@@ -150,5 +163,20 @@ public class UserListActivity extends AppCompatActivity {
                 }
         ).executeAsync();
         return image;
+    }
+
+    private class FetchUserListAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            getFriendList();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            relativeLayout.setVisibility(View.VISIBLE);
+        }
     }
 }
