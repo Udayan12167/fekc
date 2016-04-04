@@ -249,7 +249,11 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             }
         }
         if (flag == 1) {
-            uploadTaskOnServer();
+            Gson gson = new Gson();
+            Intent intent = new Intent(this, ScheduledBasedTaskReviewActivity.class);
+            intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
+            startActivity(intent);
+//            uploadTaskOnServer();
         }
     }
 

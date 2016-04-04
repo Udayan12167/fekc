@@ -211,7 +211,11 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             flag = 0;
         }
         if (flag == 1) {
-            uploadTaskOnServer();
+            Gson gson = new Gson();
+            Intent intent = new Intent(this, TimeBasedTaskReviewActivity.class);
+            intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
+            startActivity(intent);
+//            uploadTaskOnServer();
         }
     }
 

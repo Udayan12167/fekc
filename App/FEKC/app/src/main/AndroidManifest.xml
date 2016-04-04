@@ -73,19 +73,22 @@
 
         <activity
             android:name=".activity.TimeBasedTaskActivity"
-            android:label="@string/title_activity_time_based_task"></activity>
+            android:label="@string/title_activity_time_based_task" />
         <activity
             android:name=".activity.ScheduleBasedTaskActivity"
-            android:label="@string/title_activity_schedule_based_task"></activity>
+            android:label="@string/title_activity_schedule_based_task" />
         <activity
             android:name=".activity.ActivityBasedTaskActivity"
-            android:label="@string/title_activity_activity_based_task"></activity>
+            android:label="@string/title_activity_activity_based_task" />
 
         <service
             android:name=".service.CheckViolationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
+        <activity android:name=".activity.ActivityBasedTaskReviewActivity" />
+        <activity android:name=".activity.ScheduledBasedTaskReviewActivity" />
+        <activity android:name=".activity.TimeBasedTaskReviewActivity"></activity>
     </application>
 
 </manifest>
