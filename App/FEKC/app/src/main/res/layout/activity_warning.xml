@@ -1,64 +1,76 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.shiv.fekc.activity.WarningActivity">
-
-    <RelativeLayout
-        android:id="@+id/nav_warn"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-        <include layout="@layout/warning_nav"></include>
-    </RelativeLayout>
-
-
-    <view
-        android:id="@+id/acrivity_warning_recycler_view"
-        class="android.support.v7.widget.RecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="410dp"
-        android:layout_below="@id/nav_warn"
-        android:layout_centerInParent="true" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.shiv.fekc.activity.WarningActivity">
+
+        <RelativeLayout
+            android:id="@+id/nav_warn"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <include layout="@layout/warning_nav"></include>
+        </RelativeLayout>
+
+        <view
+            android:id="@+id/acrivity_warning_recycler_view"
+            class="android.support.v7.widget.RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="410dp"
+            android:layout_below="@id/nav_warn"
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="60dp"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/activity_warning_go_to_app_button"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="25dp"
-                android:background="#dd1100"
-                android:onClick="goToApp"
-                android:text="Go To App"
-                android:textColor="#fff"
-                android:textSize="20dp" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+                <Button
+                    android:id="@+id/activity_warning_go_to_app_button"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="25dp"
+                    android:background="#dd1100"
+                    android:onClick="goToApp"
+                    android:text="Go To App"
+                    android:textColor="#fff"
+                    android:textSize="20dp" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/activity_warning_stop_app_button"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="25dp"
-                android:background="#11dd11"
-                android:onClick="stopApp"
-                android:text="Stop App"
-                android:textColor="#fff"
-                android:textSize="20dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/activity_warning_stop_app_button"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="25dp"
+                    android:background="#11dd11"
+                    android:onClick="stopApp"
+                    android:text="Stop App"
+                    android:textColor="#fff"
+                    android:textSize="20dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warning_activity_progressBar"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

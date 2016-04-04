@@ -7,27 +7,29 @@ import android.widget.TextView;
 
 import com.example.shiv.fekc.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by shiv on 2/4/16.
  */
 public class WarningMessageViewHolder extends RecyclerView.ViewHolder {
 
-    private ImageView imageView;
+    private CircleImageView imageView;
     private TextView nameTextView;
     private TextView messageTextView;
 
     public WarningMessageViewHolder(View view) {
         super(view);
-        this.imageView = (ImageView)view.findViewById(R.id.warning_message_row_image_view);
+        this.imageView = (CircleImageView)view.findViewById(R.id.warning_message_row_image_view);
         this.nameTextView = (TextView)view.findViewById(R.id.warning_message_row_name_text_view);
         this.messageTextView = (TextView)view.findViewById(R.id.warning_message_row_message_text_view);
     }
 
-    public ImageView getImageView() {
+    public CircleImageView getImageView() {
         return imageView;
     }
 
-    public void setImageView(ImageView imageView) {
+    public void setImageView(CircleImageView imageView) {
         this.imageView = imageView;
     }
 

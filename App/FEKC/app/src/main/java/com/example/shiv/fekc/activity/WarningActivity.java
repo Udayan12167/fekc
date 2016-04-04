@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.WarningMessageAdapter;
@@ -40,6 +41,8 @@ public class WarningActivity extends AppCompatActivity {
     private Button stopAppButton;
     private RecyclerView recyclerView;
 
+    private ProgressBar progressBar;
+
     private WarningMessageAdapter warningMessageAdapter;
 
     private BackendAPIServiceClient backendAPIServiceClient;
@@ -55,6 +58,9 @@ public class WarningActivity extends AppCompatActivity {
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
         warningMessageAdapter = new WarningMessageAdapter(this, new ArrayList<WarningMessageItem>());
+
+        progressBar = (ProgressBar)findViewById(R.id.warning_activity_progressBar);
+        progressBar.setVisibility(View.GONE);
 
         goToAppButton = (Button) findViewById(R.id.activity_warning_go_to_app_button);
         stopAppButton = (Button) findViewById(R.id.activity_warning_stop_app_button);
@@ -101,6 +107,7 @@ public class WarningActivity extends AppCompatActivity {
     }
 
     private void getWarningMessages() {
+        progressBar.setVisibility(View.VISIBLE);
         String taskId = getIntent().getExtras().getString(Constants.STRING_EXTRA_TASK_SERVER_ID);
         final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         HashMap<String, String> parameters = new HashMap<>();
@@ -111,6 +118,7 @@ public class WarningActivity extends AppCompatActivity {
         backendAPIServiceClient.getService().getUserTaskMessages(id, parameters, new Callback<TaskMessageResponse>() {
             @Override
             public void success(TaskMessageResponse taskMessageResponse, Response response) {
+                progressBar.setVisibility(View.GONE);
                 if (taskMessageResponse.getMessages() == null) {
                     return;
                 } else {
@@ -124,7 +132,7 @@ public class WarningActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
