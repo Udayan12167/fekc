@@ -157,7 +157,7 @@ public class AppListActivity extends AppCompatActivity {
             //hides the keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            searchEditText.clearFocus();
+            searchEditText.setText("");
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_black_48dp));
 

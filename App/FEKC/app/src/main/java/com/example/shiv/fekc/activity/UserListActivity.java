@@ -2,15 +2,22 @@ package com.example.shiv.fekc.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -38,8 +45,12 @@ public class UserListActivity extends AppCompatActivity {
     private ArrayList<UserListItem> userItemList = new ArrayList<UserListItem>();
     private RecyclerView recyclerView;
     private UserListAdapter userListAdapter;
-    private RelativeLayout relativeLayout;
     private Gson gson;
+    private MenuItem mSearchAction;
+    private boolean isSearchOpened = false;
+    private Toolbar mToolbar;
+    private EditText edtSeach;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +62,21 @@ public class UserListActivity extends AppCompatActivity {
             return;
         }
 
-        relativeLayout = (RelativeLayout)findViewById(R.id.activity_user_list_relative_layout);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView = (RecyclerView) findViewById(R.id.user_list_activity_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
         userListAdapter = new UserListAdapter(this, userItemList);
         recyclerView.setAdapter(userListAdapter);
+        mToolbar = (Toolbar) findViewById(R.id.user_list_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Select Friends");
+
+        progressBar = (ProgressBar)findViewById(R.id.activity_user_list_progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         getFriendList();
 
-//        new FetchUserListAsyncTask().execute();
     }
 
     @Override
@@ -72,6 +86,7 @@ public class UserListActivity extends AppCompatActivity {
 
     private void getFriendList() {
         getUserFriends();
+        progressBar.setVisibility(View.GONE);
     }
 
     private void getUserFriends() {
@@ -98,7 +113,7 @@ public class UserListActivity extends AppCompatActivity {
         ).executeAsync();
     }
 
-    public void onSave(View view){
+    public void onSave(){
         ArrayList<String> selectedUsers = userListAdapter.getSelectedUsers();
 
         Intent intent=new Intent();
@@ -165,18 +180,89 @@ public class UserListActivity extends AppCompatActivity {
         return image;
     }
 
-    private class FetchUserListAsyncTask extends AsyncTask<Void, Void, Void>{
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mSearchAction = menu.findItem(R.id.action_search_user_list);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            getFriendList();
-            return null;
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            relativeLayout.setVisibility(View.VISIBLE);
+        switch (id) {
+            case R.id.action_search_user_list:
+                handleMenuSearch();
+                return true;
+            case R.id.user_list_save_button:
+                onSave();
+                return true;
+            }
+        return super.onOptionsItemSelected(item);
+    }
+
+    protected void handleMenuSearch(){
+        ActionBar action = getSupportActionBar(); //get the actionbar
+
+        if(isSearchOpened){ //test if the search is open
+
+            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+
+            //hides the keyboard
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            edtSeach.setText("");
+            //add the search icon in the action bar
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_black_48dp));
+
+            isSearchOpened = false;
+        } else { //open the search entry
+
+            action.setDisplayShowCustomEnabled(true); //enable it to display a
+            // custom view in the action bar.
+            action.setCustomView(R.layout.user_list_search_bar);//add the custom view
+            action.setDisplayShowTitleEnabled(false); //hide the title
+
+            edtSeach = (EditText)action.getCustomView().findViewById(R.id.user_list_activity_search_edit_text); //the text editor
+
+            //this is a listener to do a search when the user clicks on search button
+            edtSeach.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    userListAdapter.getFilter().filter(s);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+            edtSeach.requestFocus();
+
+            //open the keyboard focused in the edtSearch
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
+
+
+            //add the close icon
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_close));
+
+            isSearchOpened = true;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_user_list, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

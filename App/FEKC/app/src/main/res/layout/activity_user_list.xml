@@ -5,30 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserListActivity">
 
-    <RelativeLayout
-        android:id="@+id/activity_user_list_relative_layout"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/user_list_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:elevation="4dp"/>
 
-        <Button
-            android:id="@+id/save"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="onSave"
-            android:text="Save" />
+    <view
+        android:id="@+id/user_list_activity_recycler_view"
+        class="android.support.v7.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/user_list_toolbar"
+        android:layout_centerHorizontal="true" />
 
-        <view
-            android:id="@+id/user_list_activity_recycler_view"
-            class="android.support.v7.widget.RecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/save"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_user_list_progressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
