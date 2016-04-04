@@ -17,7 +17,6 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             >
 
             <ImageView
@@ -48,6 +47,7 @@
 
                 android:layout_toRightOf="@+id/task_type_icon"
                 android:layout_below="@+id/task_name"/>
+
             <RelativeLayout
                 android:id="@+id/llExpandArea"
                 android:visibility="gone"
@@ -56,9 +56,8 @@
                 android:layout_width="fill_parent"
                 android:layout_marginTop="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="6dp">
 
-                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:text="Task Name"
                     android:layout_marginTop="2dp"  />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,6 +83,13 @@
                     android:layout_marginTop="20dp"
                     android:textSize="15sp"
                     android:id="@+id/apps_view" />
+
+                <view
+                    android:id="@+id/task_view_row_app_recycler_view"
+                    class="android.support.v7.widget.RecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/apps_view"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -94,6 +101,13 @@
                     android:textSize="15sp"
                     android:id="@+id/friends_view" />
 
+                <view
+                    android:id="@+id/task_view_row_user_recycler_view"
+                    class="android.support.v7.widget.RecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/friends_view"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,6 +116,7 @@
                     android:layout_marginTop="50dp"
                     android:textSize="15sp"
                     android:id="@+id/task_type_field" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

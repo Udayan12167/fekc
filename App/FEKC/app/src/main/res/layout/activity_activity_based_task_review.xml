@@ -115,7 +115,7 @@
                 android:id="@+id/activity_activity_based_task_review_app_recycler_view"
                 class="android.support.v7.widget.RecyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="98dp" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

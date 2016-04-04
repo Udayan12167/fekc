@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -23,6 +25,13 @@ import com.example.shiv.fekc.activity.UserListActivity;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.DataObject;
 import com.example.shiv.fekc.item.TaskItem;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -48,6 +57,9 @@ public class TaskListAdapter extends RecyclerView
         TextView taskTypeField;
         TextView taskTypeFieldData;
 
+        RecyclerView appListRecyclerView;
+        RecyclerView userListRecyclerView;
+
         RelativeLayout llExpandArea;
 
         public DataObjectHolder(View itemView) {
@@ -59,6 +71,8 @@ public class TaskListAdapter extends RecyclerView
             taskTypeField = (TextView) itemView.findViewById(R.id.task_type_field);
             taskTypeFieldData = (TextView) itemView.findViewById(R.id.task_type_field_data);
             llExpandArea = (RelativeLayout) itemView.findViewById(R.id.llExpandArea);
+            appListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_app_recycler_view);
+            userListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_user_recycler_view);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -128,80 +142,51 @@ public class TaskListAdapter extends RecyclerView
         }
         holder.taskNameFull.setText(tasks.get(position).getTaskName());
 
-        ArrayList<String> apps = tasks.get(position).getApps();
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        Integer height = displaymetrics.heightPixels; //432
-        Integer width = displaymetrics.widthPixels;
-        Integer scaleFactor = 10;
-        Log.e("h and w",height+" ,"+width);
-        int i=0;
-        for(String packageName:apps) {
-            try
-            {
-                Drawable image = context.getPackageManager().getApplicationIcon(packageName);
-                ImageView imageView = new ImageView(context);
-                //image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        AppAdapter appAdapter = new AppAdapter(context, tasks.get(position).getApps());
+        holder.appListRecyclerView.setLayoutManager(linearLayoutManager);
+        holder.appListRecyclerView.setAdapter(appAdapter);
 
-                imageView.setImageDrawable(image);
-                //  imageView.setMaxHeight(15);
-                // imageView.setMaxWidth(15);
-                // imageView.setTop(holder.llExpandArea.);
-                //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                //          ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(context);
+        linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        UserAdapter userAdapter = new UserAdapter(context, new ArrayList<String>());
+        holder.userListRecyclerView.setAdapter(userAdapter);
+        holder.userListRecyclerView.setLayoutManager(linearLayoutManager1);
 
-                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width/scaleFactor,width/scaleFactor);
-                //RelativeLayout.MarginLayoutParams margin = new RelativeLayout.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                //ViewGroup.LayoutParams.WRAP_CONTENT);
+        getFriendDPs(tasks.get(position).getFriends(), userAdapter);
 
-                p.addRule(RelativeLayout.BELOW, R.id.apps_view);
-                p.setMargins((i * (width/scaleFactor)+ i*(width/scaleFactor)/3), 5, 0, 0);
-                //margin.setMargins(i*20,0,0,0);
-                i++;
-                imageView.setLayoutParams(p);
-                // Adds the view to the layout
-                holder.llExpandArea.addView(imageView);
-            }
-            catch (PackageManager.NameNotFoundException e)
-            {
+    }
 
-            }
+    private void getFriendDPs(ArrayList<String> list , UserAdapter userAdapter) {
+
+        for (String string : list) {
+            getUserDPUrl(string, userAdapter);
         }
 
-        ArrayList<String> friends = tasks.get(position).getFriends();
-        i=0;
-        for(String ID:friends) {
-            CircleImageView imageView = UserListActivity.getUserDP(ID,context);
-            //image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
+    }
 
-            //imageView.setMaxHeight(15);
-            //imageView.setMaxWidth(15);
-            // imageView.setTop(holder.llExpandArea.);
-            //   RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-            //          ViewGroup.LayoutParams.WRAP_CONTENT);
-            RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width/scaleFactor,width/scaleFactor);
-            //RelativeLayout.MarginLayoutParams margin = new RelativeLayout.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-            //ViewGroup.LayoutParams.WRAP_CONTENT);
+    private void getUserDPUrl(final String facebookId, final UserAdapter userAdapter) {
+        Bundle params = new Bundle();
+        params.putBoolean("redirect", false);
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                Constants.SLASH + facebookId + Constants.FACEBOOK_USER_PROFILE_PICTURE_EDGE,
+                params,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+                            String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
+                            userAdapter.add(url);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
-            p.addRule(RelativeLayout.BELOW, R.id.friends_view);
-            p.setMargins(i * (width/scaleFactor)+ i*(width/scaleFactor)/3, 5, 0, 0);
-            //margin.setMargins(i*20,0,0,0);
-            i++;
-            imageView.setLayoutParams(p);
-            // Adds the view to the layout
-            holder.llExpandArea.addView(imageView);
-        }
-
-        // int colorIndex = randy.nextInt(bgColors.length);
-        // holder.tvTitle.setText(mDataset.get(position));
-        //   holder.label.setBackgroundColor(bgColors[colorIndex]);
-        //  holder.dateTime.setBackgroundColor(sbgColors[colorIndex]);
-        /*
-        if (position == expandedPosition) {
-            holder.llExpandArea.setVisibility(View.VISIBLE);
-        } else {
-            holder.llExpandArea.setVisibility(View.GONE);
-        }*/
+        ).executeAsync();
     }
 
 

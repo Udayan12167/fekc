@@ -16,8 +16,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/tracked_friends_row_profile_pic_linear_layout"

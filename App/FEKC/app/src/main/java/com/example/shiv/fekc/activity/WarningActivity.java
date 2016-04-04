@@ -59,7 +59,7 @@ public class WarningActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
         warningMessageAdapter = new WarningMessageAdapter(this, new ArrayList<WarningMessageItem>());
 
-        progressBar = (ProgressBar)findViewById(R.id.warning_activity_progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.warning_activity_progressBar);
         progressBar.setVisibility(View.GONE);
 
         goToAppButton = (Button) findViewById(R.id.activity_warning_go_to_app_button);
