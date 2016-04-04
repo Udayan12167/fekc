@@ -2,17 +2,12 @@ package com.example.shiv.fekc.adapter;
 
 import android.content.Context;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Functions;
@@ -57,8 +52,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
         final AppItem appItem = filteredList.get(position);
         holder.getAppNameTextView().setText(appItem.getAppName());
 
-        RoundedBitmapDrawable roundDrawable = Functions.getRoundedBitmapDrawable(context, appItem.getAppIcon());
-        holder.getCircleImageView().setImageDrawable(roundDrawable);
+        holder.getImageView().setImageDrawable(appItem.getAppIcon());
         holder.getSelectedCheckBox().setChecked(appItem.isSelected());
         holder.getFavoriteCheckBox().setChecked(appItem.isFavorite());
 

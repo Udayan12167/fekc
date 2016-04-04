@@ -15,14 +15,11 @@
         android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:id="@+id/linearLayout">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/app_list_row_image_view"
+        <ImageView
             android:layout_width="@dimen/list_view_image_width"
             android:layout_height="@dimen/list_view_image_height"
             android:layout_marginRight="@dimen/list_item_horizontal_margin"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#11000000"/>
+            android:id="@+id/app_list_row_image_view" />
 
         <LinearLayout
             android:layout_width="wrap_content"
