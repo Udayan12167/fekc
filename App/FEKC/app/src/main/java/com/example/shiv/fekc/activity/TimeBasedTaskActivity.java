@@ -218,31 +218,4 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
 //            uploadTaskOnServer();
         }
     }
-
-    private void uploadTaskOnServer(){
-        Gson gson = new Gson();
-        HashMap<String, String> parameters = new HashMap<>();
-        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
-        Log.d(getClass().toString(), "The user id  is : " + user_id);
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        parameters.put(Constants.JSON_PARAMETER_TASK,gson.toJson(task));
-        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
-        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
-        backendAPIServiceClient.getService().createTask(parameters, new Callback<TaskCreateResponse>() {
-            @Override
-            public void success(TaskCreateResponse taskCreateResponse, Response response) {
-                Log.d(getClass().toString(), "Task uploaded with id " + taskCreateResponse.getTid());
-                task.setTaskServerId(taskCreateResponse.getTid());
-                dbAdapter.insertIntoTaskInfo(task);
-                Toast.makeText(getApplicationContext(), "Task Added!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(getClass().toString(), "Unable to create task");
-                error.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to create task", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

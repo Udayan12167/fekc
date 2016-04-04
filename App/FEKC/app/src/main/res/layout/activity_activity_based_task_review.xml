@@ -9,7 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.shiv.fekc.activity.activityBasedTaskReviewactivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,7 +115,7 @@
                 android:id="@+id/activity_activity_based_task_review_app_recycler_view"
                 class="android.support.v7.widget.RecyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="98dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -137,7 +136,7 @@
                 android:id="@+id/activity_activity_based_task_review_user_recycler_view"
                 class="android.support.v7.widget.RecyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="69dp" />
         </LinearLayout>
 
 
@@ -175,6 +174,27 @@
                 android:textSize="15sp" />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/activity_activity_based_task_progress_bar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+            <Button
+                android:id="@+id/activity_activity_based_task_upload_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create task"
+                android:layout_centerInParent="true"/>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 
