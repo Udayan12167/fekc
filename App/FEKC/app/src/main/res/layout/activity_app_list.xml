@@ -7,46 +7,20 @@
     android:orientation="vertical"
     tools:context="com.example.shiv.fekc.activity.AppListActivity">
 
-    <LinearLayout
-        android:id="@+id/app_list_activity_linear_layout"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/app_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/list_item_vertical_margin"
-        android:layout_marginLeft="@dimen/list_item_horizontal_margin"
-        android:layout_marginRight="@dimen/list_item_horizontal_margin"
-        android:layout_marginTop="@dimen/list_item_vertical_margin"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/app_list_activity_search_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/list_view_row_height"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_search_black_48dp" />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:id="@+id/button"
-            android:onClick="onSave"
-            android:layout_alignTop="@+id/app_list_activity_recycler_view"
-            android:layout_alignParentEnd="true" />
-
-    </LinearLayout>
+        android:elevation="4dp"/>
 
     <view
         android:id="@+id/app_list_activity_recycler_view"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_list_activity_linear_layout"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:layout_below="@id/app_list_toolbar"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
