@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.commons.Functions;
 import com.example.shiv.fekc.fragment.StatsFragment;
 import com.example.shiv.fekc.fragment.TaskListFragment;
 import com.example.shiv.fekc.fragment.TrackedFriendsFragment;
@@ -55,6 +56,7 @@ public class NavActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Functions.facebookSDKInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
         Log.e("Nav", "onCreateCalled!");
@@ -68,6 +70,11 @@ public class NavActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.app_bar_nav_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         setUpTabIcons();
+        Boolean checkNotif = getIntent().getBooleanExtra(Constants.NOTIFICATION_INTENT_IDENTIFIER, false);
+        if(checkNotif){
+            TabLayout.Tab tab = tabLayout.getTabAt(2);
+            tab.select();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.app_bar_nav_floating_action_button);
         fab.setOnClickListener(new View.OnClickListener() {

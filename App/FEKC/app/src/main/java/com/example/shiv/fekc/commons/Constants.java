@@ -48,8 +48,6 @@ public class Constants {
 
     public static final String REGISTRATION_COMPLETE = "registration_complete";
 
-    public static final String NOTIFICATION_MESSAGE = "message";
-
     public static final Integer ACTIVITY_BASED_TASK = 1;
 
     public static final Integer SCHEDULE_BASED_TASK = 2;
@@ -102,6 +100,13 @@ public class Constants {
     public static final int CODE_EXISTING_USER = 0;
 
     public static final int CODE_MESSAGE_SET = 1;
+
+    //Notifications
+    public static final String NOTIFICATION_TITLE = "FEKC";
+    public static final String NOTIFICATION_MESSAGE = "Your friend created a task. Help him!";
+    public static final String NOTIFICATION_FRIEND_FBID = "gcm.notification.friendfbid";
+    public static final String NOTIFICATION_INTENT_IDENTIFIER = "Notif";
+
 
 }
 

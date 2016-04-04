@@ -1,30 +1,81 @@
 package com.example.shiv.fekc.gcm;
 
-import android.app.Service;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.shiv.fekc.R;
+import com.example.shiv.fekc.activity.NavActivity;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.commons.NotificationUtils;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class GCMNotificationReceiverService extends GcmListenerService {
 
     private NotificationUtils notificationUtils;
+    int mNotificationId = 001;
 
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
-        String message = bundle.getString(Constants.NOTIFICATION_MESSAGE);
-        Intent resultIntent= null;
-        Log.d(getClass().toString(), "NOTIFICATION RECEIVED " + message );
-////        Intent resultIntent = new Intent(getApplicationContext(), QuizActivity.class);
-////        resultIntent.putExtra(Constants.STRING_EXTRA_JSON, message);
-//        showNotificationMessage(getApplicationContext(), message, resultIntent);
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(Constants.NOTIFICATION_TITLE)
+                .setLargeIcon(getBitmapFromURL(bundle.getString(Constants.NOTIFICATION_FRIEND_FBID)))
+                .setContentText(Constants.NOTIFICATION_MESSAGE)
+                .setAutoCancel(true)
+                .setLights(Color.BLUE, 1000, 500)
+                .setVibrate(new long[]{1000, 1000})
+                .setSound(uri);
+
+        Intent navIntent = new Intent(this, NavActivity.class);
+        navIntent.putExtra(Constants.NOTIFICATION_INTENT_IDENTIFIER, true);
+
+        PendingIntent navPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        navIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(navPendingIntent);
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        mNotificationId++;
     }
 
+    public Bitmap getBitmapFromURL(String userID) {
+        try {
+            URL url = new URL("https://graph.facebook.com/"+userID+"/picture?type=large");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      * Showing notification with text only
      */
