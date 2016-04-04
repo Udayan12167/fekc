@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.shiv.fekc.R;
@@ -40,6 +41,7 @@ public class WarningActivity extends AppCompatActivity {
     private Button goToAppButton;
     private Button stopAppButton;
     private RecyclerView recyclerView;
+    private ImageView imageView;
 
     private ProgressBar progressBar;
 
@@ -61,6 +63,9 @@ public class WarningActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.warning_activity_progressBar);
         progressBar.setVisibility(View.GONE);
+
+        imageView = (ImageView)findViewById(R.id.activity_warning_image_view);
+        imageView.setVisibility(View.GONE);
 
         goToAppButton = (Button) findViewById(R.id.activity_warning_go_to_app_button);
         stopAppButton = (Button) findViewById(R.id.activity_warning_stop_app_button);
@@ -133,6 +138,8 @@ public class WarningActivity extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
             }
         });
     }

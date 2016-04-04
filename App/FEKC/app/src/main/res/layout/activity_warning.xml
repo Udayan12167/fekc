@@ -1,5 +1,4 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -18,13 +17,25 @@
             <include layout="@layout/warning_nav"></include>
         </RelativeLayout>
 
-        <view
-            android:id="@+id/acrivity_warning_recycler_view"
-            class="android.support.v7.widget.RecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="410dp"
-            android:layout_below="@id/nav_warn"
-            android:layout_centerInParent="true" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="416dp"
+            android:layout_below="@id/nav_warn">
+
+            <ImageView
+                android:id="@+id/activity_warning_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/zootopia_sloth"/>
+
+            <view
+                android:id="@+id/acrivity_warning_recycler_view"
+                class="android.support.v7.widget.RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,9 +79,10 @@
     </LinearLayout>
 
     <ProgressBar
+        android:id="@+id/warning_activity_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/warning_activity_progressBar"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
 
 </RelativeLayout>
