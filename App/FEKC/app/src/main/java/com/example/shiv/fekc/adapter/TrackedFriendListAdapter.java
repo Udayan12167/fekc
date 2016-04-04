@@ -62,6 +62,8 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         final TrackedFriendsTask trackedFriendsTask = trackedFriendsTaskList.get(position);
         holder.getExpandableViewRelativeLayout().setVisibility(View.GONE);
         holder.getNameTextView().setText(trackedFriendsTask.getFriendName());
+        holder.getMessageTextView().setText(trackedFriendsTask.getMessage());
+        holder.getEditMessageLinearLayout().setVisibility(View.GONE);
         if (trackedFriendsTask.getMessageSet() == Constants.CODE_MESSAGE_SET) {
             holder.getMessageEditText().setText(trackedFriendsTask.getMessage());
         }
@@ -71,14 +73,30 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             holder.getTaskTextView().setText(trackedFriendsTask.getTaskName());
         }
         Picasso.with(context).load(trackedFriendsTask.getFriendImageUrl()).into(holder.getProfileImageView());
-        holder.getSendMessageImageButton().setOnClickListener(new View.OnClickListener() {
+        holder.getEditMessageImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = holder.getMessageTextView().getText().toString();
+                holder.getMessageLinearLayout().setVisibility(View.GONE);
+                holder.getEditMessageLinearLayout().setVisibility(View.VISIBLE);
+                holder.getMessageEditText().setText(message);
+            }
+        });
+        holder.getSubmitMessageImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.getMessageEditText().getText() != null && holder.getMessageEditText().getText().toString().length() > 0) {
-                    sendMessage(trackedFriendsTask.getTrackedTaskId(), holder.getMessageEditText().getText().toString());
+                    sendMessage(trackedFriendsTask.getTrackedTaskId(), holder.getMessageEditText().getText().toString(), holder);
                 } else {
                     Toast.makeText(context, "Please enter a message", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        holder.getCancelEditMessageImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.getMessageLinearLayout().setVisibility(View.VISIBLE);
+                holder.getEditMessageLinearLayout().setVisibility(View.GONE);
             }
         });
     }
@@ -88,7 +106,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         notifyDataSetChanged();
     }
 
-    private void sendMessage(String taskId, String message) {
+    private void sendMessage(String taskId, String message, final TrackedFriendListViewHolder holder) {
         final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put(Constants.JSON_PARAMETER_USER_ID, id);
@@ -99,11 +117,14 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             public void success(UpdateUserMessageResponse updateUserMessageResponse, Response response) {
                 Log.d(getClass().toString(), "Successfully updated message");
                 Toast.makeText(context, "Successfully updated message", Toast.LENGTH_SHORT).show();
+                holder.getMessageLinearLayout().setVisibility(View.VISIBLE);
+                holder.getEditMessageLinearLayout().setVisibility(View.GONE);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                holder.getMessageLinearLayout().setVisibility(View.VISIBLE);
+                holder.getEditMessageLinearLayout().setVisibility(View.GONE);
             }
         });
     }
@@ -144,9 +165,15 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         private TextView nameTextView;
         private TextView taskTextView;
         private EditText messageEditText;
-        private ImageView sendMessageImageButton;
         private RelativeLayout expandableViewRelativeLayout;
         private LinearLayout profilePicLinearLayout;
+        private TextView messageTextView;
+        private ImageView editMessageImageView;
+        private ImageView submitMessageImageView;
+        private ImageView cancelEditMessageImageView;
+        private LinearLayout editMessageLinearLayout;
+        private LinearLayout messageLinearLayout;
+
 
 
         public TrackedFriendListViewHolder(View view) {
@@ -154,10 +181,18 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.profileImageView = (CircleImageView) view.findViewById(R.id.tracked_friends_row_profile_circular_image_view);
             this.nameTextView = (TextView) view.findViewById(R.id.tracked_friends_name_text_view);
             this.taskTextView = (TextView) view.findViewById(R.id.tracked_friends_task_text_view);
-            this.messageEditText = (EditText) view.findViewById(R.id.tracked_friends_row_message_editText);
-            this.sendMessageImageButton = (ImageView) view.findViewById(R.id.tracked_friends_row_update_message_button);
             this.expandableViewRelativeLayout = (RelativeLayout) view.findViewById(R.id.tracked_friends_ExpandArea_relative_layout);
             this.profilePicLinearLayout = (LinearLayout) view.findViewById(R.id.tracked_friends_row_profile_pic_linear_layout);
+
+            this.messageEditText = (EditText) view.findViewById(R.id.tracked_friends_row_message_editText);
+            this.messageTextView = (TextView)view.findViewById(R.id.tracked_friends_row_message_text_view);
+            this.editMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_edit_message_image_view);
+            this.submitMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_submit_image_view);
+            this.cancelEditMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_cancel_image_view);
+            this.editMessageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_edit_linear_layout);
+
+            this.messageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_message_layout);
+
             view.setOnClickListener(this);
 
         }
@@ -165,6 +200,14 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         @Override
         public void onClick(View v) {
             myClickListener.onItemClick(getAdapterPosition(), v);
+        }
+
+        public LinearLayout getMessageLinearLayout() {
+            return messageLinearLayout;
+        }
+
+        public void setMessageLinearLayout(LinearLayout messageLinearLayout) {
+            this.messageLinearLayout = messageLinearLayout;
         }
 
         public TextView getNameTextView() {
@@ -191,14 +234,6 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.messageEditText = messageEditText;
         }
 
-        public ImageView getSendMessageImageButton() {
-            return sendMessageImageButton;
-        }
-
-        public void setSendMessageImageButton(ImageButton sendMessageImageButton) {
-            this.sendMessageImageButton = sendMessageImageButton;
-        }
-
         public RelativeLayout getExpandableViewRelativeLayout() {
             return expandableViewRelativeLayout;
         }
@@ -221,6 +256,46 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
 
         public void setProfilePicLinearLayout(LinearLayout profilePicLinearLayout) {
             this.profilePicLinearLayout = profilePicLinearLayout;
+        }
+
+        public TextView getMessageTextView() {
+            return messageTextView;
+        }
+
+        public void setMessageTextView(TextView messageTextView) {
+            this.messageTextView = messageTextView;
+        }
+
+        public ImageView getEditMessageImageView() {
+            return editMessageImageView;
+        }
+
+        public void setEditMessageImageView(ImageView editMessageImageView) {
+            this.editMessageImageView = editMessageImageView;
+        }
+
+        public ImageView getSubmitMessageImageView() {
+            return submitMessageImageView;
+        }
+
+        public void setSubmitMessageImageView(ImageView submitMessageImageView) {
+            this.submitMessageImageView = submitMessageImageView;
+        }
+
+        public ImageView getCancelEditMessageImageView() {
+            return cancelEditMessageImageView;
+        }
+
+        public void setCancelEditMessageImageView(ImageView cancelEditMessageImageView) {
+            this.cancelEditMessageImageView = cancelEditMessageImageView;
+        }
+
+        public LinearLayout getEditMessageLinearLayout() {
+            return editMessageLinearLayout;
+        }
+
+        public void setEditMessageLinearLayout(LinearLayout editMessageLinearLayout) {
+            this.editMessageLinearLayout = editMessageLinearLayout;
         }
     }
 
