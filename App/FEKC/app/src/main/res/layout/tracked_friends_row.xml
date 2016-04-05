@@ -89,12 +89,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp" />
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/tracked_friends_row_update_message_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_action_send" />
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src= "@drawable/ic_action_send" />
 
                     </LinearLayout>
 

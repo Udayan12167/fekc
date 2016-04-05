@@ -144,7 +144,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         private TextView nameTextView;
         private TextView taskTextView;
         private EditText messageEditText;
-        private ImageButton sendMessageImageButton;
+        private ImageView sendMessageImageButton;
         private RelativeLayout expandableViewRelativeLayout;
         private LinearLayout profilePicLinearLayout;
 
@@ -155,7 +155,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.nameTextView = (TextView) view.findViewById(R.id.tracked_friends_name_text_view);
             this.taskTextView = (TextView) view.findViewById(R.id.tracked_friends_task_text_view);
             this.messageEditText = (EditText) view.findViewById(R.id.tracked_friends_row_message_editText);
-            this.sendMessageImageButton = (ImageButton) view.findViewById(R.id.tracked_friends_row_update_message_button);
+            this.sendMessageImageButton = (ImageView) view.findViewById(R.id.tracked_friends_row_update_message_button);
             this.expandableViewRelativeLayout = (RelativeLayout) view.findViewById(R.id.tracked_friends_ExpandArea_relative_layout);
             this.profilePicLinearLayout = (LinearLayout) view.findViewById(R.id.tracked_friends_row_profile_pic_linear_layout);
             view.setOnClickListener(this);
@@ -191,7 +191,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.messageEditText = messageEditText;
         }
 
-        public ImageButton getSendMessageImageButton() {
+        public ImageView getSendMessageImageButton() {
             return sendMessageImageButton;
         }
 
