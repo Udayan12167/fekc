@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.shiv.fekc.R;
+import com.example.shiv.fekc.adapter.DBAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +22,7 @@ import com.example.shiv.fekc.R;
  */
 public class StatsFragment extends Fragment {
 
+    private DBAdapter dbAdapter;
 
     public StatsFragment() {
         // Required empty public constructor
@@ -37,4 +40,11 @@ public class StatsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_stats, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        dbAdapter = new DBAdapter();
+        Log.d(getClass().toString(), "Calling onCreate in StatsFragment");
+        dbAdapter.getAllViolationsMatchingTaskId(12);
+    }
 }

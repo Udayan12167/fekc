@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.item;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 /**
  * Created by shiv on 5/4/16.
@@ -14,7 +15,6 @@ public class ViolationItem {
     public ViolationItem(){
         taskID = 0;
         violationType = 0;
-
     }
 
     public Integer getTaskID() {
