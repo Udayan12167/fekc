@@ -13,6 +13,7 @@ import com.example.shiv.fekc.activity.WarningActivity;
 import com.example.shiv.fekc.adapter.DBAdapter;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +30,7 @@ public class CheckViolationService extends Service {
     private static UsageStats foregroundPackageUsageStats;
     private static String violatedPackage = "";
     DBAdapter dbAdapter = new DBAdapter();
+    private Gson gson = new Gson();
 
     public static String getGoToButtonForPackage() {
         return goToButtonForPackage;
@@ -130,6 +132,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
                                     Log.e(getClass().toString() , "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
 
@@ -144,6 +147,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
                                     Log.d(getClass().toString(), "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
                                 }
@@ -160,6 +164,7 @@ public class CheckViolationService extends Service {
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());
+                                    intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
                                     Log.e(getClass().toString(), "The taskId is : " + task.getTaskServerId());
                                     startActivity(intent);
                                 }

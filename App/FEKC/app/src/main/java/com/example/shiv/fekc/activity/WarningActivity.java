@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.shiv.fekc.R;
+import com.example.shiv.fekc.adapter.DBAdapter;
 import com.example.shiv.fekc.adapter.WarningMessageAdapter;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.commons.Functions;
+import com.example.shiv.fekc.item.TaskItem;
+import com.example.shiv.fekc.item.ViolationItem;
 import com.example.shiv.fekc.item.WarningMessageItem;
 import com.example.shiv.fekc.rest.response.TaskMessage;
 import com.example.shiv.fekc.rest.response.TaskMessageResponse;
@@ -25,11 +28,13 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import retrofit.Callback;
@@ -50,6 +55,11 @@ public class WarningActivity extends AppCompatActivity {
     private BackendAPIServiceClient backendAPIServiceClient;
     private SharedPreferences sharedPreferences;
 
+    private DBAdapter dbAdapter ;
+
+    private TaskItem taskItem;
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +70,11 @@ public class WarningActivity extends AppCompatActivity {
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
         warningMessageAdapter = new WarningMessageAdapter(this, new ArrayList<WarningMessageItem>());
+
+        dbAdapter = new DBAdapter();
+        gson = new Gson();
+
+        taskItem = gson.fromJson(getIntent().getExtras().getString(Constants.STRING_EXTRA_JSON), TaskItem.class);
 
         progressBar = (ProgressBar) findViewById(R.id.warning_activity_progressBar);
         progressBar.setVisibility(View.GONE);
@@ -93,9 +108,17 @@ public class WarningActivity extends AppCompatActivity {
 
         getWarningMessages();
 
+
+
     }
 
     private void stopApp() {
+        ViolationItem violationItem = new ViolationItem();
+        violationItem.setTaskID(taskItem.getTaskID());
+        violationItem.setViolationType(Constants.WIN_CODE);
+        violationItem.setDate(new Date());
+        dbAdapter.insertIntoTaskViolation(violationItem);
+
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -104,6 +127,12 @@ public class WarningActivity extends AppCompatActivity {
     }
 
     private void goToApp() {
+        ViolationItem violationItem = new ViolationItem();
+        violationItem.setTaskID(taskItem.getTaskID());
+        violationItem.setViolationType(Constants.VIOLATION_CODE);
+        violationItem.setDate(new Date());
+        dbAdapter.insertIntoTaskViolation(violationItem);
+
         CheckViolationService.setGoToButtonForPackage(CheckViolationService.getViolatedPackage());
         Log.e("FOREGROUND", CheckViolationService.getViolatedPackage());
         Intent startPackage = getPackageManager().getLaunchIntentForPackage(CheckViolationService.getViolatedPackage());
