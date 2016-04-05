@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -9,11 +10,16 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.commons.Functions;
 import com.example.shiv.fekc.item.TaskItem;
 import com.example.shiv.fekc.item.ViolationItem;
 import com.google.android.gms.gcm.Task;
 
 import java.lang.reflect.Array;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -29,15 +35,16 @@ public class DBAdapter {
 
     private SQLiteDatabase db;
     private static final Pattern DIR_SEPORATOR = Pattern.compile("/");
+
     public SQLiteDatabase getDB() {
         return db;
     }
 
-    public File getDatabaseDirectory(){
+    public File getDatabaseDirectory() {
         File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File directory = new File (sdCard.getAbsolutePath() +  File.separator + Constants.APP_NAME);
-        if(!directory.exists()) {
-            Log.d(getClass().toString() , "Created directory " + directory.getAbsolutePath());
+        File directory = new File(sdCard.getAbsolutePath() + File.separator + Constants.APP_NAME);
+        if (!directory.exists()) {
+            Log.d(getClass().toString(), "Created directory " + directory.getAbsolutePath());
             directory.mkdir();
         }
         return directory;
@@ -53,23 +60,41 @@ public class DBAdapter {
 
     public void insertIntoTaskInfo(TaskItem task) {
         String friends = "";
-        for (String user:task.getFriends()) {
-            friends=friends+":"+user;
+        for (String user : task.getFriends()) {
+            friends = friends + ":" + user;
         }
         Log.e("End date---", task.getEndDate());
         for (String app : task.getApps()) {
-            db.execSQL("INSERT INTO TaskInfo VALUES(" + "'" + task.getTaskID() + "'" + "," + "'" + task.getTaskName() + "'" + "," + task.getTaskType() + "," + "'" + task.getEndDate() + "'" + "," + "'" + task.getStartTime() + "'" + "," + "'" + task.getEndTime() + "'" +  "," + "'" + task.getDuration() + "'" + "," + "'" +  task.getActivityName() + "'" + "," + task.getActivityStartFlag() + "," + task.getActivityStopFlag() + "," + "'" + app + "'" + "," + "'" + friends + "'" + "," + "'" + task.getTaskServerId() + "'" + ");");
+            db.execSQL("INSERT INTO TaskInfo VALUES(" + "'" + task.getTaskID() + "'" + "," + "'" + task.getTaskName() + "'" + "," + task.getTaskType() + "," + "'" + task.getEndDate() + "'" + "," + "'" + task.getStartTime() + "'" + "," + "'" + task.getEndTime() + "'" + "," + "'" + task.getDuration() + "'" + "," + "'" + task.getActivityName() + "'" + "," + task.getActivityStartFlag() + "," + task.getActivityStopFlag() + "," + "'" + app + "'" + "," + "'" + friends + "'" + "," + "'" + task.getTaskServerId() + "'" + ");");
         }
 
     }
 
-    public void insertIntoTaskViolation(ViolationItem violationItem){
-        db.execSQL("INSERT INTO TaskViolation VALUES(" + "'" + violationItem.getTaskID() + "'" + "," + "'" + violationItem.getDate() + "'" + ","  + violationItem.getViolationType() + ")");
+    public void insertIntoTaskViolation(ViolationItem violationItem) {
+        db.execSQL("INSERT INTO TaskViolation VALUES(" + "'" + violationItem.getTaskID() + "'" + "," + "'" + violationItem.getDate() + "'" + "," + violationItem.getViolationType() + ")");
+    }
+
+    public ArrayList<ViolationItem> getAllViolationsMatchingTaskId(Integer taskId) {
+        ArrayList<ViolationItem> list = new ArrayList<>();
+        Log.d(getClass().toString(), "Calling raw query");
+        Cursor result = db.rawQuery("SELECT * FROM TaskViolation WHERE task_ID='" + taskId + "';", null);
+        while (result.moveToNext()) {
+            ViolationItem violationItem = new ViolationItem();
+            violationItem.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
+            violationItem.setViolationType(result.getInt(result.getColumnIndex("violation_type")));
+            try {
+                violationItem.setDate(Functions.getDateFromString(result.getString(result.getColumnIndex("date"))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            list.add(violationItem);
+        }
+        return list;
     }
 
 
     public Integer getMaxTaskIDFromTaskInfo() {
-        Cursor result = db.rawQuery("SELECT COALESCE(MAX(task_ID),0) FROM TaskInfo",null);
+        Cursor result = db.rawQuery("SELECT COALESCE(MAX(task_ID),0) FROM TaskInfo", null);
         Log.e("Result:", result.toString());
         result.moveToFirst();
         return result.getInt(0);
@@ -79,9 +104,9 @@ public class DBAdapter {
         return db.delete("TaskInfo","task_ID="+taskID,null)>0;
     }
     public ArrayList<TaskItem> getAllTasksMatchingPackageFromTaskInfo(String packageName) {
-        Cursor result = db.rawQuery("SELECT * FROM TaskInfo WHERE app='"+packageName+"';",null);
+        Cursor result = db.rawQuery("SELECT * FROM TaskInfo WHERE app='" + packageName + "';", null);
         ArrayList<TaskItem> tasks = new ArrayList<>();
-        while(result.moveToNext()) {
+        while (result.moveToNext()) {
             TaskItem task = new TaskItem();
             task.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
             Log.e("TaskID", task.getTaskID().toString());
@@ -109,8 +134,8 @@ public class DBAdapter {
             Log.e("Task apps", task.getApps().toString());
             String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
             ArrayList<String> friendsArray = new ArrayList<>();
-            for(String friend:friends) {
-                if(!friend.trim().isEmpty()) {
+            for (String friend : friends) {
+                if (!friend.trim().isEmpty()) {
                     friendsArray.add(friend.trim());
                 }
             }
@@ -123,12 +148,13 @@ public class DBAdapter {
         result.close();
         return tasks;
     }
+
     public ArrayList<TaskItem> getAllTasksFromTaskInfo() {
-        Cursor result = db.rawQuery("SELECT * FROM TaskInfo ;",null);
+        Cursor result = db.rawQuery("SELECT * FROM TaskInfo ;", null);
         ArrayList<TaskItem> tasks = new ArrayList<>();
-        HashMap<Integer,ArrayList<String>> taskIDToApp = new HashMap<Integer,ArrayList<String>>();
-        while(result.moveToNext()) {
-            if(!taskIDToApp.containsKey(result.getInt(result.getColumnIndex("task_ID")))) {
+        HashMap<Integer, ArrayList<String>> taskIDToApp = new HashMap<Integer, ArrayList<String>>();
+        while (result.moveToNext()) {
+            if (!taskIDToApp.containsKey(result.getInt(result.getColumnIndex("task_ID")))) {
                 TaskItem task = new TaskItem();
                 task.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
                 //Log.e("TaskID", task.getTaskID().toString());
@@ -153,8 +179,8 @@ public class DBAdapter {
 
                 String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
                 ArrayList<String> friendsArray = new ArrayList<>();
-                for(String friend:friends) {
-                    if(!friend.trim().isEmpty()) {
+                for (String friend : friends) {
+                    if (!friend.trim().isEmpty()) {
                         friendsArray.add(friend.trim());
                     }
                 }
@@ -164,16 +190,15 @@ public class DBAdapter {
                 apps.add(result.getString(result.getColumnIndex("app")));
                 taskIDToApp.put(task.getTaskID(), apps);
                 tasks.add(task);
-            }
-            else {
+            } else {
                 ArrayList<String> apps = taskIDToApp.get(result.getInt(result.getColumnIndex("task_ID")));
                 apps.add(result.getString(result.getColumnIndex("app")));
-                taskIDToApp.put(result.getInt(result.getColumnIndex("task_ID")),apps);
+                taskIDToApp.put(result.getInt(result.getColumnIndex("task_ID")), apps);
             }
 
         }
 
-        for(TaskItem task:tasks) {
+        for (TaskItem task : tasks) {
             task.setApps(taskIDToApp.get(task.getTaskID()));
         }
 
@@ -196,8 +221,7 @@ public class DBAdapter {
         return tasks;
     }
 
-    private static String[] getStorageDirectories()
-    {
+    private static String[] getStorageDirectories() {
         // Final set of paths
         final HashSet<String> rv = new HashSet<String>();
         // Primary physical SD-CARD (not emulated)
@@ -206,57 +230,41 @@ public class DBAdapter {
         final String rawSecondaryStoragesStr = System.getenv("SECONDARY_STORAGE");
         // Primary emulated SD-CARD
         final String rawEmulatedStorageTarget = System.getenv("EMULATED_STORAGE_TARGET");
-        if(TextUtils.isEmpty(rawEmulatedStorageTarget))
-        {
+        if (TextUtils.isEmpty(rawEmulatedStorageTarget)) {
             // Device has physical external storage; use plain paths.
-            if(TextUtils.isEmpty(rawExternalStorage))
-            {
+            if (TextUtils.isEmpty(rawExternalStorage)) {
                 // EXTERNAL_STORAGE undefined; falling back to default.
                 rv.add("/storage/sdcard0");
-            }
-            else
-            {
+            } else {
                 rv.add(rawExternalStorage);
             }
-        }
-        else
-        {
+        } else {
             // Device has emulated storage; external storage paths should have
             // userId burned into them.
             final String rawUserId;
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
-            {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 rawUserId = "";
-            }
-            else
-            {
+            } else {
                 final String path = Environment.getExternalStorageDirectory().getAbsolutePath();
                 final String[] folders = DIR_SEPORATOR.split(path);
                 final String lastFolder = folders[folders.length - 1];
                 boolean isDigit = false;
-                try
-                {
+                try {
                     Integer.valueOf(lastFolder);
                     isDigit = true;
-                }
-                catch(NumberFormatException ignored)
-                {
+                } catch (NumberFormatException ignored) {
                 }
                 rawUserId = isDigit ? lastFolder : "";
             }
             // /storage/emulated/0[1,2,...]
-            if(TextUtils.isEmpty(rawUserId))
-            {
+            if (TextUtils.isEmpty(rawUserId)) {
                 rv.add(rawEmulatedStorageTarget);
-            }
-            else
-            {
+            } else {
                 rv.add(rawEmulatedStorageTarget + File.separator + rawUserId);
             }
         }
         // Add all secondary storages
-        if(!TextUtils.isEmpty(rawSecondaryStoragesStr))
-        {
+        if (!TextUtils.isEmpty(rawSecondaryStoragesStr)) {
             // All Secondary SD-CARDs splited into array
             final String[] rawSecondaryStorages = rawSecondaryStoragesStr.split(File.pathSeparator);
             Collections.addAll(rv, rawSecondaryStorages);

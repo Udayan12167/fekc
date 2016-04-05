@@ -33,8 +33,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import retrofit.Callback;
@@ -116,7 +116,7 @@ public class WarningActivity extends AppCompatActivity {
         ViolationItem violationItem = new ViolationItem();
         violationItem.setTaskID(taskItem.getTaskID());
         violationItem.setViolationType(Constants.WIN_CODE);
-        violationItem.setDate(new Date());
+        violationItem.setDate(new Date(System.currentTimeMillis()));
         dbAdapter.insertIntoTaskViolation(violationItem);
 
         Intent startMain = new Intent(Intent.ACTION_MAIN);
@@ -130,7 +130,7 @@ public class WarningActivity extends AppCompatActivity {
         ViolationItem violationItem = new ViolationItem();
         violationItem.setTaskID(taskItem.getTaskID());
         violationItem.setViolationType(Constants.VIOLATION_CODE);
-        violationItem.setDate(new Date());
+        violationItem.setDate(new Date(System.currentTimeMillis()));
         dbAdapter.insertIntoTaskViolation(violationItem);
 
         CheckViolationService.setGoToButtonForPackage(CheckViolationService.getViolatedPackage());

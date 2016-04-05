@@ -111,6 +111,8 @@ public class Constants {
 
     public static final int WIN_CODE = 2;
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
 
 
 }
