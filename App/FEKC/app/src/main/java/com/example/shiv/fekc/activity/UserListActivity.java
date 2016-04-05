@@ -3,6 +3,7 @@ package com.example.shiv.fekc.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class UserListActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.user_list_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Select Friends");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressBar = (ProgressBar)findViewById(R.id.activity_user_list_progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -196,6 +198,9 @@ public class UserListActivity extends AppCompatActivity {
                 return true;
             case R.id.user_list_save_button:
                 onSave();
+                return true;
+            case android.R.id.home:
+                UserListActivity.this.onBackPressed();
                 return true;
             }
         return super.onOptionsItemSelected(item);

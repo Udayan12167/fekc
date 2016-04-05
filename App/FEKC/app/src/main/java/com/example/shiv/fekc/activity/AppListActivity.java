@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class AppListActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.app_list_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Select Apps");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -139,6 +141,9 @@ public class AppListActivity extends AppCompatActivity {
                 return true;
             case R.id.app_list_save_button:
                 onSave();
+                return true;
+            case android.R.id.home:
+                AppListActivity.this.onBackPressed();
                 return true;
         }
 
