@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.DBAdapter;
@@ -20,13 +22,21 @@ import com.example.shiv.fekc.item.TaskItem;
 import com.example.shiv.fekc.item.ViolationAggregateItem;
 import com.example.shiv.fekc.item.ViolationItem;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import retrofit.http.Path;
 
@@ -50,6 +60,8 @@ public class StatsFragment extends Fragment {
     private ArrayList<ViolationAggregateItem> violationAggregateItemList;
 
     private BarChart barChart;
+    private TextView textView;
+    LinearLayout linearLayout;
 
     public StatsFragment() {
         // Required empty public constructor
@@ -95,23 +107,62 @@ public class StatsFragment extends Fragment {
             }
         });
 
+        linearLayout = (LinearLayout)view.findViewById(R.id.fragment_stats_linear_layout);
         barChart = (BarChart) view.findViewById(R.id.fragment_stats_bar_chart);
+        textView = (TextView) view.findViewById(R.id.fragment_stats_text_view);
+        textView.setVisibility(View.GONE);
     }
 
     private void plotBarChart(int position) {
         ArrayList<ViolationItem> violationItemList =
                 dbAdapter.getAllViolationsMatchingTaskId(taskItemArrayList.get(position).getTaskID());
 
-        violationAggregateItemList = new ArrayList<ViolationAggregateItem>();
+        if(violationItemList.isEmpty()){
+            linearLayout.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        linearLayout.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.GONE);
+
+        createViolationAggregateItemList();
         getAggregatedList(violationItemList);
         for (ViolationAggregateItem violationAggregateItem : violationAggregateItemList) {
             Log.d(getClass().toString(), violationAggregateItem.toString());
         }
         barChart.setData(getBarData());
-        barChart.setDescription("My Chart");
+        barChart.setPinchZoom(false);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setClickable(false);
+        barChart.setDescription("");
+        barChart.setDrawGridBackground(false);
+        barChart.setTouchEnabled(false);
         barChart.animateXY(2000, 2000);
-        barChart.invalidate();
+        barChart.setAutoScaleMinMaxEnabled(true);
 
+        Legend legend = barChart.getLegend();
+        legend.setEnabled(false);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelsToSkip(1);
+        xAxis.setTextSize(9f);
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setDrawLimitLinesBehindData(false);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawAxisLine(false);
+
+        YAxis rightAxis = barChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawAxisLine(false);
+        rightAxis.setDrawLabels(false);
+
+        barChart.invalidate();
 
     }
 
@@ -133,14 +184,6 @@ public class StatsFragment extends Fragment {
                 return;
             }
         }
-        ViolationAggregateItem violationAggregateItem = new ViolationAggregateItem();
-        violationAggregateItem.setDate(violationItem.getDate());
-        if (violationItem.getViolationType() == Constants.WIN_CODE) {
-            violationAggregateItem.increaseWins();
-        } else {
-            violationAggregateItem.increaseViolations();
-        }
-        violationAggregateItemList.add(violationAggregateItem);
     }
 
     private BarData getBarData() {
@@ -154,14 +197,20 @@ public class StatsFragment extends Fragment {
             violationSet.add(barEntryViolation);
             BarEntry barEntryWin = new BarEntry((float) violationAggregateItem.getWins(), i);
             winSet.add(barEntryWin);
-            xAxisValues.add(violationAggregateItem.getDate().toString());
+            DateFormat dateFormat = new SimpleDateFormat("EEEE");
+            xAxisValues.add(dateFormat.format(violationAggregateItem.getDate()));
+            Log.d(getClass().toString() , dateFormat.format(violationAggregateItem.getDate()));
         }
 
         BarDataSet violationDataSet = new BarDataSet(violationSet, "Violations");
+        violationDataSet.setBarSpacePercent(0f);
         violationDataSet.setColor(Color.rgb(155, 0, 0));
+        violationDataSet.setDrawValues(false);
 
         BarDataSet winDataSet = new BarDataSet(winSet, "Wins");
         winDataSet.setColor(Color.rgb(0, 155, 0));
+        winDataSet.setBarSpacePercent(0f);
+        winDataSet.setDrawValues(false);
 
         ArrayList<IBarDataSet> dataSet = new ArrayList<>();
         dataSet.add(violationDataSet);
@@ -169,5 +218,22 @@ public class StatsFragment extends Fragment {
 
         BarData barData = new BarData(xAxisValues, dataSet);
         return barData;
+    }
+
+    private void createViolationAggregateItemList(){
+        violationAggregateItemList = new ArrayList<>();
+        for(int i = 6 ; i >= 0 ; i--){
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY , 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            c.add(Calendar.HOUR_OF_DAY, -24 * i);
+            Date date = new Date(c.getTimeInMillis());
+            ViolationAggregateItem violationAggregateItem = new ViolationAggregateItem();
+            violationAggregateItem.setDate(date);
+            violationAggregateItemList.add(violationAggregateItem);
+        }
+
     }
 }

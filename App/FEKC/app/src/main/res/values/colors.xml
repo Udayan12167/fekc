@@ -8,10 +8,13 @@
 
     <color name="colorOrange">#FF9800</color>
 
-    <color name="addTaskStatus">#9e4d1b</color>
-    <color name="addTaskNav">#ea6d20</color>
+    <color name="addTaskStatus">#9E4D1B</color>
+    <color name="addTaskNav">#EA6D20</color>
 
-    <color name="reviewNav">#089c28</color>
-    <color name="reviewStatus">#07661c</color>
+    <color name="reviewNav">#089C28</color>
+    <color name="reviewStatus">#07661C</color>
+
+    <color name="colorGreen">#00FF00</color>
+    <color name="colorRed">#FF0000</color>
 
 </resources>
