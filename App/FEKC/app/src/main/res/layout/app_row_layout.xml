@@ -5,8 +5,8 @@
 
     <ImageView
         android:layout_margin="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/app_row_layout_image_view" />
 
 </LinearLayout>

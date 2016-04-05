@@ -131,9 +131,9 @@
         android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:id="@+id/apps_and_friends_TimeBased">
-        
+
         <RelativeLayout
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/appBlock_TimeBased"
             android:paddingLeft="20dp">
@@ -149,7 +149,7 @@
                 android:paddingBottom="4dp"
                 android:paddingRight="20dp"/>
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/add_apps_button"
+                android:id="@+id/add_apps_button_activity"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:tint="@color/colorWhite"
@@ -159,7 +159,7 @@
                 android:scaleType="center"/>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/appBlock_TimeBased"
             android:paddingLeft="20dp">
@@ -175,7 +175,7 @@
                 android:paddingBottom="4dp"
                 android:paddingRight="20dp"/>
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/activity_schedule_based_task_add_friends_button"
+                android:id="@+id/activity_time_based_task_add_friends_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:tint="@color/colorWhite"
@@ -184,7 +184,6 @@
                 android:onClick="addFriendsButton"
                 android:scaleType="center"/>
         </RelativeLayout>
-
     </RelativeLayout>
 
     <RelativeLayout

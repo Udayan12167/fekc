@@ -11,13 +11,13 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/add_task_nav_toolbar"
+            android:id="@+id/review_nav_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/addTaskNav"
+            android:background="@color/reviewNav"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <include layout="@layout/task_selection_nav_header" />
+            <include layout="@layout/review_nav_header" />
 
         </android.support.v7.widget.Toolbar>
 

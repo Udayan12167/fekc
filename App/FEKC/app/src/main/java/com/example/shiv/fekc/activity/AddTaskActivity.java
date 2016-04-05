@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.shiv.fekc.R;
@@ -13,11 +15,18 @@ import com.example.shiv.fekc.R;
 public class AddTaskActivity extends AppCompatActivity {
 
     private ImageView goBackButton;
+    private Window window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.addTaskStatus));
+
         goBackButton = (ImageView) findViewById(R.id.add_task_back_button);
         goBackButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

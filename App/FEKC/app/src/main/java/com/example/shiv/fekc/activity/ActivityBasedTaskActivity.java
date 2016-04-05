@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +39,7 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
     DBAdapter dbAdapter;
     private TextView saveTextView;
     private ImageView goBackButton;
+    private Window window;
 
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
@@ -45,6 +48,12 @@ public class ActivityBasedTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_activity_based);
+
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.addTaskStatus));
+
         dbAdapter = new DBAdapter();
         saveTextView = (TextView) findViewById(R.id.add_task_save_text);
         saveTextView.setOnClickListener(new View.OnClickListener() {

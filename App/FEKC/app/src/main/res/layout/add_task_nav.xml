@@ -14,7 +14,7 @@
             android:id="@+id/add_task_nav_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorAccent"
+            android:background="@color/addTaskNav"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <include layout="@layout/add_task_nav_header" />

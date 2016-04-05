@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#257ac6</color>
-    <color name="colorPrimaryDark">#1e5687</color>
-    <color name="colorAccent">#089c28</color>
+    <color name="colorPrimary">#1470c2</color>
+    <color name="colorPrimaryDark">#0d497e</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorOverlay">#99000000</color>
 
     <color name="colorOrange">#FF9800</color>
+
+    <color name="addTaskStatus">#9e4d1b</color>
+    <color name="addTaskNav">#ea6d20</color>
+
+    <color name="reviewNav">#089c28</color>
+    <color name="reviewStatus">#07661c</color>
 
 </resources>

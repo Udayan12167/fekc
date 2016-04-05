@@ -2,13 +2,17 @@ package com.example.shiv.fekc.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,15 +64,29 @@ public class ScheduledBasedTaskReviewActivity extends AppCompatActivity {
 
     private AppAdapter appAdapter;
     private UserAdapter userAdapter;
+    private Window window;
 
     private SharedPreferences sharedPreferences;
     private DBAdapter dbAdapter;
     private BackendAPIServiceClient backendAPIServiceClient;
 
+    private ImageView closeButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scheduled_based_task_review);
+        setContentView(R.layout.review_schedule_based);
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.reviewStatus));
+
+        closeButton = (ImageView) findViewById(R.id.review_close_button);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         gson = new Gson();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
