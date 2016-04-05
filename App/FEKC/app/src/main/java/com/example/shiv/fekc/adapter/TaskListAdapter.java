@@ -226,7 +226,7 @@ public class TaskListAdapter extends RecyclerView
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+                                JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             userAdapter.add(url);
                         } catch (JSONException e) {
