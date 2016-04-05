@@ -68,6 +68,9 @@ public class DBAdapter {
         return result.getInt(0);
     }
 
+    public boolean deleteTask(int taskID){
+        return db.delete("TaskInfo","task_ID="+taskID,null)>0;
+    }
     public ArrayList<TaskItem> getAllTasksMatchingPackageFromTaskInfo(String packageName) {
         Cursor result = db.rawQuery("SELECT * FROM TaskInfo WHERE app='"+packageName+"';",null);
         ArrayList<TaskItem> tasks = new ArrayList<>();

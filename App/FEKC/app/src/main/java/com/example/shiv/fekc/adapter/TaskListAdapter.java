@@ -4,7 +4,10 @@ package com.example.shiv.fekc.adapter;
  * Created by Mrinalk on 30-Mar-16.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,10 +18,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.activity.UserListActivity;
@@ -56,7 +61,7 @@ public class TaskListAdapter extends RecyclerView
         TextView taskNameFull;
         TextView taskTypeField;
         TextView taskTypeFieldData;
-
+        ImageView deleteButton;
         RecyclerView appListRecyclerView;
         RecyclerView userListRecyclerView;
 
@@ -73,6 +78,7 @@ public class TaskListAdapter extends RecyclerView
             llExpandArea = (RelativeLayout) itemView.findViewById(R.id.llExpandArea);
             appListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_app_recycler_view);
             userListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_user_recycler_view);
+            deleteButton = (ImageView)itemView.findViewById(R.id.delete_icon);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -103,7 +109,7 @@ public class TaskListAdapter extends RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(DataObjectHolder holder, final int position) {
 
         /*
         ImageView taskIcon;
@@ -114,6 +120,48 @@ public class TaskListAdapter extends RecyclerView
         TextView friendsTextView;
         TextView taskTypeField;
         TextView taskTypeFieldData;*/
+        final int position2 = position;
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                // Perform action on click
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Alert!");
+                alert.setMessage("Are you sure you want to delete the task?");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do your work here
+
+                        DBAdapter db = new DBAdapter();
+                        boolean returnValue = db.deleteTask(tasks.get(position2).getTaskID()) ;
+                        //tasks.remove(position2);
+                        deleteItem(position2);
+                        dialog.dismiss();
+                        if(returnValue==true){
+                            Toast.makeText(context, "Task Deleted!" , Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+
+
+            }
+        });
+
+
         if(tasks.get(position).getTaskType()== Constants.ACTIVITY_BASED_TASK) {
             holder.taskIcon.setImageResource(R.drawable.ic_stay_current_portrait_black_48dp);
             holder.taskTypeField.setText("Activity Description");
