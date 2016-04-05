@@ -107,6 +107,11 @@ public class Constants {
     public static final String NOTIFICATION_FRIEND_FBID = "gcm.notification.friendfbid";
     public static final String NOTIFICATION_INTENT_IDENTIFIER = "Notif";
 
+    public static final int VIOLATION_CODE = 1;
+
+    public static final int WIN_CODE = 2;
+
+
 
 }
 
