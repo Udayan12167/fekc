@@ -16,25 +16,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AppListViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView imageView;
-    private TextView appNameTextView;
-    private CheckBox favoriteCheckBox;
-    private CheckBox selectedCheckBox;
+    private TextView appNameTextView;private CheckBox selectedCheckBox;
 
     public AppListViewHolder(View view) {
         super(view);
         this.imageView = (ImageView)view.findViewById(R.id.app_list_row_image_view);
         this.appNameTextView = (TextView)view.findViewById(R.id.app_list_row_app_name_text_view);
-        this.favoriteCheckBox = (CheckBox)view.findViewById(R.id.app_list_row_favorite_checkbox);
         this.selectedCheckBox = (CheckBox)view.findViewById(R.id.app_list_row_selected_checkbox);
-    }
-
-
-    public CheckBox getFavoriteCheckBox() {
-        return this.favoriteCheckBox;
-    }
-
-    public void setFavoriteCheckBox(CheckBox favoriteCheckBox) {
-        this.favoriteCheckBox = favoriteCheckBox;
     }
 
     public CheckBox getSelectedCheckBox() {

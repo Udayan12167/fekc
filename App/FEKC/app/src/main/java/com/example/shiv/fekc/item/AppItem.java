@@ -10,7 +10,6 @@ public class AppItem {
     private String appName;
     private Drawable appIcon;
     private boolean isSelected;
-    private boolean isFavorite;
     private String packageName;
 
     public String getPackageName()
@@ -30,14 +29,6 @@ public class AppItem {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setIsFavorite(boolean isFavorite) {
-        this.isFavorite = isFavorite;
     }
 
     public Drawable getAppIcon() {

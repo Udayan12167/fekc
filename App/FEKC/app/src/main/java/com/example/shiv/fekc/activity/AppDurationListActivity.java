@@ -64,7 +64,7 @@ public class AppDurationListActivity extends AppCompatActivity {
         packageManager = getPackageManager();
         mToolbar = (Toolbar) findViewById(R.id.app_list_duration_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("View App Usage");
+        getSupportActionBar().setTitle("App Usage");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

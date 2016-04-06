@@ -17,7 +17,6 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
 
     private CircleImageView circleImageView;
     private TextView userNameTextView;
-    private CheckBox favoriteCheckBox;
     private CheckBox selectedCheckBox;
     private ProgressBar progressBar;
 
@@ -25,7 +24,6 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
         super(view);
         this.circleImageView = (CircleImageView)view.findViewById(R.id.user_list_row_image_view);
         this.userNameTextView = (TextView)view.findViewById(R.id.user_list_row_app_name_text_view);
-        this.favoriteCheckBox = (CheckBox)view.findViewById(R.id.user_list_row_favorite_checkbox);
         this.selectedCheckBox = (CheckBox)view.findViewById(R.id.user_list_row_selected_checkbox);
         this.progressBar = (ProgressBar)view.findViewById(R.id.user_list_row_progress_bar);
     }
@@ -36,14 +34,6 @@ public class UserListViewHolder extends RecyclerView.ViewHolder {
 
     public void setUserNameTextView(TextView userNameTextView) {
         this.userNameTextView = userNameTextView;
-    }
-
-    public CheckBox getFavoriteCheckBox() {
-        return this.favoriteCheckBox;
-    }
-
-    public void setFavoriteCheckBox(CheckBox favoriteCheckBox) {
-        this.favoriteCheckBox = favoriteCheckBox;
     }
 
     public CheckBox getSelectedCheckBox() {

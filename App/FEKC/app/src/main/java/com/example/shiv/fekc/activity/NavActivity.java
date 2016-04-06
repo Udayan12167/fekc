@@ -83,7 +83,7 @@ public class NavActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
         setUpTabIcons();
         Boolean checkNotif = getIntent().getBooleanExtra(Constants.NOTIFICATION_INTENT_IDENTIFIER, false);
-        if(checkNotif){
+        if (checkNotif) {
             TabLayout.Tab tab = tabLayout.getTabAt(2);
             tab.select();
         }
@@ -128,13 +128,7 @@ public class NavActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, AppListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(this, UserListActivity.class);
-            startActivity(intent);
-        }else if(id == R.id.nav_app_duration){
+        if (id == R.id.nav_app_duration) {
             Intent intent = new Intent(this, AppDurationListActivity.class);
             startActivity(intent);
         }
@@ -220,15 +214,14 @@ public class NavActivity extends AppCompatActivity
                             Picasso.with(NavActivity.this).load(url).into(circleImageView);
 
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        } catch(NullPointerException e) {
-                            int max=4;
-                            int min=1;
+                        } catch (NullPointerException e) {
+                            int max = 4;
+                            int min = 1;
                             Random rand = new Random();
                             int randomNum = rand.nextInt((max - min) + 1) + min;
-                            int imageResource = getResources().getIdentifier("drawable/contact"+randomNum,null,getPackageName()); //"drawable/contact" + randomNum + ".jpg", null, getPackageName());
+                            int imageResource = getResources().getIdentifier("drawable/contact" + randomNum, null, getPackageName()); //"drawable/contact" + randomNum + ".jpg", null, getPackageName());
                             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResource);
                             circleImageView.setImageBitmap(bitmap);
 
@@ -240,7 +233,7 @@ public class NavActivity extends AppCompatActivity
         ).executeAsync();
     }
 
-    private void getUserName(){
+    private void getUserName() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -251,7 +244,7 @@ public class NavActivity extends AppCompatActivity
                             nameTextView.setText(name);
 
                             File cacheDir = new File(NavActivity.this.getCacheDir(), "FEKC");
-                            Log.e("cachedir: ",NavActivity.this.getCacheDir().toString());
+                            Log.e("cachedir: ", NavActivity.this.getCacheDir().toString());
                             cacheDir.mkdir();
                             FileOutputStream fos = new FileOutputStream(new File(cacheDir, "appUserName"));
                             fos.write(name.getBytes());
@@ -268,10 +261,10 @@ public class NavActivity extends AppCompatActivity
                             try {
                                 BufferedReader br = new BufferedReader(new FileReader(cacheDir + "/appUserName"));
                                 String name;
-                                if((name=br.readLine())!=null) {
+                                if ((name = br.readLine()) != null) {
                                     nameTextView.setText(name);
                                 }
-                            } catch (FileNotFoundException fe){
+                            } catch (FileNotFoundException fe) {
                                 e.printStackTrace();
                             } catch (IOException ie) {
                                 e.printStackTrace();

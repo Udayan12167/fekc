@@ -9,7 +9,6 @@ public class UserListItem {
     private String id;
     private String imageUrl;
     private boolean isSelected;
-    private boolean isFavorite;
 
     public boolean isSelected() {
         return isSelected;
@@ -17,14 +16,6 @@ public class UserListItem {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setIsFavorite(boolean isFavorite) {
-        this.isFavorite = isFavorite;
     }
 
     public String getName() {

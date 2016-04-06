@@ -54,22 +54,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
 
         holder.getImageView().setImageDrawable(appItem.getAppIcon());
         holder.getSelectedCheckBox().setChecked(appItem.isSelected());
-        holder.getFavoriteCheckBox().setChecked(appItem.isFavorite());
-
-        holder.getFavoriteCheckBox().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(appItem.isFavorite()){
-                    appItem.setIsFavorite(false);
-                    holder.getFavoriteCheckBox().setChecked(false);
-                }else{
-                    appItem.setIsFavorite(true);
-                    holder.getFavoriteCheckBox().setChecked(true);
-                }
-                updateItemFilteredList(appItem, position);
-                updateItemOriginalList(appItem);
-            }
-        });
 
         holder.getSelectedCheckBox().setOnClickListener(new View.OnClickListener() {
             @Override

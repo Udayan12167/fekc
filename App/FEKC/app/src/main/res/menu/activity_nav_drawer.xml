@@ -3,18 +3,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Apps" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Friends" />
-
-        <item
             android:id="@+id/nav_app_duration"
-            android:icon="@drawable/ic_action_tick"
-            android:title="Friends" />
+            android:icon="@drawable/ic_alarm_add_black_48dp"
+            android:title="App Usage" />
     </group>
 
 </menu>

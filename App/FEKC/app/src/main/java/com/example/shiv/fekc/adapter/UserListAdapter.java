@@ -51,24 +51,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         final UserListItem userItem = filteredList.get(position);
         holder.getUserNameTextView().setText(userItem.getName());
         holder.getSelectedCheckBox().setChecked(userItem.isSelected());
-        holder.getFavoriteCheckBox().setChecked(userItem.isFavorite());
         Picasso.with(context).load(userItem.getImageUrl()).into(holder.getCircleImageView());
         holder.getProgressBar().setVisibility(View.GONE);
-
-        holder.getFavoriteCheckBox().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(userItem.isFavorite()){
-                    userItem.setIsFavorite(false);
-                    holder.getFavoriteCheckBox().setChecked(false);
-                }else{
-                    userItem.setIsFavorite(true);
-                    holder.getFavoriteCheckBox().setChecked(true);
-                }
-                updateItemFilteredList(userItem, position);
-                updateItemOriginalList(userItem);
-            }
-        });
 
         holder.getSelectedCheckBox().setOnClickListener(new View.OnClickListener() {
             @Override
