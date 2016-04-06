@@ -106,6 +106,7 @@ public class AppListActivity extends AppCompatActivity {
         setResult(1,intent);
         finish();
     }
+        
 
     private class FetchAppsAsyncTask extends AsyncTask<Void, Void, Void> {
 

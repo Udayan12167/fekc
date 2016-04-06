@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -229,6 +230,9 @@ public class TaskListAdapter extends RecyclerView
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             userAdapter.add(url);
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch(NullPointerException e) {
+                            userAdapter.add(" ");
                             e.printStackTrace();
                         }
                     }

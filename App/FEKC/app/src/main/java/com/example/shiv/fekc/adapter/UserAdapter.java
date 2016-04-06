@@ -1,7 +1,10 @@
 package com.example.shiv.fekc.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,9 @@ import com.example.shiv.fekc.holder.UserViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by shiv on 4/4/16.
@@ -35,7 +41,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder>{
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         String url = list.get(position);
-        Picasso.with(context).load(url).into(holder.getCircleImageView());
+        //System.out.println("URL: "+url);
+        Log.e("URL: ",url);
+        try {
+            Picasso.with(context).load(url).into(holder.getCircleImageView());
+        } catch(IllegalArgumentException e) {
+            int max=4;
+            int min=1;
+            Log.e("In catch for url: ",url);
+            Random rand = new Random();
+            int randomNum = rand.nextInt((max - min) + 1) + min;
+            int imageResource = context.getResources().getIdentifier("drawable/contact"+randomNum,null,context.getPackageName()); //"drawable/contact" + randomNum + ".jpg", null, getPackageName());
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), imageResource);
+            CircleImageView civ = holder.getCircleImageView(); // new CircleImageView(context);
+            civ.setImageBitmap(bitmap);
+            //holder.setCircleImageView(civ);
+        }
     }
 
     @Override

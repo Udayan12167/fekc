@@ -2,6 +2,9 @@ package com.example.shiv.fekc.activity;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -39,8 +42,16 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -202,8 +213,21 @@ public class NavActivity extends AppCompatActivity
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             Log.d(getClass().toString(), url);
                             Picasso.with(NavActivity.this).load(url).into(circleImageView);
+
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch(NullPointerException e) {
+                            int max=4;
+                            int min=1;
+                            Random rand = new Random();
+                            int randomNum = rand.nextInt((max - min) + 1) + min;
+                            int imageResource = getResources().getIdentifier("drawable/contact"+randomNum,null,getPackageName()); //"drawable/contact" + randomNum + ".jpg", null, getPackageName());
+                            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResource);
+                            circleImageView.setImageBitmap(bitmap);
+
+                            //circleImageView.setImageDrawable((getResources().getDrawable(R.drawable.contact1)));
                         }
                     }
                 }
@@ -220,7 +244,37 @@ public class NavActivity extends AppCompatActivity
                         try {
                             String name = object.getString(Constants.FACEBOOK_JSON_NAME);
                             nameTextView.setText(name);
+
+                            File cacheDir = new File(NavActivity.this.getCacheDir(), "FEKC");
+                            Log.e("cachedir: ",NavActivity.this.getCacheDir().toString());
+                            cacheDir.mkdir();
+                            FileOutputStream fos = new FileOutputStream(new File(cacheDir, "appUserName"));
+                            fos.write(name.getBytes());
+                            fos.close();
+                            Log.e("cachedir: ", "DOne");
+
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            File cacheDir = new File(NavActivity.this.getCacheDir(), "FEKC");
+                            //Log.e("cachedir: ",NavActivity.this.getCacheDir().toString());
+                            //cacheDir.mkdir();
+                            try {
+                                BufferedReader br = new BufferedReader(new FileReader(cacheDir + "/appUserName"));
+                                String name;
+                                if((name=br.readLine())!=null) {
+                                    nameTextView.setText(name);
+                                }
+                            } catch (FileNotFoundException fe){
+                                e.printStackTrace();
+                            } catch (IOException ie) {
+                                e.printStackTrace();
+                            }
+
+
+                            Log.e("cachedir: ", "DOne");
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
