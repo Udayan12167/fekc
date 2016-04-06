@@ -1,5 +1,6 @@
 package com.example.shiv.fekc.adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -126,7 +127,7 @@ public class DBAdapter {
             Log.e("Task activity name", task.getActivityName());
             task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_start_flag")));
             Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
-            task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
+            task.setActivityStopFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
             Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
             ArrayList<String> apps = new ArrayList<>();
             apps.add(result.getString(result.getColumnIndex("app")));
@@ -174,7 +175,7 @@ public class DBAdapter {
                 //Log.e("Task activity name", task.getActivityName());
                 task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_start_flag")));
                 //Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
-                task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
+                task.setActivityStopFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
                 //Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
                 task.setTaskServerId(result.getString(result.getColumnIndex("task_server_id")));
                 String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
@@ -221,6 +222,18 @@ public class DBAdapter {
         return tasks;
     }
 
+    public void updateStartActivity(int taskID){
+        ContentValues values = new ContentValues();
+        values.put("activity_start_flag",1);
+        values.put("activity_stop_flag",0);
+        db.update("TaskInfo", values, "task_ID=" + taskID, null);
+    }
+    public void updateStopActivity(int taskID){
+        ContentValues values = new ContentValues();
+        values.put("activity_start_flag",0);
+        values.put("activity_stop_flag",1);
+        db.update("TaskInfo",values,"task_ID="+taskID,null);
+    }
     private static String[] getStorageDirectories() {
         // Final set of paths
         final HashSet<String> rv = new HashSet<String>();
