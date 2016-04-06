@@ -100,7 +100,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             finish();
         }
 
-        try{
+        try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.shiv.fekc", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
@@ -147,7 +147,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         parameters.put(Constants.JSON_PARAMETER_FACEBOOK_ID, accessToken.getUserId());
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, accessToken.getToken());
-        Log.d(getClass().toString(), "Trying to register user : " + accessToken.getUserId() );
+        Log.d(getClass().toString(), "Trying to register user : " + accessToken.getUserId());
         backendAPIServiceClient.getService().registerUser(parameters, new Callback<RegisterUserResponse>() {
             @Override
             public void success(RegisterUserResponse registerUserResponse, Response response) {
@@ -156,9 +156,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 editor.putString(Constants.USER_ACCESS_TOKEN, registerUserResponse.getOid());
                 editor.commit();
                 Log.d(getClass().toString(), "The user id  is : " + registerUserResponse.getOid());
-                if(registerUserResponse.getUserStatusCode() == Constants.CODE_NEW_USER){
-                    registerGCM();
-                }
+                registerGCM();
                 Intent tabActivityIntent = new Intent(FacebookLoginActivity.this, NavActivity.class);
                 startActivity(tabActivityIntent);
                 finish();
