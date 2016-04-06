@@ -16,129 +16,210 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
-            <ImageView
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_drop_down_black_24dp"
-                android:id="@+id/dropdown_icon"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete_black_24dp"
-                android:id="@+id/delete_icon"
-                android:layout_toLeftOf="@id/dropdown_icon"
-                android:layout_alignParentTop="true" />
+                android:layout_marginBottom="5dp"
+                android:id="@+id/SmallDescrTask">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_keyboard_arrow_down"
+                    android:id="@+id/dropdown_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/dropdown_icon"
+                    android:text="MORE\nINFO"
+                    android:textAlignment="center"
+                    android:textSize="9sp"
+                    android:id="@+id/More_Info"
+                    android:layout_centerVertical="true"/>
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/task_type_icon"
+                    android:src="@drawable/ic_action_warning"
+                    android:tint="#222"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/task_type_icon"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/task_type_icon"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/TaskDescr1">
+                    <TextView
+                        android:id="@+id/task_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task Name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="#222"
+                        android:layout_alignParentTop="true"/>
 
-            <TextView
-                android:id="@+id/task_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/task_type_icon"
-                android:layout_marginLeft="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold"
+                    <TextView
+                        android:id="@+id/info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="12sp"
+                        android:text="Task Descr"
+                        android:layout_below="@+id/task_name"/>
+                </RelativeLayout>
 
-                android:layout_alignParentTop="true"/>
-
-            <TextView
-                android:id="@+id/info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="10sp"
-
-                android:layout_toRightOf="@+id/task_type_icon"
-                android:layout_below="@+id/task_name"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/llExpandArea"
                 android:visibility="gone"
-                android:layout_below="@+id/info"
+                android:layout_below="@id/SmallDescrTask"
                 android:layout_alignParentStart="true"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Task Name"
-                    android:textSize="15sp"
-                    android:id="@+id/task_name_view" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ccc"
+                    android:id="@+id/TaskDivider"/>
 
-                <TextView
-                    android:id="@+id/task_name_full"
-                    android:layout_width="wrap_content"
-                    android:layout_below="@+id/task_name_view"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Task Name"
-                    android:layout_marginTop="2dp"  />
+                    android:id="@+id/task_descr"
+                    android:paddingTop="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Task Name"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        android:id="@+id/task_name_view" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Apps"
-                    android:layout_below="@+id/task_name_full"
-                    android:layout_marginTop="20dp"
-                    android:textSize="15sp"
-                    android:id="@+id/apps_view" />
+                    <TextView
+                        android:id="@+id/task_name_full"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@+id/task_name_view"
+                        android:layout_height="wrap_content"
+                        android:text="Task Name"
+                        android:layout_marginTop="2dp"  />
+                </RelativeLayout>
 
-                <view
-                    android:id="@+id/task_view_row_app_recycler_view"
-                    class="android.support.v7.widget.RecyclerView"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/apps_view"/>
+                    android:layout_below="@id/task_descr"
+                    android:id="@+id/app_task_list"
+                    android:paddingTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Apps"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        android:id="@+id/apps_view" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Friends"
-                    android:layout_below="@+id/apps_view"
-                    android:layout_marginTop="50dp"
-                    android:textSize="15sp"
-                    android:id="@+id/friends_view" />
+                    <view
+                        android:id="@+id/task_view_row_app_recycler_view"
+                        class="android.support.v7.widget.RecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/apps_view"/>
 
-                <view
-                    android:id="@+id/task_view_row_user_recycler_view"
-                    class="android.support.v7.widget.RecyclerView"
-                    android:layout_width="wrap_content"
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/friends_view"/>
+                    android:id="@+id/friends_task_list"
+                    android:layout_below="@id/app_task_list"
+                    android:paddingTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Friends"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        android:id="@+id/friends_view" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/friends_view"
-                    android:layout_marginTop="50dp"
-                    android:textSize="15sp"
-                    android:id="@+id/task_type_field" />
+                    <view
+                        android:id="@+id/task_view_row_user_recycler_view"
+                        class="android.support.v7.widget.RecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/friends_view"/>
 
-                <TextView
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Task_deets"
+                    android:layout_below="@id/friends_task_list"
+                    android:paddingTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="TaskType"
+                        android:textColor="#222"
+                        android:id="@+id/task_type_field" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/task_type_field"
+                        android:layout_marginTop="2dp"
+                        android:textSize="15sp"
+                        android:text="TaskDeets"
+                        android:id="@+id/task_type_field_data" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ccc"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/Task_deets"
+                    android:id="@+id/Delete_Divider"/>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/task_type_field"
-                    android:layout_marginTop="2dp"
-                    android:textSize="15sp"
-                    android:id="@+id/task_type_field_data" />
+                    android:id="@+id/deleteLayout"
+                    android:layout_below="@id/Delete_Divider"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:id="@+id/delete_task_text"
+                        android:text="Delete Task?"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="5dp"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_toEndOf="@id/delete_task_text"
+                        android:src="@drawable/ic_delete_forever"
+                        android:id="@+id/delete_icon" />
+                </RelativeLayout>
 
             </RelativeLayout>
 

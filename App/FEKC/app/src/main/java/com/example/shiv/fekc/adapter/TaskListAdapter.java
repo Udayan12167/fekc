@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,8 @@ public class TaskListAdapter extends RecyclerView
     private ArrayList<TaskItem> tasks;
     private static MyClickListener myClickListener;
     private static Context context;
+    private ImageView dropDownButton;
+    private TextView infoDescr;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -164,19 +167,19 @@ public class TaskListAdapter extends RecyclerView
 
 
         if(tasks.get(position).getTaskType()== Constants.ACTIVITY_BASED_TASK) {
-            holder.taskIcon.setImageResource(R.drawable.ic_stay_current_portrait_black_48dp);
+            holder.taskIcon.setImageResource(R.drawable.ic_phone_android);
             holder.taskTypeField.setText("Activity Description");
             holder.taskTypeFieldData.setText(tasks.get(position).getActivityName());
             holder.info.setText(tasks.get(position).getActivityName());
         }
         else if(tasks.get(position).getTaskType()==Constants.SCHEDULE_BASED_TASK) {
-            holder.taskIcon.setImageResource(R.drawable.ic_date_range_black_48dp);
+            holder.taskIcon.setImageResource(R.drawable.ic_date_range);
             holder.taskTypeField.setText("Schedule");
             holder.taskTypeFieldData.setText("From " + tasks.get(position).getStartTime() + "   To " + tasks.get(position).getEndTime());
             holder.info.setText("From " + tasks.get(position).getStartTime() + "   To " + tasks.get(position).getEndTime());
         }
         else {
-            holder.taskIcon.setImageResource(R.drawable.ic_hourglass_empty_black_48dp);
+            holder.taskIcon.setImageResource(R.drawable.ic_hourglass_empty);
             holder.taskTypeField.setText("Duration");
             String[] durationString = tasks.get(position).getDuration().split(":");
             String duration = durationString[0].trim()+" hours "+durationString[1].trim()+" minutes";
@@ -245,13 +248,19 @@ public class TaskListAdapter extends RecyclerView
     public void onClick(View view, int position) {
         //  DataObjectHolder holder = (DataObjectHolder) view.getTag();
         DataObjectHolder holder = new DataObjectHolder(view);
+        dropDownButton = (ImageView) view.findViewById(R.id.dropdown_icon);
+        infoDescr = (TextView) view.findViewById(R.id.More_Info);
         // String theString = mDataset.get(holder.getAdapterPosition());
         if(holder.llExpandArea.getVisibility()==View.VISIBLE)
         {
             holder.llExpandArea.setVisibility(View.GONE);
+            dropDownButton.setImageResource(R.drawable.ic_keyboard_arrow_down);
+            infoDescr.setText("MORE\nINFO");
         }
         else {
             holder.llExpandArea.setVisibility(View.VISIBLE);
+            dropDownButton.setImageResource(R.drawable.ic_keyboard_arrow_up);
+            infoDescr.setText("LESS\nINFO");
         }
 
         //Toast.makeText(mContext, "Clicked: " , Toast.LENGTH_SHORT).show();
