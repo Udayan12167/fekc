@@ -141,9 +141,11 @@ public class CheckViolationService extends Service {
 
                             //Check if Activity Type Task
                             if (task.getTaskType() == Constants.ACTIVITY_BASED_TASK) {
+                                Log.e("Inside activity Val of flag:",task.getActivityStartFlag()+"");
 
                                 if (task.getActivityStartFlag() == 1) {
                                     flag = 1;
+                                    Log.e("Inside check:",task.getActivityStartFlag()+"");
                                     Intent intent = new Intent(getApplicationContext(), WarningActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra(Constants.STRING_EXTRA_TASK_SERVER_ID, task.getTaskServerId());

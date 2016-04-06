@@ -80,6 +80,8 @@ public class TaskListAdapter extends RecyclerView
         ImageView deleteButton;
         RecyclerView appListRecyclerView;
         RecyclerView userListRecyclerView;
+        Button startActivityButton;
+        Button stopActivityButton;
 
         RelativeLayout llExpandArea;
 
@@ -95,6 +97,8 @@ public class TaskListAdapter extends RecyclerView
             appListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_app_recycler_view);
             userListRecyclerView = (RecyclerView)itemView.findViewById(R.id.task_view_row_user_recycler_view);
             deleteButton = (ImageView)itemView.findViewById(R.id.delete_icon);
+            startActivityButton = (Button)itemView.findViewById(R.id.task_view_row_start_button);
+            stopActivityButton = (Button)itemView.findViewById(R.id.task_view_row_stop_button);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -127,7 +131,7 @@ public class TaskListAdapter extends RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, final int position) {
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
 
         /*
         ImageView taskIcon;
@@ -200,17 +204,60 @@ public class TaskListAdapter extends RecyclerView
         });
 
 
+        holder.startActivityButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                // Perform action on click
+                DBAdapter db = new DBAdapter();
+                db.updateStartActivity(tasks.get(position2).getTaskID()) ;
+                holder.startActivityButton.setEnabled(false);
+                holder.stopActivityButton.setEnabled(true);
+                tasks.get(position2).setActivityStartFlag(1);
+                tasks.get(position2).setActivityStopFlag(0);
+            }
+        });
+        holder.stopActivityButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                // Perform action on click
+                DBAdapter db = new DBAdapter();
+                db.updateStopActivity(tasks.get(position2).getTaskID()) ;
+                holder.startActivityButton.setEnabled(true);
+                holder.stopActivityButton.setEnabled(false);
+                tasks.get(position2).setActivityStartFlag(0);
+                tasks.get(position2).setActivityStopFlag(1);
+            }
+        });
+
+
         if(tasks.get(position).getTaskType()== Constants.ACTIVITY_BASED_TASK) {
+
             holder.taskIcon.setImageResource(R.drawable.ic_phone_android);
             holder.taskTypeField.setText("Activity Description");
             holder.taskTypeFieldData.setText(tasks.get(position).getActivityName());
             holder.info.setText(tasks.get(position).getActivityName());
+            int startFlag = tasks.get(position).getActivityStartFlag();
+            // Log.e("Start flag value------:"," "+startFlag);
+            if(startFlag==1) {
+                //   Log.e("In hereeeeeeeee ",tasks.get(position).getTaskName());
+                holder.startActivityButton.setEnabled(false);
+                holder.stopActivityButton.setEnabled(true);
+            }
+            else {
+                // Log.e("WTFFFFFffffff ",tasks.get(position).getTaskName());
+                holder.startActivityButton.setEnabled(true);
+                holder.stopActivityButton.setEnabled(false);
+            }
+
+
         }
         else if(tasks.get(position).getTaskType()==Constants.SCHEDULE_BASED_TASK) {
             holder.taskIcon.setImageResource(R.drawable.ic_date_range);
             holder.taskTypeField.setText("Schedule");
             holder.taskTypeFieldData.setText("From " + tasks.get(position).getStartTime() + "   To " + tasks.get(position).getEndTime());
             holder.info.setText("From " + tasks.get(position).getStartTime() + "   To " + tasks.get(position).getEndTime());
+            holder.stopActivityButton.setVisibility(View.GONE);
+            holder.startActivityButton.setVisibility(View.GONE);
         }
         else {
             holder.taskIcon.setImageResource(R.drawable.ic_hourglass_empty);
@@ -219,9 +266,11 @@ public class TaskListAdapter extends RecyclerView
             String duration = durationString[0].trim()+" hours "+durationString[1].trim()+" minutes";
             holder.taskTypeFieldData.setText(duration);
             holder.info.setText(duration);
+            holder.stopActivityButton.setVisibility(View.GONE);
+            holder.startActivityButton.setVisibility(View.GONE);
         }
-        if(tasks.get(position).getTaskName().length()>23) {
-            holder.taskName.setText(tasks.get(position).getTaskName().substring(0,23)+"...");
+        if(tasks.get(position).getTaskName().length()>15) {
+            holder.taskName.setText(tasks.get(position).getTaskName().substring(0,15)+"...");
         }
         else {
             holder.taskName.setText(tasks.get(position).getTaskName());
@@ -263,7 +312,7 @@ public class TaskListAdapter extends RecyclerView
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
                         try {
-                                JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
+                            JSONObject jsonObject = new JSONObject(response.getJSONObject().getString(Constants.FACEBOOK_JSON_DATA));
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             userAdapter.add(url);
                         } catch (JSONException e) {
