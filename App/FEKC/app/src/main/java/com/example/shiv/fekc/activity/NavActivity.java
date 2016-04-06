@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
@@ -92,9 +93,14 @@ public class NavActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NavActivity.this, AddTaskActivity.class);
-                startActivity(intent);
-                finish();
+                if(Functions.isInternetEnabled(NavActivity.this)){
+                    Intent intent = new Intent(NavActivity.this, AddTaskActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(NavActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

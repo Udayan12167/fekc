@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.TaskListAdapter;
@@ -148,31 +149,7 @@ public class TrackedFriendsFragment extends Fragment {
             public void failure(RetrofitError error) {
                 swipeRefreshLayout.setRefreshing(false);
                 error.printStackTrace();
-                Log.d(getClass().toString(), "Failed");
-            }
-        });
-    }
-
-    private void getMessages(){
-        final String taskId = "56fe6c2ff19872b2def51b22";
-        final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
-        HashMap<String, String> parameters = new HashMap<>();
-
-        parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
-        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
-
-        backendAPIServiceClient.getService().getUserTaskMessages(id, parameters, new Callback<TaskMessageResponse>() {
-            @Override
-            public void success(TaskMessageResponse taskMessageResponse, Response response) {
-                if (taskMessageResponse.getMessages() == null) {
-                    return;
-                }
-                Log.d(getClass().toString(), "Successfully got messages");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
+                Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }
