@@ -91,6 +91,10 @@ public class Constants {
 
     public static final String GET_MESSAGES_ENDPOINT = "/messages";
 
+    public static final String POST_VIOLATION_ENDPOINT = "/violation";
+
+    public static final String POST_WIN_ENDPOINT = "/win";
+
     public static final String ID_PARAMETER = "/{id}";
 
     public static final String ID = "id";

@@ -107,9 +107,6 @@ public class WarningActivity extends AppCompatActivity {
         recyclerView.setAdapter(warningMessageAdapter);
 
         getWarningMessages();
-
-
-
     }
 
     private void stopApp() {
@@ -118,6 +115,8 @@ public class WarningActivity extends AppCompatActivity {
         violationItem.setViolationType(Constants.WIN_CODE);
         violationItem.setDate(new Date(System.currentTimeMillis()));
         dbAdapter.insertIntoTaskViolation(violationItem);
+
+        postWin();
 
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
@@ -132,6 +131,8 @@ public class WarningActivity extends AppCompatActivity {
         violationItem.setViolationType(Constants.VIOLATION_CODE);
         violationItem.setDate(new Date(System.currentTimeMillis()));
         dbAdapter.insertIntoTaskViolation(violationItem);
+
+        postViolation();
 
         CheckViolationService.setGoToButtonForPackage(CheckViolationService.getViolatedPackage());
         Log.e("FOREGROUND", CheckViolationService.getViolatedPackage());
@@ -221,5 +222,47 @@ public class WarningActivity extends AppCompatActivity {
                 }
         );
         request.executeAsync();
+    }
+
+    private void postViolation(){
+        String taskId = getIntent().getExtras().getString(Constants.STRING_EXTRA_TASK_SERVER_ID);
+        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
+        parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
+        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
+
+        backendAPIServiceClient.getService().postViolation(parameters, new Callback<Void>() {
+            @Override
+            public void success(Void aVoid, Response response) {
+                Log.d(getClass().toString(), "Successfully created violation");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(getClass().toString(), "Failed to create violation");
+            }
+        });
+    }
+
+    private void postWin(){
+        String taskId = getIntent().getExtras().getString(Constants.STRING_EXTRA_TASK_SERVER_ID);
+        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
+        parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
+        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
+
+        backendAPIServiceClient.getService().postWinWin(parameters, new Callback<Void>() {
+            @Override
+            public void success(Void aVoid, Response response) {
+                Log.d(getClass().toString(), "Successfully created win");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(getClass().toString(), "Failed to create win");
+            }
+        });
     }
 }

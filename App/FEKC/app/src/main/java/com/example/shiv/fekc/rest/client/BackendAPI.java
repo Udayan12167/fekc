@@ -48,5 +48,11 @@ public interface BackendAPI {
     @GET(Constants.GET_MESSAGES_ENDPOINT + Constants.ID_PARAMETER)
     void getUserTaskMessages(@Path(Constants.ID) String id, @QueryMap Map<String, String> options, Callback<TaskMessageResponse> callback);
 
+    @FormUrlEncoded
+    @POST(Constants.POST_VIOLATION_ENDPOINT)
+    void postViolation(@FieldMap Map<String, String> options, Callback<Void> callback);
 
+    @FormUrlEncoded
+    @POST(Constants.POST_WIN_ENDPOINT)
+    void postWinWin(@FieldMap Map<String, String> options, Callback<Void> callback);
 }
