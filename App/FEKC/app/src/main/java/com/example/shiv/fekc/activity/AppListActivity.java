@@ -102,11 +102,18 @@ public class AppListActivity extends AppCompatActivity {
         ArrayList<String> selectedApps = appListAdapter.getSelectedApps();
 
         Intent intent=new Intent();
+        intent.putExtra("SelectedApps", selectedApps);
+        setResult(1, intent);
+        finish();
+    }
+    @Override
+    public void onBackPressed() {
+        ArrayList<String> selectedApps = new ArrayList<String>();
+        Intent intent=new Intent();
         intent.putExtra("SelectedApps",selectedApps);
         setResult(1,intent);
         finish();
     }
-        
 
     private class FetchAppsAsyncTask extends AsyncTask<Void, Void, Void> {
 

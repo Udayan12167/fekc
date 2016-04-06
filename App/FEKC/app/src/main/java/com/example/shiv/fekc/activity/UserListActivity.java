@@ -123,6 +123,16 @@ public class UserListActivity extends AppCompatActivity {
         setResult(2, intent);
         finish();
     }
+    @Override
+    public void onBackPressed() {
+        ArrayList<String> selectedUsers = new ArrayList<String>();
+
+        Intent intent=new Intent();
+        intent.putExtra("SelectedUsers",selectedUsers);
+        setResult(2, intent);
+        finish();
+    }
+
     private void getUserDPUrl(final UserListItem userItem) {
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
