@@ -114,6 +114,9 @@ public class AppDurationListActivity extends AppCompatActivity {
             case R.id.action_search:
                 handleMenuSearch();
                 return true;
+            case android.R.id.home:
+                AppDurationListActivity.this.onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
