@@ -6,7 +6,7 @@
 
     <EditText
         android:id="@+id/user_list_activity_search_edit_text"
-        android:layout_width="500dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:imeOptions="actionSearch" />

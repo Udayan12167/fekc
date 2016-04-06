@@ -10,6 +10,11 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Friends" />
+
+        <item
+            android:id="@+id/nav_app_duration"
+            android:icon="@drawable/ic_action_tick"
+            android:title="Friends" />
     </group>
 
 </menu>

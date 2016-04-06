@@ -222,5 +222,4 @@ public class WarningActivity extends AppCompatActivity {
         );
         request.executeAsync();
     }
-
 }

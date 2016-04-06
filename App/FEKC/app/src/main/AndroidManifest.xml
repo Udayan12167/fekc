@@ -89,11 +89,15 @@
         <activity android:name=".activity.ActivityBasedTaskReviewActivity" />
         <activity android:name=".activity.ScheduledBasedTaskReviewActivity" />
         <activity android:name=".activity.TimeBasedTaskReviewActivity" />
+
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" >
         </activity>
+
+        <activity android:name=".activity.AppDurationListActivity"></activity>
+
     </application>
 
 </manifest>
