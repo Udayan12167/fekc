@@ -13,12 +13,4 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorWhite"/>
 
-    <ImageView
-        android:id="@+id/custom_toolbar_home"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginRight="@dimen/toolbar_horizontal_margin"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_home" />
-
 </RelativeLayout>

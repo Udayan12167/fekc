@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -93,6 +94,7 @@ public class NavActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(NavActivity.this, AddTaskActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -283,5 +285,33 @@ public class NavActivity extends AppCompatActivity
         parameters.putString("fields", "name");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.custom_toolbar_chart) {
+            Intent intent = new Intent(NavActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
