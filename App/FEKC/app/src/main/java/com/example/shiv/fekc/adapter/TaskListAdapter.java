@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -29,8 +30,12 @@ import android.widget.Toast;
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.activity.UserListActivity;
 import com.example.shiv.fekc.commons.Constants;
+import com.example.shiv.fekc.commons.Functions;
 import com.example.shiv.fekc.item.DataObject;
 import com.example.shiv.fekc.item.TaskItem;
+import com.example.shiv.fekc.rest.response.TaskDeleteResponse;
+import com.example.shiv.fekc.rest.response.TaskMessageResponse;
+import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -40,9 +45,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class TaskListAdapter extends RecyclerView
         .Adapter<TaskListAdapter
@@ -54,6 +63,9 @@ public class TaskListAdapter extends RecyclerView
     private static Context context;
     private ImageView dropDownButton;
     private TextView infoDescr;
+
+    private BackendAPIServiceClient backendAPIServiceClient;
+    private SharedPreferences sharedPreferences;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -100,6 +112,8 @@ public class TaskListAdapter extends RecyclerView
     public TaskListAdapter(ArrayList<TaskItem> tasks, Context context) {
         this.tasks = tasks;
         this.context = context;
+        backendAPIServiceClient = new BackendAPIServiceClient();
+        sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -135,19 +149,39 @@ public class TaskListAdapter extends RecyclerView
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
                         //do your work here
-
-                        DBAdapter db = new DBAdapter();
-                        boolean returnValue = db.deleteTask(tasks.get(position2).getTaskID()) ;
-                        //tasks.remove(position2);
-                        deleteItem(position2);
-                        dialog.dismiss();
-                        if(returnValue==true){
-                            Toast.makeText(context, "Task Deleted!" , Toast.LENGTH_SHORT).show();
+                        if(!Functions.isInternetEnabled(context)){
+                            Toast.makeText(context, "No internet connection" , Toast.LENGTH_SHORT).show();
                         }
 
+                        String user_id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
+                        HashMap<String, String> parameters = new HashMap<>();
+                        parameters.put(Constants.JSON_PARAMETER_USER_ID, user_id);
+                        parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
 
+                        String taskServerId = tasks.get(position2).getTaskServerId();
+                        Log.d(getClass().toString(), "The task server id is : " + taskServerId);
+
+                        backendAPIServiceClient.getService().deleteTask(taskServerId, parameters, new Callback<TaskDeleteResponse>() {
+                            @Override
+                            public void success(TaskDeleteResponse taskDeleteResponse, Response response) {
+                                Log.d(getClass().toString() , "Deleted task on server");
+                                DBAdapter db = new DBAdapter();
+                                boolean returnValue = db.deleteTask(tasks.get(position2).getTaskID());
+                                //tasks.remove(position2);
+                                deleteItem(position2);
+                                dialog.dismiss();
+                                if (returnValue == true) {
+                                    Toast.makeText(context, "Task Deleted!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {

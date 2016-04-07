@@ -4,6 +4,7 @@ import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.TaskItem;
 import com.example.shiv.fekc.rest.response.RegisterUserResponse;
 import com.example.shiv.fekc.rest.response.TaskCreateResponse;
+import com.example.shiv.fekc.rest.response.TaskDeleteResponse;
 import com.example.shiv.fekc.rest.response.TaskMessageResponse;
 import com.example.shiv.fekc.rest.response.TrackedFriendsTaskResponse;
 import com.example.shiv.fekc.rest.response.UpdateGCMTokenResponse;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
+import retrofit.http.DELETE;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -56,4 +58,7 @@ public interface BackendAPI {
     @FormUrlEncoded
     @POST(Constants.POST_WIN_ENDPOINT)
     void postWinWin(@FieldMap Map<String, String> options, Callback<ViolationObjectResponse> callback);
+
+    @DELETE(Constants.DELETE_TASK_ENDPOINT + Constants.ID_PARAMETER)
+    void deleteTask(@Path(Constants.ID) String id, @QueryMap Map<String, String> options, Callback<TaskDeleteResponse> callback);
 }

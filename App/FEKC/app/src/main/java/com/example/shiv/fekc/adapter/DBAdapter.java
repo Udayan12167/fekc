@@ -176,7 +176,7 @@ public class DBAdapter {
                 //Log.e("Task ctivity start flag", task.getActivityStartFlag().toString());
                 task.setActivityStartFlag(result.getInt(result.getColumnIndex("activity_stop_flag")));
                 //Log.e("Task activity stop flag", task.getActivityStopFlag().toString());
-
+                task.setTaskServerId(result.getString(result.getColumnIndex("task_server_id")));
                 String[] friends = result.getString(result.getColumnIndex("friends")).split(":");
                 ArrayList<String> friendsArray = new ArrayList<>();
                 for (String friend : friends) {

@@ -85,6 +85,8 @@ public class Constants {
 
     public static final String CREATE_TASK_ENDPOINT = "/tasks";
 
+    public static final String DELETE_TASK_ENDPOINT = "/task";
+
     public static final String GET_TRACKED_TASK_ENDPOINT = "/tracked_tasks";
 
     public static final String PUT_MESSAGE_ENDPOINT = "/message";
