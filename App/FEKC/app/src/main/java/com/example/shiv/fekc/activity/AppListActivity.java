@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.AppListAdapter;
+import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.AppItem;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class AppListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_list);
         if (savedInstanceState != null) {
-            Log.d(getClass().toString(), "Main activity has saved instance");
+            Log.d(getClass().toString(), "Activity has saved instance");
             return;
         }
         packageManager = getPackageManager();
@@ -83,7 +84,11 @@ public class AppListActivity extends AppCompatActivity {
         for (ApplicationInfo applicationInfo : applicationInfoList) {
             if( packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null ){
                 //This app is a non-system app
-                appListAdapter.add(getAppItemFromApplicationInfo(applicationInfo));
+                if(applicationInfo.packageName.equals(Constants.APP_PACKAGE)){
+                    continue;
+                }else {
+                    appListAdapter.add(getAppItemFromApplicationInfo(applicationInfo));
+                }
             }
         }
     }

@@ -14,6 +14,8 @@ import java.util.ListIterator;
  */
 public class Constants {
 
+    public static final String APP_PACKAGE = "com.example.shiv.fekc";
+
     public static final String FACEBOOK_PERMISSION_USER_FRIENDS = "user_friends";
 
     public static final String FACEBOOK_USER_FRIENDS_EDGE = "/me/friends";
