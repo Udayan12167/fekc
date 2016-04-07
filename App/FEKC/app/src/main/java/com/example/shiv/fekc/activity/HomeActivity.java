@@ -11,16 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.TextView;
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.fragment.FailureFragment;
-import com.example.shiv.fekc.fragment.PendingFragment;
 import com.example.shiv.fekc.fragment.SuccessFragment;
 
 public class HomeActivity extends AppCompatActivity {
@@ -56,15 +52,6 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
-      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-      fab.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null).show();
-          }
-      });
 
     }
 
@@ -116,8 +103,6 @@ public class HomeActivity extends AppCompatActivity {
                     return SuccessFragment.newInstance();
                 case 1:
                     return FailureFragment.newInstance();
-                case 2:
-                    return PendingFragment.newInstance();
             }
             return null;
         }
@@ -125,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -135,8 +120,6 @@ public class HomeActivity extends AppCompatActivity {
                     return "SECTION 1";
                 case 1:
                     return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
             }
             return null;
         }

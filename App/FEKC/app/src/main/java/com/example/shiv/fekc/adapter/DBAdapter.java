@@ -93,6 +93,24 @@ public class DBAdapter {
         return list;
     }
 
+    public ArrayList<ViolationItem> getAllViolations() {
+        ArrayList<ViolationItem> list = new ArrayList<>();
+        Log.d(getClass().toString(), "Calling raw query");
+        Cursor result = db.rawQuery("SELECT * FROM TaskViolation;", null);
+        while (result.moveToNext()) {
+            ViolationItem violationItem = new ViolationItem();
+            violationItem.setTaskID(result.getInt(result.getColumnIndex("task_ID")));
+            violationItem.setViolationType(result.getInt(result.getColumnIndex("violation_type")));
+            try {
+                violationItem.setDate(Functions.getDateFromString(result.getString(result.getColumnIndex("date"))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            list.add(violationItem);
+        }
+        return list;
+    }
+
 
     public Integer getMaxTaskIDFromTaskInfo() {
         Cursor result = db.rawQuery("SELECT COALESCE(MAX(task_ID),0) FROM TaskInfo", null);
