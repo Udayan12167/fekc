@@ -204,11 +204,11 @@ public class StatsFragment extends Fragment {
 
         BarDataSet violationDataSet = new BarDataSet(violationSet, "Violations");
         violationDataSet.setBarSpacePercent(0f);
-        violationDataSet.setColor(Color.rgb(155, 0, 0));
+        violationDataSet.setColor(Color.rgb(199,18,21));
         violationDataSet.setDrawValues(false);
 
         BarDataSet winDataSet = new BarDataSet(winSet, "Wins");
-        winDataSet.setColor(Color.rgb(0, 155, 0));
+        winDataSet.setColor(Color.rgb(26,161,52));
         winDataSet.setBarSpacePercent(0f);
         winDataSet.setDrawValues(false);
 
