@@ -30,7 +30,9 @@ public class AddTaskActivity extends AppCompatActivity {
         goBackButton = (ImageView) findViewById(R.id.add_task_back_button);
         goBackButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(AddTaskActivity.this, NavActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
     }

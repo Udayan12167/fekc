@@ -116,6 +116,9 @@ public class TrackedFriendsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            return;
+        }
     }
 
     @Override
@@ -204,4 +207,5 @@ public class TrackedFriendsFragment extends Fragment {
         );
         request.executeAsync();
     }
+
 }

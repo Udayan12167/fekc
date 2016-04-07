@@ -88,6 +88,7 @@ public class AppDurationListActivity extends AppCompatActivity {
         calendar.set(Calendar.MILLISECOND, 0);
         long startTime = calendar.getTimeInMillis() ;
         usageStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTime, currentTime);
+        usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, currentTime);
 
         new FetchAppDurationAsyncTask().execute();
     }
@@ -135,17 +136,27 @@ public class AppDurationListActivity extends AppCompatActivity {
         AppDurationItem appDurationItem = new AppDurationItem();
         appDurationItem.setAppName(applicationInfo.loadLabel(packageManager).toString());
         appDurationItem.setAppIcon(applicationInfo.loadIcon(packageManager));
-        appDurationItem.setAppTime(getTotalForegroundTime(applicationInfo.packageName));
-        Log.d(getClass().toString(), applicationInfo.packageName);
+//        appDurationItem.setAppTime(getTotalForegroundTimeFromMap(applicationInfo.packageName));
+        appDurationItem.setAppTime(getTotalForegroundTimeFromList(applicationInfo.packageName));
+        Log.d(getClass().toString(), applicationInfo.packageName + " " + getTotalForegroundTimeFromMap(applicationInfo.packageName) + " " + getTotalForegroundTimeFromList(applicationInfo.packageName));
         return appDurationItem;
     }
 
-    private String getTotalForegroundTime(String packageName) {
+    private String getTotalForegroundTimeFromMap(String packageName) {
         if(usageStatsMap.get(packageName) != null){
             return  getFormattedUsageTime(usageStatsMap.get(packageName).getTotalTimeInForeground()/1000);
         }else {
             return getFormattedUsageTime(0L);
         }
+    }
+
+    private String getTotalForegroundTimeFromList(String packageName) {
+        for(UsageStats usageStats : usageStatsList){
+            if(usageStats.getPackageName().equals(packageName)){
+                return getFormattedUsageTime(usageStats.getTotalTimeInForeground()/1000);
+            }
+        }
+        return getFormattedUsageTime(0L);
     }
 
     private String getFormattedUsageTime(long timeInSeconds) {

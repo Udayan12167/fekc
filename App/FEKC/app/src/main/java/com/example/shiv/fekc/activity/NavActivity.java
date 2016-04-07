@@ -72,12 +72,17 @@ public class NavActivity extends AppCompatActivity
         Functions.facebookSDKInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
+        if(savedInstanceState != null){
+            return;
+        }
+
         Log.e("Nav", "onCreateCalled!");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_nav_home_toolbar);
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.app_bar_nav_viewpager);
+        viewPager.setOffscreenPageLimit(2);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.app_bar_nav_tab_layout);

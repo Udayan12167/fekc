@@ -236,4 +236,12 @@ public class StatsFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            return;
+        }
+    }
 }
