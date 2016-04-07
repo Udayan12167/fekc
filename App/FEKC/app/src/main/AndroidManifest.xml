@@ -23,18 +23,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AppListActivity" />
-        <activity android:name=".activity.WarningActivity" />
-        <activity android:name=".activity.FacebookLoginActivity" />
+        <activity
+            android:name=".activity.AppListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WarningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FacebookLoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddTaskActivity"
-            android:label="@string/title_activity_add_task" />
+            android:label="@string/title_activity_add_task"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.UserListActivity" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserListActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -43,7 +53,8 @@
         <activity
             android:name=".activity.NavActivity"
             android:label="@string/title_activity_nav"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -74,30 +85,42 @@
 
         <activity
             android:name=".activity.TimeBasedTaskActivity"
-            android:label="@string/title_activity_time_based_task" />
+            android:label="@string/title_activity_time_based_task"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScheduleBasedTaskActivity"
-            android:label="@string/title_activity_schedule_based_task" />
+            android:label="@string/title_activity_schedule_based_task"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ActivityBasedTaskActivity"
-            android:label="@string/title_activity_activity_based_task" />
+            android:label="@string/title_activity_activity_based_task"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.CheckViolationService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.ActivityBasedTaskReviewActivity" />
-        <activity android:name=".activity.ScheduledBasedTaskReviewActivity" />
-        <activity android:name=".activity.TimeBasedTaskReviewActivity" />
+        <activity
+            android:name=".activity.ActivityBasedTaskReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ScheduledBasedTaskReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TimeBasedTaskReviewActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" >
         </activity>
 
-        <activity android:name=".activity.AppDurationListActivity"></activity>
+        <activity
+            android:name=".activity.AppDurationListActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
