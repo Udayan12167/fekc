@@ -81,7 +81,7 @@
 
             <RelativeLayout
                 android:id="@+id/llExpandArea"
-
+                android:visibility="gone"
                 android:layout_below="@id/SmallDescrTask"
                 android:layout_alignParentStart="true"
                 android:layout_width="fill_parent"

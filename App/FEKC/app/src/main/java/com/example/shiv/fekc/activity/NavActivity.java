@@ -57,8 +57,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NavActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class NavActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -98,27 +97,17 @@ public class NavActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Functions.isInternetEnabled(NavActivity.this)){
+                if (Functions.isInternetEnabled(NavActivity.this)) {
                     Intent intent = new Intent(NavActivity.this, AddTaskActivity.class);
                     startActivity(intent);
                     finish();
-                }else{
+                } else {
                     Toast.makeText(NavActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_nav_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.activity_nav_nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        createNavigationHeader();
     }
 
     private void createNavigationHeader() {
@@ -133,21 +122,6 @@ public class NavActivity extends AppCompatActivity
 
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_app_duration) {
-            Intent intent = new Intent(this, AppDurationListActivity.class);
-            startActivity(intent);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_nav_drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -301,17 +275,13 @@ public class NavActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         if (id == R.id.custom_toolbar_chart) {
             Intent intent = new Intent(NavActivity.this, HomeActivity.class);
