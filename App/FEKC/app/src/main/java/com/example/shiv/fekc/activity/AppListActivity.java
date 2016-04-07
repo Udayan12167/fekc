@@ -29,6 +29,7 @@ import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.item.AppItem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class AppListActivity extends AppCompatActivity {
@@ -42,6 +43,7 @@ public class AppListActivity extends AppCompatActivity {
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private Toolbar mToolbar;
+    private HashSet<String> selectedAppHashSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +62,17 @@ public class AppListActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        recyclerView = (RecyclerView)findViewById(R.id.app_list_activity_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.app_list_activity_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
         appListAdapter = new AppListAdapter(this, appItemList);
         recyclerView.setAdapter(appListAdapter);
         recyclerView.setVisibility(View.GONE);
 
 
-        progressBar = (ProgressBar)findViewById(R.id.activity_app_list_progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.activity_app_list_progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
+        selectedAppHashSet =  new HashSet<String>(getIntent().getExtras().getStringArrayList(Constants.STRING_EXTRA_SELECTED_APPS));
 
         new FetchAppsAsyncTask().execute();
 
@@ -79,14 +83,14 @@ public class AppListActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void updateAppList(){
+    private void updateAppList() {
         List<ApplicationInfo> applicationInfoList = packageManager.getInstalledApplications(0);
         for (ApplicationInfo applicationInfo : applicationInfoList) {
-            if( packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null ){
+            if (packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null) {
                 //This app is a non-system app
-                if(applicationInfo.packageName.equals(Constants.APP_PACKAGE)){
+                if (applicationInfo.packageName.equals(Constants.APP_PACKAGE)) {
                     continue;
-                }else {
+                } else {
                     appListAdapter.add(getAppItemFromApplicationInfo(applicationInfo));
                 }
             }
@@ -99,24 +103,26 @@ public class AppListActivity extends AppCompatActivity {
         appItem.setPackageName(applicationInfo.packageName.toString());
         Log.d(getClass().toString(), applicationInfo.loadLabel(packageManager).toString());
         appItem.setAppIcon(applicationInfo.loadIcon(packageManager));
+        if(selectedAppHashSet.contains(applicationInfo.packageName)){
+            appItem.setIsSelected(true);
+        }
         return appItem;
     }
 
-    public void onSave()
-    {
-        ArrayList<String> selectedApps = appListAdapter.getSelectedApps();
-
-        Intent intent=new Intent();
-        intent.putExtra("SelectedApps", selectedApps);
+    public void onSave() {
+        ArrayList<String> selectedApps = new ArrayList<>(appListAdapter.getSelectedApps());
+        Intent intent = new Intent();
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_APPS, selectedApps);
         setResult(1, intent);
         finish();
     }
+
     @Override
     public void onBackPressed() {
         ArrayList<String> selectedApps = new ArrayList<String>();
-        Intent intent=new Intent();
-        intent.putExtra("SelectedApps",selectedApps);
-        setResult(1,intent);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_APPS, selectedApps);
+        setResult(1, intent);
         finish();
     }
 
@@ -163,10 +169,10 @@ public class AppListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void handleMenuSearch(){
+    protected void handleMenuSearch() {
         ActionBar action = getSupportActionBar(); //get the actionbar
 
-        if(isSearchOpened){ //test if the search is open
+        if (isSearchOpened) { //test if the search is open
 
 
             action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar

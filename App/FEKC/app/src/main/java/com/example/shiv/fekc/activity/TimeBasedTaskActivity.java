@@ -30,8 +30,10 @@ import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.facebook.AccessToken;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,10 +43,12 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
     TaskItem task = new TaskItem();
     DBAdapter dbAdapter; // = new DBAdapter();
     private TextView saveTextView;
-    private SharedPreferences sharedPreferences;
-    private BackendAPIServiceClient backendAPIServiceClient;
+
     private ImageView goBackButton;
     private Window window;
+
+    private HashSet<String> selectedAppsHashSet = new HashSet<>();
+    private HashSet<String> selectedUsersHashSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +75,6 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
         });
         dbAdapter = new DBAdapter();
 
-        backendAPIServiceClient = new BackendAPIServiceClient();
-        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
     }
 
     public void setDate(View view) {
@@ -111,12 +113,14 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
     public void addAppsButton(View view) {
         // TODO Auto-generated method stub
         Intent intent = new Intent(this, AppListActivity.class);
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_APPS, new ArrayList<String>(selectedAppsHashSet));
         startActivityForResult(intent, 1);
     }
 
     public void addFriendsButton(View view) {
         // TODO Auto-generated method stub
         Intent intent = new Intent(this, UserListActivity.class);
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_USERS, new ArrayList<String>(selectedUsersHashSet));
         startActivityForResult(intent, 2);
     }
 
@@ -142,24 +146,22 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
 
         }
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // check if the request code is same as what is passed  here it is 2
-        if(requestCode==1)
-        {
-            task.setApps(data.getStringArrayListExtra("SelectedApps"));
-            Log.e("Select apps:", task.getApps().toString());
-
+        if (requestCode == 1) {
+            selectedAppsHashSet = new HashSet<>(data.getStringArrayListExtra(Constants.STRING_EXTRA_SELECTED_APPS));
+            task.setApps(new ArrayList<String>(selectedAppsHashSet));
+            Log.e(getClass().toString(), task.getApps().toString());
         }
-        if(requestCode==2)
-        {
-            task.setFriends(data.getStringArrayListExtra("SelectedUsers"));
-            Log.e("Select users:", task.getFriends().toString());
-
-
+        if (requestCode == 2) {
+            selectedUsersHashSet = new HashSet<>(data.getStringArrayListExtra(Constants.STRING_EXTRA_SELECTED_USERS));
+            task.setFriends(new ArrayList<String>(selectedUsersHashSet));
+            Log.e(getClass().toString(), task.getFriends().toString());
         }
     }
+
     public void onSave() {
         EditText name = (EditText) findViewById(R.id.duration_taskname);
         task.setTaskType(Constants.TIME_BASED_TASK);
@@ -216,7 +218,7 @@ public class TimeBasedTaskActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please add at least one friend!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }
-        if(flag==1 && task.getDuration().length() == 0) {
+        if (flag == 1 && task.getDuration().length() == 0) {
             Toast.makeText(getApplicationContext(), "Please add a duration!", Toast.LENGTH_SHORT).show();
             flag = 0;
         }

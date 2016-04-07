@@ -36,6 +36,10 @@ public class Constants {
 
     public static final String STRING_EXTRA_USER_ID = "user_id";
 
+    public static final String STRING_EXTRA_SELECTED_APPS = "SelectedApps";
+
+    public static final String STRING_EXTRA_SELECTED_USERS = "SelectedUsers";
+
     public static final String STRING_EXTRA_TASK_SERVER_ID = "task_server_id";
 
     public static final String JSON_PARAMETER_FACEBOOK_ID = "fbid";

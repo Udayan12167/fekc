@@ -2,8 +2,6 @@ package com.example.shiv.fekc.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.adapter.UserListAdapter;
@@ -38,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,8 +48,9 @@ public class UserListActivity extends AppCompatActivity {
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private Toolbar mToolbar;
-    private EditText edtSeach;
+    private EditText editText;
     private ProgressBar progressBar;
+    private HashSet<String> selectedUserHashSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +75,8 @@ public class UserListActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar)findViewById(R.id.activity_user_list_progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
+        selectedUserHashSet =  new HashSet<String>(getIntent().getExtras().getStringArrayList(Constants.STRING_EXTRA_SELECTED_USERS));
 
         getFriendList();
 
@@ -116,19 +117,17 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     public void onSave(){
-        ArrayList<String> selectedUsers = userListAdapter.getSelectedUsers();
-
+        ArrayList<String> selectedUsers = new ArrayList<>(userListAdapter.getSelectedUsers());
         Intent intent=new Intent();
-        intent.putExtra("SelectedUsers",selectedUsers);
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_USERS,selectedUsers);
         setResult(2, intent);
         finish();
     }
     @Override
     public void onBackPressed() {
         ArrayList<String> selectedUsers = new ArrayList<String>();
-
         Intent intent=new Intent();
-        intent.putExtra("SelectedUsers",selectedUsers);
+        intent.putExtra(Constants.STRING_EXTRA_SELECTED_USERS,selectedUsers);
         setResult(2, intent);
         finish();
     }
@@ -149,6 +148,9 @@ public class UserListActivity extends AppCompatActivity {
                             String url = jsonObject.getString(Constants.FACEBOOK_JSON_URL);
                             Log.d(getClass().toString(), userItem.getName());
                             userItem.setImageUrl(url);
+                            if(selectedUserHashSet.contains(userItem.getId())){
+                                userItem.setIsSelected(true);
+                            }
                             userListAdapter.add(userItem);
 //                            Log.d(getClass().toString(), data);
                             Log.d(getClass().toString(), url);
@@ -227,7 +229,7 @@ public class UserListActivity extends AppCompatActivity {
             //hides the keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            edtSeach.setText("");
+            editText.setText("");
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_black_48dp));
 
@@ -239,10 +241,10 @@ public class UserListActivity extends AppCompatActivity {
             action.setCustomView(R.layout.user_list_search_bar);//add the custom view
             action.setDisplayShowTitleEnabled(false); //hide the title
 
-            edtSeach = (EditText)action.getCustomView().findViewById(R.id.user_list_activity_search_edit_text); //the text editor
+            editText = (EditText)action.getCustomView().findViewById(R.id.user_list_activity_search_edit_text); //the text editor
 
             //this is a listener to do a search when the user clicks on search button
-            edtSeach.addTextChangedListener(new TextWatcher() {
+            editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -260,11 +262,11 @@ public class UserListActivity extends AppCompatActivity {
             });
 
 
-            edtSeach.requestFocus();
+            editText.requestFocus();
 
             //open the keyboard focused in the edtSearch
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
 
 
             //add the close icon

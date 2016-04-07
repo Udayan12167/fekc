@@ -16,6 +16,7 @@ import com.example.shiv.fekc.holder.AppListViewHolder;
 import com.example.shiv.fekc.item.AppItem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by shiv on 10/3/16.
@@ -24,10 +25,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
 
     private ArrayList<AppItem> originalList;
     private ArrayList<AppItem> filteredList = new ArrayList<AppItem>();
-    private ArrayList<String> selectedApps = new ArrayList<String>();
+    private HashSet<String> selectedAppsHashSet = new HashSet<String>();
     private Context context;
 
-    public AppListAdapter(Context context, ArrayList<AppItem> appItemList){
+    public AppListAdapter(Context context, ArrayList<AppItem> appItemList) {
         this.context = context;
         this.originalList = appItemList;
     }
@@ -55,17 +56,21 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
         holder.getImageView().setImageDrawable(appItem.getAppIcon());
         holder.getSelectedCheckBox().setChecked(appItem.isSelected());
 
+        if(appItem.isSelected()){
+            selectedAppsHashSet.add(appItem.getPackageName());
+        }
+
         holder.getSelectedCheckBox().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(appItem.isSelected()){
+                if (appItem.isSelected()) {
                     appItem.setIsSelected(false);
                     holder.getSelectedCheckBox().setChecked(false);
-                    selectedApps.remove(appItem.getPackageName());
-                }else{
+                    selectedAppsHashSet.remove(appItem.getPackageName());
+                } else {
                     appItem.setIsSelected(true);
                     holder.getSelectedCheckBox().setChecked(true);
-                    selectedApps.add(appItem.getPackageName());
+                    selectedAppsHashSet.add(appItem.getPackageName());
                 }
                 updateItemFilteredList(appItem, position);
                 updateItemOriginalList(appItem);
@@ -75,16 +80,15 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
     }
 
 
-    public ArrayList<String> getSelectedApps()
-    {
-        return selectedApps;
+    public HashSet<String> getSelectedApps() {
+        return selectedAppsHashSet;
     }
 
     @Override
     public int getItemCount() {
-        if(filteredList != null){
+        if (filteredList != null) {
             return filteredList.size();
-        }else{
+        } else {
             return 0;
         }
     }
@@ -94,13 +98,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
         return new AppItemFilter(this, originalList, filteredList);
     }
 
-    public void add(AppItem appItem){
+    public void add(AppItem appItem) {
         originalList.add((appItem));
         filteredList.add(appItem);
 //        notifyDataSetChanged();
     }
 
-    public void remove(AppItem appItem){
+    public void remove(AppItem appItem) {
         int position = filteredList.indexOf(appItem);
         originalList.remove(appItem);
         filteredList.remove(appItem);
@@ -108,29 +112,29 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListViewHolder> impl
         notifyItemRemoved(position);
     }
 
-    public void clearFilteredList(){
+    public void clearFilteredList() {
         int originalSize = filteredList.size();
         filteredList.clear();
         notifyDataSetChanged();
         notifyItemRangeRemoved(0, originalSize);
     }
 
-    public void setFilteredList(ArrayList<AppItem> appItemList){
+    public void setFilteredList(ArrayList<AppItem> appItemList) {
         clearFilteredList();
         filteredList.addAll(appItemList);
         notifyDataSetChanged();
         notifyItemRangeInserted(0, filteredList.size());
     }
 
-    private void updateItemFilteredList(AppItem appItem, int position){
+    private void updateItemFilteredList(AppItem appItem, int position) {
         filteredList.set(position, appItem);
         notifyDataSetChanged();
         notifyItemChanged(position);
     }
 
-    private void updateItemOriginalList(AppItem appItem){
-        for(int i = 0 ; i < originalList.size() ; i++){
-            if(appItem.getAppName().equals(originalList.get(i).getAppName())){
+    private void updateItemOriginalList(AppItem appItem) {
+        for (int i = 0; i < originalList.size(); i++) {
+            if (appItem.getAppName().equals(originalList.get(i).getAppName())) {
                 originalList.set(i, appItem);
                 break;
             }

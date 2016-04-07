@@ -16,6 +16,7 @@ import com.example.shiv.fekc.item.UserListItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by shiv on 11/3/16.
@@ -25,7 +26,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
     private ArrayList<UserListItem> originalList;
     private ArrayList<UserListItem> filteredList = new ArrayList<UserListItem>();
     private Context context;
-    private ArrayList<String> selectedUsers = new ArrayList<String>();
+    private HashSet<String> selectedUsersHashSet = new HashSet<String>();
     public UserListAdapter(Context context, ArrayList<UserListItem> userItemList){
         this.context = context;
         this.originalList = userItemList;
@@ -54,17 +55,21 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
         Picasso.with(context).load(userItem.getImageUrl()).into(holder.getCircleImageView());
         holder.getProgressBar().setVisibility(View.GONE);
 
+        if(userItem.isSelected()){
+            selectedUsersHashSet.add(userItem.getId());
+        }
+
         holder.getSelectedCheckBox().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(userItem.isSelected()){
                     userItem.setIsSelected(false);
                     holder.getSelectedCheckBox().setChecked(false);
-                    selectedUsers.remove(userItem.getId());
+                    selectedUsersHashSet.remove(userItem.getId());
                 }else{
                     userItem.setIsSelected(true);
                     holder.getSelectedCheckBox().setChecked(true);
-                    selectedUsers.add(userItem.getId());
+                    selectedUsersHashSet.add(userItem.getId());
                 }
                 updateItemFilteredList(userItem, position);
                 updateItemOriginalList(userItem);
@@ -74,8 +79,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListViewHolder> im
 
     }
 
-    public ArrayList<String> getSelectedUsers(){
-        return selectedUsers;
+    public HashSet<String> getSelectedUsers(){
+        return selectedUsersHashSet;
     }
 
     @Override
