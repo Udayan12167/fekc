@@ -19,6 +19,7 @@ public class TaskItem {
     private Integer activityStartFlag;
     private Integer activityStopFlag;
     private String taskServerId;
+    private ArrayList<String> appNames;
 
     public String getTaskServerId() {
         return taskServerId;
@@ -39,9 +40,18 @@ public class TaskItem {
         activityName = "";
         apps = new ArrayList<String>();
         friends = new ArrayList<String>();
+        appNames = new ArrayList<String>();
         activityStartFlag = 0;
         activityStopFlag = 0;
 
+    }
+
+    public ArrayList<String> getAppNames() {
+        return appNames;
+    }
+
+    public void setAppNames(ArrayList<String> appNames) {
+        this.appNames = appNames;
     }
 
     public Integer getTaskID() {

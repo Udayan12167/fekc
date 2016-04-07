@@ -17,6 +17,7 @@ public class TrackedFriendsTask {
     private String duration;
     private String activityName;
     private List<String> apps;
+    private List<String> appNames;
     private List<String> friends;
     private int activityStartFlag;
     private int activityStopFlag;
@@ -26,6 +27,10 @@ public class TrackedFriendsTask {
     private String friendName;
     private String friendImageUrl;
     private String trackedTaskId;
+
+    public TrackedFriendsTask(){
+        this.appNames = new ArrayList<String>();
+    }
 
     public String getTrackedTaskId() {
         return trackedTaskId;
@@ -171,5 +176,11 @@ public class TrackedFriendsTask {
         this.activityStopFlag = activityStopFlag;
     }
 
+    public List<String> getAppNames() {
+        return appNames;
+    }
 
+    public void setAppNames(List<String> appNames) {
+        this.appNames = appNames;
+    }
 }

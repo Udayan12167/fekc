@@ -196,6 +196,9 @@ public class ScheduledBasedTaskReviewActivity extends AppCompatActivity {
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Unable to create task");
                 error.printStackTrace();
+                createTaskButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Unable to create Task!", Toast.LENGTH_SHORT).show();
             }
         });
     }

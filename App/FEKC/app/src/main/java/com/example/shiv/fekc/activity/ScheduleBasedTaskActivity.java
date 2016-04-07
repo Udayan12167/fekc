@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
 
     private Window window;
 
+    private PackageManager packageManager;
+
     private HashSet<String> selectedAppsHashSet = new HashSet<>();
     private HashSet<String> selectedUsersHashSet = new HashSet<>();
 
@@ -74,6 +77,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        packageManager = getPackageManager();
     }
 
     @Override
@@ -262,11 +267,24 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             }
         }
         if (flag == 1) {
+            task.setAppNames(getAppNameListFromPackageNameList(task.getApps()));
             Gson gson = new Gson();
             Intent intent = new Intent(this, ScheduledBasedTaskReviewActivity.class);
             intent.putExtra(Constants.STRING_EXTRA_JSON, gson.toJson(task));
             startActivity(intent);
 //            uploadTaskOnServer();
         }
+    }
+
+    private ArrayList<String> getAppNameListFromPackageNameList(ArrayList<String> packageNameList){
+        ArrayList<String> appNameList = new ArrayList<String>();
+        for(String packageName : packageNameList){
+            try {
+                appNameList.add((String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)));
+            }catch (PackageManager.NameNotFoundException ex){
+                appNameList.add("App");
+            }
+        }
+        return appNameList;
     }
 }

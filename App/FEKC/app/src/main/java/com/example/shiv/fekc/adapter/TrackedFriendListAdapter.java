@@ -2,6 +2,9 @@ package com.example.shiv.fekc.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.example.shiv.fekc.R;
 import com.example.shiv.fekc.commons.Constants;
 import com.example.shiv.fekc.holder.UserListViewHolder;
+import com.example.shiv.fekc.item.TrackedFriendAppItem;
 import com.example.shiv.fekc.rest.response.TrackedFriendsTask;
 import com.example.shiv.fekc.rest.response.UpdateUserMessageResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
@@ -42,12 +46,14 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
     private SharedPreferences sharedPreferences;
     private BackendAPIServiceClient backendAPIServiceClient;
     private static TaskListAdapter.MyClickListener myClickListener;
+    private PackageManager packageManager;
 
     public TrackedFriendListAdapter(Context context, ArrayList<TrackedFriendsTask> trackedFriendsTaskList) {
         this.context = context;
         this.trackedFriendsTaskList = trackedFriendsTaskList;
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        packageManager = context.getPackageManager();
     }
 
     @Override
@@ -99,6 +105,13 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
                 holder.getEditMessageLinearLayout().setVisibility(View.GONE);
             }
         });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        TrackedFriendAppRowAdapter trackedFriendAppRowAdapter = new TrackedFriendAppRowAdapter(context, getTrackedFriendAppItemList(trackedFriendsTask));
+        holder.getAppRecyclerView().setLayoutManager(linearLayoutManager);
+        holder.getAppRecyclerView().setAdapter(trackedFriendAppRowAdapter);
+
     }
 
     public void add(TrackedFriendsTask trackedFriendsTask) {
@@ -106,7 +119,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         notifyDataSetChanged();
     }
 
-    private void sendMessage(String taskId, String message, final TrackedFriendListViewHolder holder) {
+    private void sendMessage(String taskId, final String message, final TrackedFriendListViewHolder holder) {
         final String id = sharedPreferences.getString(Constants.USER_ACCESS_TOKEN, "");
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put(Constants.JSON_PARAMETER_USER_ID, id);
@@ -119,6 +132,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
                 Toast.makeText(context, "Successfully updated message", Toast.LENGTH_SHORT).show();
                 holder.getMessageLinearLayout().setVisibility(View.VISIBLE);
                 holder.getEditMessageLinearLayout().setVisibility(View.GONE);
+                holder.getMessageTextView().setText(message);
             }
 
             @Override
@@ -173,7 +187,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         private ImageView cancelEditMessageImageView;
         private LinearLayout editMessageLinearLayout;
         private LinearLayout messageLinearLayout;
-
+        private RecyclerView appRecyclerView;
 
 
         public TrackedFriendListViewHolder(View view) {
@@ -192,6 +206,8 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.editMessageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_edit_linear_layout);
 
             this.messageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_message_layout);
+
+            this.appRecyclerView = (RecyclerView)view.findViewById(R.id.tracked_friends_row_app_recycler_view);
 
             view.setOnClickListener(this);
 
@@ -297,6 +313,34 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         public void setEditMessageLinearLayout(LinearLayout editMessageLinearLayout) {
             this.editMessageLinearLayout = editMessageLinearLayout;
         }
+
+        public RecyclerView getAppRecyclerView() {
+            return appRecyclerView;
+        }
+
+        public void setAppRecyclerView(RecyclerView appRecyclerView) {
+            this.appRecyclerView = appRecyclerView;
+        }
+    }
+
+    private ArrayList<TrackedFriendAppItem> getTrackedFriendAppItemList(TrackedFriendsTask trackedFriendsTask){
+        if(trackedFriendsTask.getAppNames() == null || trackedFriendsTask.getAppNames().size() == 0){
+            return new ArrayList<TrackedFriendAppItem>();
+        }
+        ArrayList<TrackedFriendAppItem> trackedFriendAppItemList = new ArrayList<>();
+        for(int i = 0 ; i < trackedFriendsTask.getApps().size() ; i++){
+            TrackedFriendAppItem trackedFriendAppItem = new TrackedFriendAppItem();
+            trackedFriendAppItem.setAppName(trackedFriendsTask.getAppNames().get(i));
+            Drawable icon;
+            try {
+                icon = packageManager.getApplicationIcon(trackedFriendsTask.getApps().get(i));
+            } catch (PackageManager.NameNotFoundException e) {
+                icon = context.getDrawable(R.drawable.ic_launcher);
+            }
+            trackedFriendAppItem.setAppImage(icon);
+            trackedFriendAppItemList.add(trackedFriendAppItem);
+        }
+        return trackedFriendAppItemList;
     }
 
 }
