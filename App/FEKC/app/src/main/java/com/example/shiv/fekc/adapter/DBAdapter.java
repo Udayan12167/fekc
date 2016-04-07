@@ -302,5 +302,4 @@ public class DBAdapter {
         }
         return rv.toArray(new String[rv.size()]);
     }
-
 }

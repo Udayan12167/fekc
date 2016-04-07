@@ -24,24 +24,37 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import retrofit.RestAdapter;
+
 public class GCMNotificationReceiverService extends GcmListenerService {
 
     private NotificationUtils notificationUtils;
-    int mNotificationId = 001;
+    int mNotificationId = 1;
 
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
-
+        for (String key: bundle.keySet())
+        {
+            Log.d ("myApplication", key + " is a key in the bundle");
+        }
+        Log.d ("Message is:", bundle.getString("message"));
+        String message;
+        if(bundle.getString("message").equals("Task violated")){
+            message = Constants.VIOLATION_MESSAGE;
+        }
+        else{
+            message = Constants.NOTIFICATION_MESSAGE;
+        }
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(Constants.NOTIFICATION_TITLE)
                 .setLargeIcon(getBitmapFromURL(bundle.getString(Constants.NOTIFICATION_FRIEND_FBID)))
-                .setContentText(Constants.NOTIFICATION_MESSAGE)
+                .setContentText(message)
                 .setAutoCancel(true)
                 .setLights(Color.BLUE, 1000, 500)
-                .setVibrate(new long[]{1000, 1000})
+                .setVibrate(new long[]{300, 300, 300})
                 .setSound(uri);
 
         Intent navIntent = new Intent(this, NavActivity.class);
