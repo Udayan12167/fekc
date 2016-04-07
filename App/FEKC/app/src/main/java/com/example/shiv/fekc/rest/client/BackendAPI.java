@@ -8,6 +8,7 @@ import com.example.shiv.fekc.rest.response.TaskMessageResponse;
 import com.example.shiv.fekc.rest.response.TrackedFriendsTaskResponse;
 import com.example.shiv.fekc.rest.response.UpdateGCMTokenResponse;
 import com.example.shiv.fekc.rest.response.UpdateUserMessageResponse;
+import com.example.shiv.fekc.rest.response.ViolationObjectResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,9 @@ public interface BackendAPI {
 
     @FormUrlEncoded
     @POST(Constants.POST_VIOLATION_ENDPOINT)
-    void postViolation(@FieldMap Map<String, String> options, Callback<Void> callback);
+    void postViolation(@FieldMap Map<String, String> options, Callback<ViolationObjectResponse> callback);
 
     @FormUrlEncoded
     @POST(Constants.POST_WIN_ENDPOINT)
-    void postWinWin(@FieldMap Map<String, String> options, Callback<Void> callback);
+    void postWinWin(@FieldMap Map<String, String> options, Callback<ViolationObjectResponse> callback);
 }

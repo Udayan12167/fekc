@@ -22,6 +22,7 @@ import com.example.shiv.fekc.item.ViolationItem;
 import com.example.shiv.fekc.item.WarningMessageItem;
 import com.example.shiv.fekc.rest.response.TaskMessage;
 import com.example.shiv.fekc.rest.response.TaskMessageResponse;
+import com.example.shiv.fekc.rest.response.ViolationObjectResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.example.shiv.fekc.service.CheckViolationService;
 import com.facebook.AccessToken;
@@ -232,9 +233,9 @@ public class WarningActivity extends AppCompatActivity {
         parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
 
-        backendAPIServiceClient.getService().postViolation(parameters, new Callback<Void>() {
+        backendAPIServiceClient.getService().postViolation(parameters, new Callback<ViolationObjectResponse>() {
             @Override
-            public void success(Void aVoid, Response response) {
+            public void success(ViolationObjectResponse violationObjectResponse, Response response) {
                 Log.d(getClass().toString(), "Successfully created violation");
             }
 
@@ -253,9 +254,9 @@ public class WarningActivity extends AppCompatActivity {
         parameters.put(Constants.JSON_PARAMETER_TASK_ID, taskId);
         parameters.put(Constants.JSON_PARAMETER_FB_TOKEN, AccessToken.getCurrentAccessToken().getToken());
 
-        backendAPIServiceClient.getService().postWinWin(parameters, new Callback<Void>() {
+        backendAPIServiceClient.getService().postWinWin(parameters, new Callback<ViolationObjectResponse>() {
             @Override
-            public void success(Void aVoid, Response response) {
+            public void success(ViolationObjectResponse violationObjectResponse, Response response) {
                 Log.d(getClass().toString(), "Successfully created win");
             }
 
