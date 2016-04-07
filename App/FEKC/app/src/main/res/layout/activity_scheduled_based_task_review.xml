@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -164,7 +164,6 @@
             android:layout_marginBottom="20dp"
             android:background="#ccc"/>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -223,34 +222,10 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#ccc"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/activity_schedule_based_task_upload_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@color/reviewNav"
-                android:textColor="@color/colorWhite"
-                android:text="Create Task" />
-
-            <ProgressBar
-                android:id="@+id/activity_schedule_based_task_progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:paddingTop="10dp"
-                android:layout_centerInParent="true" />
-
-        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

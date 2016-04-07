@@ -15,8 +15,32 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/scheduleTaskNav">
-        <include layout="@layout/activity_scheduled_based_task_review" />
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/schedule_goButton">
+        <Button
+            android:id="@+id/activity_schedule_based_task_upload_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/reviewNav"
+            android:textColor="@color/colorWhite"
+            android:text="Create Task" />
+
+        <ProgressBar
+            android:id="@+id/activity_schedule_based_task_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingTop="10dp"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/schedule_scroll"
+        android:layout_below="@id/scheduleTaskNav"
+        android:layout_above="@id/schedule_goButton">
+        <include layout="@layout/activity_scheduled_based_task_review" />
+    </ScrollView>
 </RelativeLayout>
