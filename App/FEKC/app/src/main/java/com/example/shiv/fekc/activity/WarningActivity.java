@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -55,6 +57,7 @@ public class WarningActivity extends AppCompatActivity {
 
     private BackendAPIServiceClient backendAPIServiceClient;
     private SharedPreferences sharedPreferences;
+    private Window window;
 
     private DBAdapter dbAdapter ;
 
@@ -66,11 +69,16 @@ public class WarningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Functions.facebookSDKInitialize(getApplicationContext());
         setContentView(R.layout.activity_warning);
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.colorBlack));
         Log.d(getClass().toString(), "Opened warning activity");
 
         backendAPIServiceClient = new BackendAPIServiceClient();
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
         warningMessageAdapter = new WarningMessageAdapter(this, new ArrayList<WarningMessageItem>());
+
 
         dbAdapter = new DBAdapter();
         gson = new Gson();

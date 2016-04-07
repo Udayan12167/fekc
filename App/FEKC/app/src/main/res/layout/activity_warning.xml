@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,30 +17,14 @@
             <include layout="@layout/warning_nav"></include>
         </RelativeLayout>
 
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="416dp"
-            android:layout_below="@id/nav_warn">
-
-            <ImageView
-                android:id="@+id/activity_warning_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/zootopia_sloth"/>
-
-            <view
-                android:id="@+id/acrivity_warning_recycler_view"
-                class="android.support.v7.widget.RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/Dangerous_buttons"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,8 +36,9 @@
                     android:layout_width="130dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="25dp"
-                    android:background="#dd1100"
+                    android:background="#c71215"
                     android:onClick="goToApp"
+                    android:textAllCaps="false"
                     android:text="Go To App"
                     android:textColor="#fff"
                     android:textSize="20dp" />
@@ -69,14 +54,37 @@
                     android:layout_width="130dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="25dp"
-                    android:background="#11dd11"
+                    android:background="#1aa134"
                     android:onClick="stopApp"
+                    android:textAllCaps="false"
                     android:text="Stop App"
                     android:textColor="#fff"
+                    android:bottomRightRadius="10dp"
                     android:textSize="20dp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nav_warn"
+            android:layout_above="@id/Dangerous_buttons">
+
+            <ImageView
+                android:id="@+id/activity_warning_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/zootopia_sloth"/>
+
+            <view
+                android:id="@+id/acrivity_warning_recycler_view"
+                class="android.support.v7.widget.RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/warning_activity_progressBar"
