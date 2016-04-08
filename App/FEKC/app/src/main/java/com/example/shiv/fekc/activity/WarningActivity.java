@@ -245,11 +245,13 @@ public class WarningActivity extends AppCompatActivity {
             @Override
             public void success(ViolationObjectResponse violationObjectResponse, Response response) {
                 Log.d(getClass().toString(), "Successfully created violation");
+                finish();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Failed to create violation");
+                finish();
             }
         });
     }
@@ -266,11 +268,13 @@ public class WarningActivity extends AppCompatActivity {
             @Override
             public void success(ViolationObjectResponse violationObjectResponse, Response response) {
                 Log.d(getClass().toString(), "Successfully created win");
+                finish();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Failed to create win");
+                finish();
             }
         });
     }
