@@ -11,8 +11,12 @@
     <color name="addTaskStatus">#9E4D1B</color>
     <color name="addTaskNav">#EA6D20</color>
 
-    <color name="reviewNav">#089C28</color>
+    <color name="colorAccent">#089C28</color>
+
     <color name="reviewStatus">#07661C</color>
+    <color name="reviewNav">#089C28</color>
+
+    <color name="lightgray">#aaa</color>
 
     <color name="colorGreen">#1aa134</color>
     <color name="colorRed">#c71215</color>

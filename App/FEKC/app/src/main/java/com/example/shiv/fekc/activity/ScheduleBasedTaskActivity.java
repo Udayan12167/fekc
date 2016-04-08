@@ -116,7 +116,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
                 editText2.setText(selectedHour + ":" + selectedMinute);
                 task.setStartTime(selectedHour + ":" + selectedMinute);
             }
-        }, hour, minute, true);//Yes 24 hour time
+        }, hour, minute, false);//No 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
 
@@ -135,7 +135,7 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
                 editText2.setText(selectedHour + ":" + selectedMinute);
                 task.setEndTime(selectedHour + ":" + selectedMinute);
             }
-        }, hour, minute, true);//Yes 24 hour time
+        }, hour, minute, false);//No 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
         // end_time = selectedHour + ":" + selectedMinute;
