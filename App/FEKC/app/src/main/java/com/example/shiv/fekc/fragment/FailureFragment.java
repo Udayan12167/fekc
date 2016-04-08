@@ -2,6 +2,7 @@ package com.example.shiv.fekc.fragment;
 
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -77,6 +78,7 @@ public class FailureFragment extends Fragment {
 
         final TextView failureStats = (TextView) view.findViewById(R.id.arc_view_failure_stats);
         failureStats.setText("You had "+violations+" violations\n in the past week.");
+        failureStats.setTypeface(Typeface.MONOSPACE);
 
         final TextView textPercentage = (TextView) view.findViewById(R.id.textPercentage);
         series1Item.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {

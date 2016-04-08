@@ -1,6 +1,7 @@
 package com.example.shiv.fekc.fragment;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -77,7 +78,9 @@ public class SuccessFragment extends Fragment {
         int series1Index = decoView.addSeries(series1Item);
 
         final TextView successStats = (TextView) view.findViewById(R.id.arc_view_success_stats);
-        successStats.setText("You had "+wins+" wins\n in the past week.");
+        successStats.setText("You had "+wins+" wins\n in the 7 days.");
+        successStats.setTypeface(Typeface.MONOSPACE);
+
 
         final TextView textPercentage = (TextView) view.findViewById(R.id.textPercentage);
         series1Item.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
