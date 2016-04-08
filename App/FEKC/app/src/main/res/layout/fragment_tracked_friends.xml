@@ -21,7 +21,9 @@
             class="android.support.v7.widget.RecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:paddingBottom="70dp"
+            android:clipToPadding="false"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

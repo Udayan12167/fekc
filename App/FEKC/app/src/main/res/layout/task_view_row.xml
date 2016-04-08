@@ -222,7 +222,13 @@
                         android:id="@+id/delete_icon" />
                 </RelativeLayout>
 
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/deleteLayout"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/task_view_row_dummy_text_view" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -232,13 +238,6 @@
                         android:layout_marginRight="2dp"
                         android:text="Start"
                         android:id="@+id/task_view_row_start_button" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:layout_below="@+id/deleteLayout"
-                        android:layout_centerInParent="true"
-                        android:id="@+id/task_view_row_dummy_text_view" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
