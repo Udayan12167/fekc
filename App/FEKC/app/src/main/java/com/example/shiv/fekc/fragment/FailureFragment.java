@@ -62,16 +62,23 @@ public class FailureFragment extends Fragment {
             wins += violationAggregateItem.getWins();
             violations += violationAggregateItem.getViolations();
         }
+        int max;
+        if(wins+violations==0){
+            max = 1;
+        }
+        else {
+            max = wins+violations;
+        }
         super.onViewCreated(view, savedInstanceState);
         decoView = (DecoView) view.findViewById(R.id.failureArcView);
         SeriesItem seriesItem = new SeriesItem.Builder(Color.parseColor("#FFE2E2E2"))
-                .setRange(0, wins+violations, 0)
+                .setRange(0, max, 0)
                 .build();
 
         int backIndex = decoView.addSeries(seriesItem);
 
         final SeriesItem series1Item = new SeriesItem.Builder(Color.parseColor("#c71215"))
-                .setRange(0, wins+violations, 0)
+                .setRange(0, max, 0)
                 .build();
 
         int series1Index = decoView.addSeries(series1Item);
@@ -94,7 +101,7 @@ public class FailureFragment extends Fragment {
             }
         });
 
-        decoView.addEvent(new DecoEvent.Builder(wins+violations)
+        decoView.addEvent(new DecoEvent.Builder(max)
                 .setIndex(backIndex)
                 .build());
 
