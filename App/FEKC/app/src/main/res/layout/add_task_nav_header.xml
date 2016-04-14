@@ -18,15 +18,4 @@
         android:textColor="@color/colorWhite"
         android:layout_toEndOf="@id/add_task_back_button"/>
 
-    <TextView
-        android:id="@+id/add_task_save_text"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginRight="@dimen/toolbar_horizontal_margin"
-        android:text="REVIEW"
-        android:textSize="15dp"
-        android:layout_centerVertical="true"
-        android:textColor="@color/colorWhite"
-        android:layout_alignParentRight="true"/>
-
 </RelativeLayout>

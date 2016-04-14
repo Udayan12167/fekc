@@ -113,8 +113,71 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 EditText editText2 = (EditText) findViewById(R.id.start_time_edit_text_Schedule);
-                editText2.setText(selectedHour + ":" + selectedMinute);
-                task.setStartTime(selectedHour + ":" + selectedMinute);
+                if(selectedHour == 0) {
+                    if(selectedMinute < 10) {
+                        editText2.setText("12:0"+selectedMinute+" AM");
+                        task.setStartTime("12:0" + selectedMinute + " AM");
+                    }
+                    else {
+                        editText2.setText("12:"+selectedMinute+" AM");
+                        task.setStartTime("12:" + selectedMinute + " AM");
+                    }
+                }
+                else if(selectedHour < 10) {
+                    if(selectedMinute < 10) {
+                        editText2.setText("0" + selectedHour + ":0" + selectedMinute + " AM");
+                        task.setStartTime("0" + selectedHour + ":0" + selectedMinute + " AM");
+                    }
+                    else {
+                        editText2.setText("0"+selectedHour+":"+selectedMinute+" AM");
+                        task.setStartTime("0" + selectedHour + ":" + selectedMinute + " AM");
+                    }
+                }
+                else if(selectedHour < 12) {
+                    if(selectedMinute < 10) {
+                        editText2.setText(selectedHour+":0"+selectedMinute+" AM");
+                        task.setStartTime(selectedHour + ":0" + selectedMinute + " AM");
+                    }
+                    else {
+                        editText2.setText(selectedHour+":"+selectedMinute+" AM");
+                        task.setStartTime(selectedHour + ":" + selectedMinute + " AM");
+                    }
+                }
+                else {
+                    selectedHour -= 12;
+                    if(selectedHour == 0) {
+                        if(selectedMinute < 10) {
+                            editText2.setText("12:0"+selectedMinute+" PM");
+                            task.setStartTime("12:0" + selectedMinute + " PM");
+                        }
+                        else {
+                            editText2.setText("12:"+selectedMinute+" PM");
+                            task.setStartTime("12:" + selectedMinute + " PM");
+                        }
+                    }
+                    else if(selectedHour < 10) {
+                        if(selectedMinute < 10) {
+                            editText2.setText("0"+selectedHour+":0"+selectedMinute+" PM");
+                            task.setStartTime("0" + selectedHour + ":0" + selectedMinute + " PM");
+                        }
+                        else {
+                            editText2.setText("0"+selectedHour+":"+selectedMinute+" PM");
+                            task.setStartTime("0" + selectedHour + ":" + selectedMinute + " PM");
+                        }
+                    }
+                    else {
+                        if(selectedMinute < 10) {
+                            editText2.setText(selectedHour+":0"+selectedMinute+" PM");
+                            task.setStartTime(selectedHour + ":0" + selectedMinute + " PM");
+                        }
+                        else {
+                            editText2.setText(selectedHour+":"+selectedMinute+" PM");
+                            task.setStartTime(selectedHour + ":" + selectedMinute + " PM");
+                        }
+                    }
+                }
+//                editText2.setText(selectedHour + ":" + selectedMinute);
+//                task.setStartTime(selectedHour + ":" + selectedMinute);
             }
         }, hour, minute, false);//No 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -128,12 +191,76 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
+        CharSequence myStr;
         mTimePicker = new TimePickerDialog(ScheduleBasedTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 EditText editText2 = (EditText) findViewById(R.id.end_time_edit_text_Schedule);
-                editText2.setText(selectedHour + ":" + selectedMinute);
-                task.setEndTime(selectedHour + ":" + selectedMinute);
+                if(selectedHour == 0) {
+                    if(selectedMinute < 10) {
+                        editText2.setText("12:0"+selectedMinute+" AM");
+                        task.setEndTime("12:0"+selectedMinute+" AM");
+                    }
+                    else {
+                        editText2.setText("12:"+selectedMinute+" AM");
+                        task.setEndTime("12:" + selectedMinute + " AM");
+                    }
+                }
+                else if(selectedHour < 10) {
+                    if(selectedMinute < 10) {
+                        editText2.setText("0" + selectedHour + ":0" + selectedMinute + " AM");
+                        task.setEndTime("0" + selectedHour + ":0" + selectedMinute+" AM");
+                    }
+                    else {
+                        editText2.setText("0"+selectedHour+":"+selectedMinute+" AM");
+                        task.setEndTime("0"+selectedHour+":"+selectedMinute+" AM");
+                    }
+                }
+                else if(selectedHour < 12) {
+                    if(selectedMinute < 10) {
+                        editText2.setText(selectedHour+":0"+selectedMinute+" AM");
+                        task.setEndTime(selectedHour + ":0" + selectedMinute + " AM");
+                    }
+                    else {
+                        editText2.setText(selectedHour+":"+selectedMinute+" AM");
+                        task.setEndTime(selectedHour + ":" + selectedMinute + " AM");
+                    }
+                }
+                else {
+                    selectedHour -= 12;
+                    if(selectedHour == 0) {
+                        if(selectedMinute < 10) {
+                            editText2.setText("12:0"+selectedMinute+" PM");
+                            task.setEndTime("12:0" + selectedMinute + " PM");
+                        }
+                        else {
+                            editText2.setText("12:"+selectedMinute+" PM");
+                            task.setEndTime("12:" + selectedMinute + " PM");
+                        }
+                    }
+                    else if(selectedHour < 10) {
+                        if(selectedMinute < 10) {
+                            editText2.setText("0"+selectedHour+":0"+selectedMinute+" PM");
+                            task.setEndTime("0" + selectedHour + ":0" + selectedMinute+" PM");
+                        }
+                        else {
+                            editText2.setText("0"+selectedHour+":"+selectedMinute+" PM");
+                            task.setEndTime("0" + selectedHour + ":" + selectedMinute + " PM");
+                        }
+                    }
+                    else {
+                        if(selectedMinute < 10) {
+                            editText2.setText(selectedHour+":0"+selectedMinute+" PM");
+                            task.setEndTime(selectedHour + ":0" + selectedMinute + " PM");
+                        }
+                        else {
+                            editText2.setText(selectedHour+":"+selectedMinute+" PM");
+                            task.setEndTime(selectedHour + ":" + selectedMinute + " PM");
+                        }
+                    }
+                }
+//                editText2.setText(selectedHour + ":" + selectedMinute);
+//                task.setEndTime(selectedHour + ":" + selectedMinute);
             }
         }, hour, minute, false);//No 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -256,8 +383,8 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
             flag = 0;
         }
         if (flag == 1 && task.getEndTime().length() > 0) {
-            String[] startTime = task.getStartTime().trim().split(":");
-            String[] endTime = task.getEndTime().trim().split(":");
+            String[] startTime = task.getStartTime().trim().split(" ")[0].split(":");
+            String[] endTime = task.getEndTime().trim().split(" ")[0].split(":");
             if (Integer.parseInt(startTime[0].trim()) > Integer.parseInt(endTime[0])) {
                 Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
                 flag = 0;

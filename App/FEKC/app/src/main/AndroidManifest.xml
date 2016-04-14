@@ -87,15 +87,18 @@
         <activity
             android:name=".activity.TimeBasedTaskActivity"
             android:label="@string/title_activity_time_based_task"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".activity.ScheduleBasedTaskActivity"
             android:label="@string/title_activity_schedule_based_task"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".activity.ActivityBasedTaskActivity"
             android:label="@string/title_activity_activity_based_task"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <service
             android:name=".service.CheckViolationService"

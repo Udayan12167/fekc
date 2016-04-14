@@ -13,12 +13,27 @@
         android:id="@+id/timeTaskNav">
         <include layout="@layout/add_task_nav" />
     </LinearLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/timeTaskNav">
-        <include layout="@layout/activity_time_based_task" />
-
+        android:layout_height="60dp"
+        android:background="@color/reviewNav"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/save_button">
+        <TextView
+            android:id="@+id/add_task_save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Task"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorWhite"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/timeTaskNav"
+        android:layout_above="@id/save_button">
+        <include layout="@layout/activity_time_based_task" />
+    </ScrollView>
 </RelativeLayout>
