@@ -30,6 +30,7 @@ import com.example.shiv.fekc.service.CheckViolationService;
 import com.example.shiv.fekc.service.PostViolationService;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.gson.Gson;
@@ -64,6 +65,9 @@ public class WarningActivity extends AppCompatActivity {
 
     private TaskItem taskItem;
     private Gson gson;
+
+    GraphRequestAsyncTask user_name_task;
+    GraphRequestAsyncTask user_dp_task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +141,12 @@ public class WarningActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+        if(user_name_task!=null) {
+            user_name_task.cancel(true);
+        }
+        if(user_dp_task!=null) {
+            user_dp_task.cancel(true);
+        }
         finish();
     }
 
@@ -158,6 +168,12 @@ public class WarningActivity extends AppCompatActivity {
         Log.e("FOREGROUND", CheckViolationService.getViolatedPackage());
         Intent startPackage = getPackageManager().getLaunchIntentForPackage(CheckViolationService.getViolatedPackage());
         startActivity(startPackage);
+        if(user_name_task!=null) {
+            user_name_task.cancel(true);
+        }
+        if(user_dp_task!=null) {
+            user_dp_task.cancel(true);
+        }
         finish();
     }
 
@@ -197,7 +213,7 @@ public class WarningActivity extends AppCompatActivity {
     private void getUserDPUrl(final WarningMessageItem warningMessageItem) {
         Bundle params = new Bundle();
         params.putBoolean("redirect", false);
-        new GraphRequest(
+        user_dp_task = new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 Constants.SLASH + warningMessageItem.getFriendId() + Constants.FACEBOOK_USER_PROFILE_PICTURE_EDGE,
                 params,
@@ -241,7 +257,7 @@ public class WarningActivity extends AppCompatActivity {
                     }
                 }
         );
-        request.executeAsync();
+        user_name_task = request.executeAsync();
     }
 
     private void postViolation(){
