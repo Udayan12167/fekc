@@ -27,6 +27,7 @@ import com.example.shiv.fekc.rest.response.TaskMessageResponse;
 import com.example.shiv.fekc.rest.response.ViolationObjectResponse;
 import com.example.shiv.fekc.rest.service.BackendAPIServiceClient;
 import com.example.shiv.fekc.service.CheckViolationService;
+import com.example.shiv.fekc.service.PostViolationService;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -119,13 +120,18 @@ public class WarningActivity extends AppCompatActivity {
     }
 
     private void stopApp() {
-        ViolationItem violationItem = new ViolationItem();
-        violationItem.setTaskID(taskItem.getTaskID());
-        violationItem.setViolationType(Constants.WIN_CODE);
-        violationItem.setDate(new Date(System.currentTimeMillis()));
-        dbAdapter.insertIntoTaskViolation(violationItem);
+        Intent serviceIntent = new Intent(this, PostViolationService.class);
+        serviceIntent.putExtra(Constants.STRING_EXTRA_JSON, getIntent().getExtras().getString(Constants.STRING_EXTRA_JSON));
+        serviceIntent.putExtra(Constants.STRING_EXTRA_VIOLATION_CODE, Constants.WIN_CODE);
+        startService(serviceIntent);
 
-        postWin();
+//        ViolationItem violationItem = new ViolationItem();
+//        violationItem.setTaskID(taskItem.getTaskID());
+//        violationItem.setViolationType(Constants.WIN_CODE);
+//        violationItem.setDate(new Date(System.currentTimeMillis()));
+//        dbAdapter.insertIntoTaskViolation(violationItem);
+//
+//        postWin();
 
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
@@ -135,13 +141,18 @@ public class WarningActivity extends AppCompatActivity {
     }
 
     private void goToApp() {
-        ViolationItem violationItem = new ViolationItem();
-        violationItem.setTaskID(taskItem.getTaskID());
-        violationItem.setViolationType(Constants.VIOLATION_CODE);
-        violationItem.setDate(new Date(System.currentTimeMillis()));
-        dbAdapter.insertIntoTaskViolation(violationItem);
+//        ViolationItem violationItem = new ViolationItem();
+//        violationItem.setTaskID(taskItem.getTaskID());
+//        violationItem.setViolationType(Constants.VIOLATION_CODE);
+//        violationItem.setDate(new Date(System.currentTimeMillis()));
+//        dbAdapter.insertIntoTaskViolation(violationItem);
+//
+//        postViolation();
+        Intent serviceIntent = new Intent(this, PostViolationService.class);
+        serviceIntent.putExtra(Constants.STRING_EXTRA_JSON, getIntent().getExtras().getString(Constants.STRING_EXTRA_JSON));
+        serviceIntent.putExtra(Constants.STRING_EXTRA_VIOLATION_CODE, Constants.VIOLATION_CODE);
+        startService(serviceIntent);
 
-        postViolation();
 
         CheckViolationService.setGoToButtonForPackage(CheckViolationService.getViolatedPackage());
         Log.e("FOREGROUND", CheckViolationService.getViolatedPackage());

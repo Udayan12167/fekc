@@ -110,6 +110,8 @@ public class CheckViolationService extends Service {
                             //Check if schedule based task
                             if (task.getTaskType() == Constants.SCHEDULE_BASED_TASK) {
                                 Calendar calendar = Calendar.getInstance();
+                                task.setStartTime(cleanTime(task.getStartTime()));
+                                task.setEndTime(cleanTime(task.getEndTime()));
                                 String[] startTime = task.getStartTime().trim().split(":");
                                 String[] endTime = task.getEndTime().trim().split(":");
                                 Integer currHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -208,5 +210,21 @@ public class CheckViolationService extends Service {
     public void onDestroy() {
         Log.e(getClass().toString(), "The service has been destroyed");
         super.onDestroy();
+    }
+
+    private String cleanTime(String time){
+        if(time.endsWith("PM")){
+            time = time.replace("PM", "");
+            String arr[] = time.trim().split(":");
+            arr[0] = Integer.toString(Integer.parseInt(arr[0]) + 12);
+            return arr[0] + ":" + arr[1];
+        }else{
+            time = time.replace("AM", "");
+            String arr[] = time.trim().split(":");
+            if(Integer.parseInt(arr[0]) == 12){
+                arr[0] = Integer.toString(Integer.parseInt(arr[0]) - 12);
+            }
+            return arr[0] + ":" + arr[1];
+        }
     }
 }

@@ -385,10 +385,15 @@ public class ScheduleBasedTaskActivity extends AppCompatActivity {
         if (flag == 1 && task.getEndTime().length() > 0) {
             String[] startTime = task.getStartTime().trim().split(" ")[0].split(":");
             String[] endTime = task.getEndTime().trim().split(" ")[0].split(":");
-            if (Integer.parseInt(startTime[0].trim()) > Integer.parseInt(endTime[0])) {
-                Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
-                flag = 0;
-            } else if (Integer.parseInt(startTime[0].trim()) == Integer.parseInt(endTime[0].trim()) && Integer.parseInt(startTime[1].trim()) > Integer.parseInt(endTime[1].trim())) {
+            if((task.getStartTime().endsWith("AM") && task.getEndTime().endsWith("AM")) || (task.getStartTime().endsWith("PM") && task.getEndTime().endsWith("PM"))) {
+                if (Integer.parseInt(startTime[0].trim()) > Integer.parseInt(endTime[0])) {
+                    Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
+                    flag = 0;
+                } else if (Integer.parseInt(startTime[0].trim()) == Integer.parseInt(endTime[0].trim()) && Integer.parseInt(startTime[1].trim()) > Integer.parseInt(endTime[1].trim())) {
+                    Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
+                    flag = 0;
+                }
+            }else if((task.getStartTime().endsWith("PM") && task.getEndTime().endsWith("AM"))){
                 Toast.makeText(getApplicationContext(), "Start time cannot be after end time!", Toast.LENGTH_SHORT).show();
                 flag = 0;
             }

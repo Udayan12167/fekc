@@ -30,6 +30,8 @@ public class Constants {
 
     public static final String STRING_EXTRA_JSON = "extra_json";
 
+    public static final String STRING_EXTRA_VIOLATION_CODE = "violation_code";
+
     public static final String SLASH = "/";
 
     public static final String STRING_EXTRA_KEY_GCM = "key";

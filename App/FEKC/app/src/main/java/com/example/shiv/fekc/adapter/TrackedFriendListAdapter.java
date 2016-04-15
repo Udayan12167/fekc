@@ -73,11 +73,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         if (trackedFriendsTask.getMessageSet() == Constants.CODE_MESSAGE_SET) {
             holder.getMessageEditText().setText(trackedFriendsTask.getMessage());
         }
-        if (trackedFriendsTask.getTaskType() == Constants.ACTIVITY_BASED_TASK) {
-            holder.getTaskTextView().setText(trackedFriendsTask.getActivityName());
-        } else {
-            holder.getTaskTextView().setText(trackedFriendsTask.getTaskName());
-        }
+        holder.getTaskTextView().setText(trackedFriendsTask.getTaskName());
         Picasso.with(context).load(trackedFriendsTask.getFriendImageUrl()).into(holder.getProfileImageView());
         holder.getEditMessageImageView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +162,7 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         this.myClickListener = myClickListener;
     }
 
-    public void removeAll(){
+    public void removeAll() {
         int size = trackedFriendsTaskList.size();
         trackedFriendsTaskList.clear();
         notifyDataSetChanged();
@@ -199,15 +195,15 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
             this.profilePicLinearLayout = (LinearLayout) view.findViewById(R.id.tracked_friends_row_profile_pic_linear_layout);
 
             this.messageEditText = (EditText) view.findViewById(R.id.tracked_friends_row_message_editText);
-            this.messageTextView = (TextView)view.findViewById(R.id.tracked_friends_row_message_text_view);
-            this.editMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_edit_message_image_view);
-            this.submitMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_submit_image_view);
-            this.cancelEditMessageImageView = (ImageView)view.findViewById(R.id.tracked_friends_row_cancel_image_view);
-            this.editMessageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_edit_linear_layout);
+            this.messageTextView = (TextView) view.findViewById(R.id.tracked_friends_row_message_text_view);
+            this.editMessageImageView = (ImageView) view.findViewById(R.id.tracked_friends_row_edit_message_image_view);
+            this.submitMessageImageView = (ImageView) view.findViewById(R.id.tracked_friends_row_submit_image_view);
+            this.cancelEditMessageImageView = (ImageView) view.findViewById(R.id.tracked_friends_row_cancel_image_view);
+            this.editMessageLinearLayout = (LinearLayout) view.findViewById(R.id.tracked_friends_row_edit_linear_layout);
 
-            this.messageLinearLayout = (LinearLayout)view.findViewById(R.id.tracked_friends_row_message_layout);
+            this.messageLinearLayout = (LinearLayout) view.findViewById(R.id.tracked_friends_row_message_layout);
 
-            this.appRecyclerView = (RecyclerView)view.findViewById(R.id.tracked_friends_row_app_recycler_view);
+            this.appRecyclerView = (RecyclerView) view.findViewById(R.id.tracked_friends_row_app_recycler_view);
 
             view.setOnClickListener(this);
 
@@ -323,12 +319,12 @@ public class TrackedFriendListAdapter extends RecyclerView.Adapter<TrackedFriend
         }
     }
 
-    private ArrayList<TrackedFriendAppItem> getTrackedFriendAppItemList(TrackedFriendsTask trackedFriendsTask){
-        if(trackedFriendsTask.getAppNames() == null || trackedFriendsTask.getAppNames().size() == 0){
+    private ArrayList<TrackedFriendAppItem> getTrackedFriendAppItemList(TrackedFriendsTask trackedFriendsTask) {
+        if (trackedFriendsTask.getAppNames() == null || trackedFriendsTask.getAppNames().size() == 0) {
             return new ArrayList<TrackedFriendAppItem>();
         }
         ArrayList<TrackedFriendAppItem> trackedFriendAppItemList = new ArrayList<>();
-        for(int i = 0 ; i < trackedFriendsTask.getApps().size() ; i++){
+        for (int i = 0; i < trackedFriendsTask.getApps().size(); i++) {
             TrackedFriendAppItem trackedFriendAppItem = new TrackedFriendAppItem();
             trackedFriendAppItem.setAppName(trackedFriendsTask.getAppNames().get(i));
             Drawable icon;
